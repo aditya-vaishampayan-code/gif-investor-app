@@ -1,5 +1,6 @@
 import { Link, useParams, Navigate } from 'react-router-dom'
 import Frame from '../components/Frame'
+import Logo from '../components/Logo'
 import { STARTUPS, MONEY_BY_SCORE, formatMoney, initials } from '../data/startups'
 import { getRating } from '../services/dataService'
 
@@ -21,7 +22,7 @@ export default function Detail() {
       <div className="px-5 pt-5 pb-8 border-b border-ink/7" style={{ background: 'rgba(255,255,255,0.7)' }}>
         <div className="flex items-center gap-2 mb-3.5">
           <div className="w-12 h-12 flex items-center justify-center shrink-0" style={{ background: s.monoBg }}>
-            <span className="font-display text-sm font-bold" style={{ color: s.monoFg }}>{s.monogram}</span>
+            <span style={{ color: s.monoFg }}><Logo id={s.id} size={26} /></span>
           </div>
           <p className="text-[10px] font-semibold text-orange uppercase" style={{ letterSpacing: '0.12em' }}>
             {s.sector} · {s.metrics.stage}

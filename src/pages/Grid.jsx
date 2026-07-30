@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Frame from '../components/Frame'
+import Logo from '../components/Logo'
 import { STARTUPS } from '../data/startups'
 import { getRatings, getUser } from '../services/dataService'
 
@@ -41,8 +42,8 @@ export default function Grid() {
                   style={{ background: 'rgba(255,255,255,0.75)' }}>
               <div className="h-[76px] flex items-center justify-center relative overflow-hidden" style={{ background: s.monoBg }}>
                 <div className="absolute inset-0 opacity-10" style={{ background: 'var(--stripe-gradient)' }} />
-                <span className="font-display text-xl font-bold relative" style={{ color: s.monoFg }}>
-                  {s.monogram}
+                <span className="relative" style={{ color: s.monoFg }}>
+                  <Logo id={s.id} size={30} />
                 </span>
               </div>
               <div className="px-3 pt-2.5 pb-3.5">

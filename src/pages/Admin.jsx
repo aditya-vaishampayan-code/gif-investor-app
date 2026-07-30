@@ -1,4 +1,5 @@
 import Frame from '../components/Frame'
+import Logo from '../components/Logo'
 import { STARTUPS } from '../data/startups'
 import { getAggregates } from '../services/dataService'
 
@@ -32,7 +33,7 @@ export default function Admin() {
             <div key={r.id} className="flex items-center gap-[18px] py-4 border-b border-ink/7">
               <span className="font-display text-[13px] font-bold text-ink/20 w-[22px] text-right shrink-0">{i + 1}</span>
               <div className="w-11 h-11 flex items-center justify-center shrink-0" style={{ background: s.monoBg }}>
-                <span className="font-display text-[13px] font-bold" style={{ color: s.monoFg }}>{s.monogram}</span>
+                <span style={{ color: s.monoFg }}><Logo id={s.id} size={24} /></span>
               </div>
               <div className="min-w-0" style={{ flex: '0 0 160px' }}>
                 <p className="text-[15px] font-semibold text-ink truncate">{r.name}</p>

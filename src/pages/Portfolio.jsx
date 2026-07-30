@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import Frame from '../components/Frame'
+import Logo from '../components/Logo'
 import { MONEY_BY_SCORE, STARTUPS, formatMoney } from '../data/startups'
 import { getRatings } from '../services/dataService'
 
@@ -44,7 +45,7 @@ export default function Portfolio() {
                     style={{ background: 'rgba(255,255,255,0.75)' }}>
               <span className="font-display text-base font-bold text-ink/18 w-[26px] shrink-0 text-right">#{i + 1}</span>
               <div className="w-[38px] h-[38px] flex items-center justify-center shrink-0" style={{ background: s.monoBg }}>
-                <span className="font-display text-xs font-bold" style={{ color: s.monoFg }}>{s.monogram}</span>
+                <span style={{ color: s.monoFg }}><Logo id={s.id} size={20} /></span>
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-ink" style={{ lineHeight: 1.3 }}>{s.name}</p>
