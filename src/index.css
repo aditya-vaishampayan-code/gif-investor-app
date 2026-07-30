@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0B0F14;
+  --color-surface: #141B23;
+  --color-gold: #D4AF37;
+  --color-mint: #22C55E;
+  --color-fog: #E8EDF2;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-fog);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
