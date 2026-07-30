@@ -18,6 +18,14 @@ export function login({ name, email }) {
 export const getUser = () => read(USER_KEY, null)
 export const logout = () => localStorage.removeItem(USER_KEY)
 
+export function updateUser({ name, email }) {
+  const user = getUser()
+  if (!user) throw new Error('not logged in')
+  const updated = { ...user, name: name?.trim() || user.name, email: email?.trim() || user.email }
+  localStorage.setItem(USER_KEY, JSON.stringify(updated))
+  return updated
+}
+
 export function saveRating(startupId, score) {
   if (!Number.isInteger(score) || score < 1 || score > 10) throw new Error('score must be 1-10')
   const ratings = read(RATINGS_KEY, {})

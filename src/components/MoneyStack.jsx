@@ -43,10 +43,7 @@ export default function MoneyStack({ score }) {
                 <span style={{ fontFamily: 'serif', fontSize: 18, color: 'rgba(40,70,20,0.4)', lineHeight: 1 }}>$</span>
               </div>
               {/* corner denominations */}
-              <div className="absolute" style={{ left: 9, top: 8, fontFamily: 'serif', fontSize: 9, fontWeight: 700, color: 'rgba(20,50,10,0.55)', letterSpacing: '0.05em', lineHeight: 1.3 }}>
-                {denomCorner}
-              </div>
-              <div className="absolute" style={{ left: 9, bottom: 8, fontFamily: 'serif', fontSize: 9, fontWeight: 700, color: 'rgba(20,50,10,0.55)', letterSpacing: '0.05em', transform: 'rotate(180deg)' }}>
+              <div className="absolute" style={{ left: 9, top: 8, fontFamily: 'serif', fontSize: 9, fontWeight: 700, color: 'rgba(20,50,10,0.55)', letterSpacing: '0.05em' }}>
                 {denomCorner}
               </div>
               {/* center denomination */}

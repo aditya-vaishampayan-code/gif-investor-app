@@ -6,6 +6,7 @@ import Detail from './pages/Detail'
 import Rate from './pages/Rate'
 import Portfolio from './pages/Portfolio'
 import Admin from './pages/Admin'
+import Agenda from './pages/Agenda'
 
 function RequireUser({ children }) {
   return getUser() ? children : <Navigate to="/login" replace />
@@ -19,6 +20,7 @@ export default function App() {
       <Route path="/startup/:id" element={<RequireUser><Detail /></RequireUser>} />
       <Route path="/rate/:id" element={<RequireUser><Rate /></RequireUser>} />
       <Route path="/portfolio" element={<RequireUser><Portfolio /></RequireUser>} />
+      <Route path="/agenda" element={<RequireUser><Agenda /></RequireUser>} />
       <Route path="/admin" element={<Admin />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

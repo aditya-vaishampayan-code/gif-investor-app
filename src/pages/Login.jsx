@@ -46,7 +46,7 @@ export default function Login() {
           <button type="submit"
                   className="mt-7 w-full bg-orange text-white py-[17px] font-display font-bold text-[15px]"
                   style={{ letterSpacing: '0.04em' }}>
-            Enter the Forum
+            Start Investing
           </button>
         </form>
       </div>

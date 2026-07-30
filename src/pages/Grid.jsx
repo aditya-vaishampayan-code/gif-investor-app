@@ -1,24 +1,39 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Frame from '../components/Frame'
 import Logo from '../components/Logo'
+import ProfileSheet from '../components/ProfileSheet'
 import { STARTUPS } from '../data/startups'
 import { getRatings, getUser } from '../services/dataService'
 
 export default function Grid() {
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [, setTick] = useState(0)
   const ratings = getRatings()
   const rated = Object.keys(ratings).length
   const user = getUser()
+  const initial = user?.name ? user.name[0].toUpperCase() : '?'
 
   return (
     <Frame>
       <div className="sticky top-0 z-10 border-b border-ink/8"
            style={{ background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(8px)' }}>
-        <div className="px-5 pt-[18px] pb-3.5">
-          <div className="flex justify-between items-center mb-3.5">
-            <span className="font-display text-[13px] font-bold text-ink" style={{ letterSpacing: '0.06em' }}>GIF II</span>
-            <span className="text-[13px] text-ink/50">Good day, {user?.name?.split(' ')[0]}.</span>
+        <div className="px-4 pt-3.5 pb-3">
+          <div className="flex justify-between items-center mb-3">
+            <span className="font-display text-sm font-bold text-ink" style={{ letterSpacing: '-0.01em' }}>GIF II</span>
+            <div className="flex items-center gap-2">
+              <Link to="/agenda"
+                    className="text-orange text-[11px] font-semibold px-[11px] py-1.5"
+                    style={{ background: 'rgba(240,100,40,0.08)', border: '1px solid rgba(240,100,40,0.25)', letterSpacing: '0.05em' }}>
+                AGENDA ↗
+              </Link>
+              <button onClick={() => setProfileOpen(true)} aria-label="Profile"
+                      className="w-8 h-8 bg-orange text-white font-display text-xs font-bold flex items-center justify-center shrink-0">
+                {initial}
+              </button>
+            </div>
           </div>
-          <div className="flex items-center gap-2.5 mb-3.5">
+          <div className="flex items-center gap-2.5 mb-3">
             <div className="flex-1 h-0.5 bg-ink/10">
               <div className="h-full bg-orange transition-all duration-500" style={{ width: `${rated * 10}%` }} />
             </div>
@@ -65,6 +80,9 @@ export default function Grid() {
           ORGANIZER VIEW →
         </Link>
       </div>
+      {profileOpen && (
+        <ProfileSheet user={user} onClose={() => setProfileOpen(false)} onSaved={() => setTick((t) => t + 1)} />
+      )}
     </Frame>
   )
 }
