@@ -1,80 +1,99 @@
 import { useState } from 'react'
-import { useNavigate, useParams, Navigate } from 'react-router-dom'
+import { useNavigate, useParams, Navigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import Shell from '../components/Shell'
 import MoneyStack from '../components/MoneyStack'
-import { MONEY_BY_SCORE, STARTUPS, formatMoney } from '../data/startups'
+import { MONEY_BY_SCORE, STARTUPS, formatMoneyFull } from '../data/startups'
 import { getRating, saveRating } from '../services/dataService'
+
+const cta = 'w-full bg-orange text-white py-[18px] font-display font-extrabold text-base'
 
 export default function Rate() {
   const { id } = useParams()
   const nav = useNavigate()
   const s = STARTUPS.find((x) => x.id === id)
   const [score, setScore] = useState(5)
-  const [confirming, setConfirming] = useState(false)
-  const [locked, setLocked] = useState(false)
+  const [phase, setPhase] = useState('sliding') // sliding | confirm | locked
 
   if (!s) return <Navigate to="/" replace />
-  if (getRating(id) && !locked) return <Navigate to={`/startup/${id}`} replace />
+  if (getRating(id) && phase !== 'locked') return <Navigate to={`/startup/${id}`} replace />
+
+  const money = formatMoneyFull(MONEY_BY_SCORE[score])
 
   const onSlide = (e) => {
     const v = Number(e.target.value)
     if (v !== score) navigator.vibrate?.(8)
     setScore(v)
-    setConfirming(false)
   }
 
   const lockIn = () => {
     saveRating(id, score)
     navigator.vibrate?.([30, 40, 60])
-    setLocked(true)
-    setTimeout(() => nav(`/startup/${id}`), 1400)
-  }
-
-  if (locked) {
-    return (
-      <Shell title={s.name} back={`/startup/${id}`}>
-        <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-                    className="text-center py-20">
-          <div className="text-7xl mb-4">✅</div>
-          <p className="text-2xl font-extrabold text-bronze">INVESTED</p>
-          <p className="text-fog/60 mt-2">{formatMoney(MONEY_BY_SCORE[score])} of interest locked in</p>
-        </motion.div>
-      </Shell>
-    )
+    setPhase('locked')
+    setTimeout(() => nav(`/startup/${id}`), 1500)
   }
 
   return (
-    <Shell title={`Rate ${s.name}`} back={`/startup/${id}`}>
-      <p className="text-center font-display text-xl text-fog/80 mb-2">How far does your conviction go?</p>
-      <p className="text-center text-5xl font-extrabold text-gold mb-1">{score}<span className="text-xl text-fog/40">/10</span></p>
-      <p className="text-center text-bronze font-bold text-lg mb-4">{formatMoney(MONEY_BY_SCORE[score])}</p>
+    <div className="min-h-screen flex justify-center bg-ink">
+      <div className="w-full max-w-[390px] min-h-screen bg-ink flex flex-col">
+        {phase === 'sliding' && (
+          <>
+            <div className="px-5 pt-4">
+              <Link to={`/startup/${id}`} className="inline-block text-white/45 text-xs font-semibold pb-4" style={{ letterSpacing: '0.08em' }}>
+                ← BACK
+              </Link>
+            </div>
+            <div className="flex-1 flex flex-col items-center px-7 pt-2 pb-10">
+              <p className="text-[11px] font-semibold text-white/40 uppercase mb-5 text-center" style={{ letterSpacing: '0.12em' }}>
+                {s.name}
+              </p>
+              <div className="flex items-end justify-center gap-1.5 mb-1 leading-none">
+                <span className="font-display text-[100px] font-extrabold text-orange" style={{ letterSpacing: '-0.04em', lineHeight: 0.9 }}>{score}</span>
+                <span className="font-display text-[32px] font-extrabold text-white/25 pb-3" style={{ letterSpacing: '-0.02em' }}>/10</span>
+              </div>
+              <p className="text-[17px] font-semibold text-white/60 mb-7 text-center">{money}</p>
+              <div className="w-full mb-9"><MoneyStack score={score} /></div>
+              <input type="range" min="1" max="10" step="1" value={score} onChange={onSlide}
+                     aria-label="Investment interest from 1 to 10" className="mb-1.5" />
+              <div className="w-full flex justify-between mb-9">
+                <span className="text-xs text-white/30" style={{ letterSpacing: '0.04em' }}>Pass</span>
+                <span className="text-xs text-white/30" style={{ letterSpacing: '0.04em' }}>All in</span>
+              </div>
+              <button onClick={() => setPhase('confirm')} className={cta} style={{ letterSpacing: '0.04em' }}>
+                LOCK IT IN
+              </button>
+            </div>
+          </>
+        )}
 
-      <MoneyStack score={score} />
+        {phase === 'confirm' && (
+          <motion.div initial={{ y: 12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.25 }}
+                      className="flex-1 flex flex-col items-center justify-center px-7 py-10 text-center">
+            <p className="text-[11px] font-semibold text-white/40 uppercase mb-6" style={{ letterSpacing: '0.14em' }}>{s.name}</p>
+            <p className="font-display text-[80px] font-extrabold text-orange mb-5" style={{ lineHeight: 0.9, letterSpacing: '-0.04em' }}>{score}</p>
+            <p className="text-base text-white/75 font-medium mb-1.5">Lock in {score}/10?</p>
+            <p className="text-[13px] text-white/35 mb-11" style={{ lineHeight: 1.6 }}>This is final. Ratings cannot be changed.</p>
+            <button onClick={lockIn} className={`${cta} mb-3`} style={{ letterSpacing: '0.04em' }}>
+              CONFIRM — {money}
+            </button>
+            <button onClick={() => setPhase('sliding')}
+                    className="w-full border border-white/18 text-white/55 py-4 text-sm font-medium">
+              Keep adjusting
+            </button>
+          </motion.div>
+        )}
 
-      <input type="range" min="1" max="10" step="1" value={score} onChange={onSlide}
-             aria-label="Investment interest from 1 to 10"
-             className="w-full mt-6 accent-gold h-2" />
-      <div className="flex justify-between text-xs text-fog/40 mt-1 mb-8">
-        <span>Pass</span><span>All in</span>
+        {phase === 'locked' && (
+          <motion.div initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 16 }}
+                      className="flex-1 flex flex-col items-center justify-center px-7 py-10 text-center">
+            <div className="w-1 h-1 bg-orange rounded-full mb-7" />
+            <p className="text-[11px] font-semibold text-white/40 uppercase mb-4" style={{ letterSpacing: '0.2em' }}>Invested</p>
+            <p className="font-display text-[88px] font-extrabold text-orange mb-3" style={{ lineHeight: 0.9, letterSpacing: '-0.04em' }}>{score}</p>
+            <p className="font-display text-[22px] font-extrabold text-white/25 mb-4" style={{ letterSpacing: '-0.02em' }}>/10</p>
+            <p className="text-xl font-semibold text-white/70">{money}</p>
+          </motion.div>
+        )}
       </div>
-
-      {confirming ? (
-        <div className="space-y-2">
-          <p className="text-center text-fog/70 text-sm">Lock in <b className="text-gold">{score}/10</b>? This is final.</p>
-          <button onClick={lockIn} className="w-full rounded-xl bg-bronze text-ink font-bold py-4 active:scale-95 transition">
-            🔒 Yes, Lock It In
-          </button>
-          <button onClick={() => setConfirming(false)} className="w-full rounded-xl bg-surface text-fog/70 py-3">
-            Keep adjusting
-          </button>
-        </div>
-      ) : (
-        <button onClick={() => setConfirming(true)} className="w-full rounded-xl bg-gold text-ink font-bold py-4 active:scale-95 transition">
-          Lock It In
-        </button>
-      )}
-    </Shell>
+    </div>
   )
 }

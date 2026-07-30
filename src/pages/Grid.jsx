@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import Shell from '../components/Shell'
+import Frame from '../components/Frame'
 import { STARTUPS } from '../data/startups'
 import { getRatings, getUser } from '../services/dataService'
 
@@ -9,40 +9,59 @@ export default function Grid() {
   const user = getUser()
 
   return (
-    <Shell title="Global Impact Forum">
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <p className="text-sand text-sm">Welcome, {user?.name?.split(' ')[0]}</p>
-          <p className="text-gold font-bold">{rated} of {STARTUPS.length} conversations considered</p>
+    <Frame>
+      <div className="sticky top-0 z-10 bg-ink">
+        <div className="px-5 pt-[18px] pb-3.5">
+          <div className="flex justify-between items-center mb-3.5">
+            <span className="font-display text-[13px] font-extrabold text-white" style={{ letterSpacing: '0.1em' }}>GIF II</span>
+            <span className="text-[13px] text-white/55">Good day, {user?.name?.split(' ')[0]}.</span>
+          </div>
+          <div className="flex items-center gap-2.5 mb-3.5">
+            <div className="flex-1 h-0.5 bg-white/12">
+              <div className="h-full bg-orange transition-all duration-500" style={{ width: `${rated * 10}%` }} />
+            </div>
+            <span className="text-[11px] text-white/45 whitespace-nowrap" style={{ letterSpacing: '0.04em' }}>
+              {rated} of 10 rated
+            </span>
+          </div>
+          <Link to="/portfolio"
+                className="inline-block border border-white/18 text-white/65 text-[11px] font-semibold px-3 py-1.5"
+                style={{ letterSpacing: '0.06em' }}>
+            MY PORTFOLIO →
+          </Link>
         </div>
-        <Link to="/portfolio" className="rounded-full border border-gold/40 text-gold text-sm px-4 py-2">
-          My Portfolio
-        </Link>
       </div>
-      <div className="h-1.5 rounded-full bg-surface mb-6">
-        <div className="h-1.5 rounded-full bg-gradient-to-r from-gold to-bronze transition-all"
-             style={{ width: `${(rated / STARTUPS.length) * 100}%` }} />
-      </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="px-3.5 pt-[18px] pb-12 grid grid-cols-2 gap-2.5">
         {STARTUPS.map((s) => {
           const r = ratings[s.id]
           return (
             <Link key={s.id} to={`/startup/${s.id}`}
-                  className={`rounded-2xl bg-surface p-4 border ${r ? 'border-bronze/40' : 'border-white/5'} active:scale-95 transition`}>
-              <div className={`h-16 rounded-xl bg-gradient-to-br ${s.bannerGradient} flex items-center justify-center text-3xl mb-3`}>
-                {s.logoEmoji}
+                  className="bg-card border border-ink/9 relative overflow-hidden active:scale-[0.98] transition-transform">
+              <div className="h-[76px] flex items-center justify-center relative overflow-hidden" style={{ background: s.monoBg }}>
+                <div className="absolute inset-0 opacity-[0.07]" style={{ background: 'var(--stripe-gradient)' }} />
+                <span className="font-display text-xl font-extrabold relative" style={{ color: s.monoFg, letterSpacing: '-0.01em' }}>
+                  {s.monogram}
+                </span>
               </div>
-              <p className="font-bold text-fog leading-tight">{s.name}</p>
-              <p className="text-fog/50 text-xs mt-0.5">{s.sector}</p>
+              <div className="px-3 pt-2.5 pb-3.5">
+                <p className="text-[13px] font-semibold text-ink mb-[3px]" style={{ lineHeight: 1.25 }}>{s.name}</p>
+                <p className="text-[11px] text-orange font-medium" style={{ letterSpacing: '0.03em' }}>{s.sector}</p>
+              </div>
               {r && (
-                <span className="inline-block mt-2 text-xs font-bold text-bronze bg-bronze/10 rounded-full px-2 py-0.5">
-                  🔒 Locked · {r.score}/10
+                <span className="absolute top-[7px] right-[7px] bg-ink/85 text-white text-[10px] font-semibold px-[7px] py-[3px]"
+                      style={{ letterSpacing: '0.06em' }}>
+                  {r.score}/10
                 </span>
               )}
             </Link>
           )
         })}
       </div>
-    </Shell>
+      <div className="px-3.5 pb-8 text-center">
+        <Link to="/admin" className="text-[11px] text-ink/25 p-2" style={{ letterSpacing: '0.08em' }}>
+          ORGANIZER VIEW →
+        </Link>
+      </div>
+    </Frame>
   )
 }
