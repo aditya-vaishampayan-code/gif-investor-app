@@ -38,7 +38,7 @@ export default function Rate() {
                     transition={{ type: 'spring', stiffness: 300, damping: 15 }}
                     className="text-center py-20">
           <div className="text-7xl mb-4">✅</div>
-          <p className="text-2xl font-extrabold text-mint">INVESTED</p>
+          <p className="text-2xl font-extrabold text-bronze">INVESTED</p>
           <p className="text-fog/60 mt-2">{formatMoney(MONEY_BY_SCORE[score])} of interest locked in</p>
         </motion.div>
       </Shell>
@@ -47,9 +47,9 @@ export default function Rate() {
 
   return (
     <Shell title={`Rate ${s.name}`} back={`/startup/${id}`}>
-      <p className="text-center text-fog/60 text-sm mb-2">How likely are you to invest?</p>
+      <p className="text-center font-display text-xl text-fog/80 mb-2">How far does your conviction go?</p>
       <p className="text-center text-5xl font-extrabold text-gold mb-1">{score}<span className="text-xl text-fog/40">/10</span></p>
-      <p className="text-center text-mint font-bold text-lg mb-4">{formatMoney(MONEY_BY_SCORE[score])}</p>
+      <p className="text-center text-bronze font-bold text-lg mb-4">{formatMoney(MONEY_BY_SCORE[score])}</p>
 
       <MoneyStack score={score} />
 
@@ -63,7 +63,7 @@ export default function Rate() {
       {confirming ? (
         <div className="space-y-2">
           <p className="text-center text-fog/70 text-sm">Lock in <b className="text-gold">{score}/10</b>? This is final.</p>
-          <button onClick={lockIn} className="w-full rounded-xl bg-mint text-ink font-bold py-4 active:scale-95 transition">
+          <button onClick={lockIn} className="w-full rounded-xl bg-bronze text-ink font-bold py-4 active:scale-95 transition">
             🔒 Yes, Lock It In
           </button>
           <button onClick={() => setConfirming(false)} className="w-full rounded-xl bg-surface text-fog/70 py-3">

@@ -18,7 +18,7 @@ export default function Detail() {
         <span className="text-xs bg-surface rounded-full px-3 py-1 text-fog/70">{s.sector}</span>
         <span className="text-xs bg-surface rounded-full px-3 py-1 text-gold">{s.metrics.stage}</span>
       </div>
-      <p className="text-lg font-bold text-fog mb-2">{s.tagline}</p>
+      <p className="font-display text-2xl font-semibold text-fog mb-2">{s.tagline}</p>
       <p className="text-fog/70 text-sm leading-relaxed mb-6">{s.description}</p>
 
       <h2 className="text-gold font-bold text-sm uppercase tracking-wider mb-2">Founders</h2>
@@ -47,8 +47,8 @@ export default function Detail() {
       </div>
 
       {r ? (
-        <div className="rounded-xl border border-mint/40 bg-mint/10 p-4 text-center">
-          <p className="text-mint font-bold">🔒 Interest locked: {r.score}/10</p>
+        <div className="rounded-xl border border-bronze/40 bg-bronze/10 p-4 text-center">
+          <p className="text-bronze font-bold">🔒 Interest locked: {r.score}/10</p>
           <p className="text-fog/50 text-xs mt-1">Ratings are final.</p>
         </div>
       ) : (

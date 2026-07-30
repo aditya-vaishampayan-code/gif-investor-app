@@ -28,7 +28,7 @@ export default function Portfolio() {
             </div>
             <div className="text-right">
               <p className="text-gold font-bold">{s.score}/10</p>
-              <p className="text-mint text-xs">{formatMoney(MONEY_BY_SCORE[s.score])}</p>
+              <p className="text-bronze text-xs">{formatMoney(MONEY_BY_SCORE[s.score])}</p>
             </div>
           </div>
         ))}

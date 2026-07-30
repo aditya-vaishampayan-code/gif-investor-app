@@ -8,7 +8,7 @@ export default function Admin() {
 
   return (
     <Shell title="Organizer Dashboard">
-      <p className="text-fog/50 text-sm mb-5">Live average investor interest per startup (demo data).</p>
+      <p className="text-sand text-sm mb-5">Where the room's conviction is gathering — live average interest per venture.</p>
       <div className="space-y-3 md:max-w-2xl">
         {rows.map((r, i) => {
           const s = STARTUPS.find((x) => x.id === r.id)
@@ -21,7 +21,7 @@ export default function Admin() {
                 <p className="text-gold font-bold">{r.avgScore.toFixed(1)} <span className="text-fog/40 text-xs font-normal">· {r.raterCount} raters</span></p>
               </div>
               <div className="h-2.5 rounded-full bg-ink">
-                <div className="h-2.5 rounded-full bg-gradient-to-r from-gold to-mint"
+                <div className="h-2.5 rounded-full bg-gradient-to-r from-gold to-bronze"
                      style={{ width: `${(r.avgScore / max) * 100}%` }} />
               </div>
             </div>
