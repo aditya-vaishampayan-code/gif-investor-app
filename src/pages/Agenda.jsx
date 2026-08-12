@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import Frame from '../components/Frame'
+import BottomNav from '../components/BottomNav'
 import { AGENDA } from '../data/agenda'
 import { STARTUPS } from '../data/startups'
 
@@ -27,13 +27,7 @@ export default function Agenda() {
 
   return (
     <Frame>
-      <div className="sticky top-0 z-10 px-5 pt-4 border-b border-ink/7"
-           style={{ background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(8px)' }}>
-        <Link to="/" className="inline-block text-ink/45 text-xs font-semibold pb-4" style={{ letterSpacing: '0.08em' }}>
-          ← BACK
-        </Link>
-      </div>
-      <div className="px-5 pt-7 pb-5 border-b border-ink/6" style={{ background: 'rgba(255,255,255,0.6)' }}>
+      <div className="px-5 pt-6 pb-4 border-b border-ink/7">
         <p className="text-[10px] font-semibold text-orange uppercase mb-2" style={{ letterSpacing: '0.16em' }}>
           Global Impact Forum II
         </p>
@@ -42,7 +36,7 @@ export default function Agenda() {
         </h1>
         <p className="text-[13px] text-ink/45">Full schedule · Startup pitches & events</p>
       </div>
-      <div className="px-5 pb-14 relative">
+      <div className="px-5 pb-[86px] relative">
         <div className="absolute top-0 bottom-0 w-0.5 bg-ink/10" style={{ left: 44 }} />
         <div className="absolute top-0 w-0.5" style={{
           left: 44,
@@ -85,6 +79,7 @@ export default function Agenda() {
           )
         })}
       </div>
+      <BottomNav active="agenda" />
     </Frame>
   )
 }

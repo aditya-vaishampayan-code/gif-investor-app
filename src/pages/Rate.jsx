@@ -6,7 +6,8 @@ import MoneyStack from '../components/MoneyStack'
 import { MONEY_BY_SCORE, STARTUPS, formatMoneyFull } from '../data/startups'
 import { getRating, saveRating } from '../services/dataService'
 
-const cta = 'w-full bg-orange text-white py-[18px] font-display font-bold text-base'
+const cta = 'w-full bg-orange text-white py-[18px] font-display font-bold text-base border-none cursor-pointer'
+const ctaStyle = { borderRadius: 10, letterSpacing: '0.02em' }
 
 export default function Rate() {
   const { id } = useParams()
@@ -58,7 +59,7 @@ export default function Rate() {
               <span className="text-xs text-ink/35" style={{ letterSpacing: '0.04em' }}>Pass</span>
               <span className="text-xs text-ink/35" style={{ letterSpacing: '0.04em' }}>All in</span>
             </div>
-            <button onClick={() => setPhase('confirm')} className={cta} style={{ letterSpacing: '0.02em' }}>
+            <button onClick={() => setPhase('confirm')} className={cta} style={ctaStyle}>
               Lock it in
             </button>
           </div>
@@ -72,11 +73,12 @@ export default function Rate() {
           <p className="font-display text-[80px] font-bold text-orange mb-5" style={{ lineHeight: 0.9, letterSpacing: '-0.04em' }}>{score}</p>
           <p className="text-base text-ink/75 font-medium mb-1.5">Lock in {score}/10?</p>
           <p className="text-[13px] text-ink/40 mb-11" style={{ lineHeight: 1.6 }}>This is final. Ratings cannot be changed.</p>
-          <button onClick={lockIn} className={`${cta} mb-3`} style={{ letterSpacing: '0.02em' }}>
+          <button onClick={lockIn} className={`${cta} mb-3`} style={ctaStyle}>
             Confirm — {money}
           </button>
           <button onClick={() => setPhase('sliding')}
-                  className="w-full border border-ink/20 text-ink/55 py-4 text-sm font-medium">
+                  className="w-full border border-ink/20 text-ink/55 py-4 text-sm font-medium cursor-pointer"
+                  style={{ borderRadius: 10, background: 'transparent' }}>
             Keep adjusting
           </button>
         </motion.div>

@@ -5,6 +5,7 @@ import { logout, updateUser } from '../services/dataService'
 
 const inputCls =
   'w-full px-3 py-[11px] border border-ink/18 text-sm text-ink focus:outline-none focus:border-orange'
+const inputStyle = { borderRadius: 6, background: 'rgba(255,255,255,0.8)' }
 
 export default function ProfileSheet({ user, onClose, onSaved }) {
   const nav = useNavigate()
@@ -37,7 +38,7 @@ export default function ProfileSheet({ user, onClose, onSaved }) {
           </div>
           <div className="px-6 pt-5">
             <div className="flex items-center gap-3.5 mb-6 pb-5 border-b border-ink/7">
-              <div className="w-12 h-12 bg-orange flex items-center justify-center shrink-0">
+              <div className="w-12 h-12 bg-orange flex items-center justify-center shrink-0 rounded-full">
                 <span className="font-display text-lg font-bold text-white">{initial}</span>
               </div>
               <div>
@@ -47,18 +48,19 @@ export default function ProfileSheet({ user, onClose, onSaved }) {
             </div>
             <div className="mb-3">
               <p className="text-[10px] font-semibold text-muted uppercase mb-1.5" style={{ letterSpacing: '0.12em' }}>Full name</p>
-              <input className={inputCls} style={{ background: 'rgba(255,255,255,0.8)' }} value={name} onChange={(e) => setName(e.target.value)} />
+              <input className={inputCls} style={inputStyle} value={name} onChange={(e) => setName(e.target.value)} />
             </div>
             <div className="mb-5">
               <p className="text-[10px] font-semibold text-muted uppercase mb-1.5" style={{ letterSpacing: '0.12em' }}>Email</p>
-              <input className={inputCls} style={{ background: 'rgba(255,255,255,0.8)' }} type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input className={inputCls} style={inputStyle} type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <button onClick={save}
                     className="w-full bg-orange text-white py-3.5 font-display font-bold text-sm mb-2.5"
-                    style={{ letterSpacing: '0.02em' }}>
+                    style={{ borderRadius: 8, letterSpacing: '0.02em' }}>
               Save changes
             </button>
-            <button onClick={signOut} className="w-full border border-ink/18 text-ink/60 py-3.5 text-sm font-medium">
+            <button onClick={signOut} className="w-full border border-ink/18 text-ink/60 py-3.5 text-sm font-medium"
+                    style={{ borderRadius: 8, background: 'transparent' }}>
               Sign out
             </button>
           </div>
