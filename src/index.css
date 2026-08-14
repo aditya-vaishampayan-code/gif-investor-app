@@ -5,14 +5,14 @@
    Drop the licensed files at these paths; falls back to Plus Jakarta Sans until they exist. */
 @font-face {
   font-family: 'Korto';
-  src: url('/fonts/Korto-Medium.ttf') format('truetype');
+  src: url('/fonts/Korto-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Korto';
-  src: url('/fonts/Korto-Bold.ttf') format('truetype');
+  src: url('/fonts/Korto-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
