@@ -43,7 +43,7 @@ export default function Login() {
 
       <div className="flex-1 flex flex-col px-6 pt-10 pb-8">
         <div className="mb-7">
-          <img src="/logo-lockup-white.png" alt="Global Impact Forum" className="h-9 w-auto" />
+          <img src="/logo-lockup-white.png" alt="Global Impact Forum" className="w-[217px] h-[66px]" />
         </div>
 
         <p className="text-[11px] font-semibold text-white/80 uppercase mb-4" style={{ letterSpacing: '0.14em' }}>
