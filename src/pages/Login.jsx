@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Frame from '../components/Frame'
-import SunburstMark from '../components/SunburstMark'
 import { login } from '../services/dataService'
 
 const field =
@@ -43,11 +42,8 @@ export default function Login() {
       />
 
       <div className="flex-1 flex flex-col px-6 pt-10 pb-8">
-        <div className="flex items-center gap-3 mb-7">
-          <SunburstMark size={40} color="#FFFFFF" />
-          <div className="font-display text-white font-bold text-[19px] leading-[1.05]">
-            Global<br />Impact Forum
-          </div>
+        <div className="mb-7">
+          <img src="/logo-lockup-white.png" alt="Global Impact Forum" className="h-9 w-auto" />
         </div>
 
         <p className="text-[11px] font-semibold text-white/80 uppercase mb-4" style={{ letterSpacing: '0.14em' }}>
