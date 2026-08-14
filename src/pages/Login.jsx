@@ -41,12 +41,22 @@ export default function Login() {
         }}
       />
 
-      <div className="flex-1 flex flex-col px-6 pt-10 pb-8">
-        <div className="mb-7">
-          <img src="/logo-lockup-white.png" alt="Global Impact Forum" className="w-[217px] h-[66px]" />
-        </div>
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          background:
+            'linear-gradient(165deg, #EF4E3D 0%, #E85A45 24%, #B97270 44%, #7C87A0 64%, #6591B0 82%, #4B546B 100%)',
+        }}
+      />
+      <img
+        src="/logo-lockup-white.png"
+        alt="Global Impact Forum"
+        className="absolute w-[217px] h-[66px]"
+        style={{ left: 3, top: 59 }}
+      />
 
-        <p className="text-[11px] font-semibold text-white/80 uppercase mb-4" style={{ letterSpacing: '0.14em' }}>
+      <div className="flex-1 flex flex-col px-6 pt-10 pb-8">
+        <p className="font-body font-regular text-[12px] text-white/80 uppercase mb-4" style={{ letterSpacing: '0.14em' }}>
           Global Impact Forum – Edition II
         </p>
         <h1 className="font-display text-[34px] font-medium text-white mb-3" style={{ lineHeight: 1.15, letterSpacing: '-0.01em' }}>
