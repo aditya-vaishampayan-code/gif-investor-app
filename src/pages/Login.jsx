@@ -55,7 +55,7 @@ export default function Login() {
         style={{ left: 3, top: 59 }}
       />
 
-      <div className="flex-1 flex flex-col px-6 pt-10 pb-8">
+      <div className="flex-1 flex flex-col px-6 pt-[135px] pb-8">
         <p className="font-body font-regular text-[12px] text-white/80 uppercase mb-4" style={{ letterSpacing: '0.14em' }}>
           Global Impact Forum – Edition II
         </p>
