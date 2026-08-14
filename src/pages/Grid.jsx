@@ -127,3 +127,17 @@ export default function Grid() {
                   </span>
                   <div className="text-[11px] text-white/60 line-clamp-2">{ev.blurb}</div>
                 </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <BottomNav active="tonight" />
+
+      {profileOpen && (
+        <ProfileSheet user={user} onClose={() => setProfileOpen(false)} onSaved={() => setTick((t) => t + 1)} />
+      )}
+    </Frame>
+  )
+}

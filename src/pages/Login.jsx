@@ -78,7 +78,7 @@ export default function Login() {
 
           <label className="flex items-center gap-2 mb-2 text-[13px] text-ink/70">
             <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
-            Agree all the Terms and Conditions
+            I agree to all the Terms and Conditions
           </label>
 
           {error && <p className="text-[13px] text-orange py-1">{error}</p>}
