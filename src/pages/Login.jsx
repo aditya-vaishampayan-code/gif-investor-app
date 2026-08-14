@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Frame from '../components/Frame'
+import SunburstMark from '../components/SunburstMark'
 import { login } from '../services/dataService'
 
 const field =
-  'w-full py-3.5 border-0 border-b border-ink/18 bg-transparent text-[15px] text-ink focus:outline-none focus:border-orange mb-4'
+  'w-full py-3 px-3.5 rounded-[10px] border border-ink/15 bg-white text-[15px] text-ink placeholder:text-ink/35 focus:outline-none focus:border-orange'
 
 export default function Login() {
   const nav = useNavigate()
   const [form, setForm] = useState({ name: '', email: '', password: '' })
+  const [agreed, setAgreed] = useState(false)
   const [error, setError] = useState('')
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value })
 
@@ -16,6 +18,10 @@ export default function Login() {
     e.preventDefault()
     if (!form.name.trim() || !form.email.trim() || !form.password.trim()) {
       setError('Please complete all fields.')
+      return
+    }
+    if (!agreed) {
+      setError('Please agree to the Terms and Conditions.')
       return
     }
     try {
@@ -27,33 +33,65 @@ export default function Login() {
   }
 
   return (
-    <Frame className="flex flex-col">
-      <div className="flex-1 flex flex-col justify-center px-8 pt-12 pb-10">
-        <p className="text-[11px] font-semibold text-orange uppercase mb-5" style={{ letterSpacing: '0.16em' }}>
-          Global Impact Forum II
+    <Frame className="flex flex-col relative overflow-hidden">
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          background:
+            'linear-gradient(165deg, #EF4E3D 0%, #E85A45 24%, #B97270 44%, #7C87A0 64%, #6591B0 82%, #4B546B 100%)',
+        }}
+      />
+
+      <div className="flex-1 flex flex-col px-6 pt-10 pb-8">
+        <div className="flex items-center gap-3 mb-7">
+          <SunburstMark size={40} color="#FFFFFF" />
+          <div className="font-display text-white font-bold text-[19px] leading-[1.05]">
+            Global<br />Impact Forum
+          </div>
+        </div>
+
+        <p className="text-[11px] font-semibold text-white/80 uppercase mb-4" style={{ letterSpacing: '0.14em' }}>
+          Global Impact Forum – Edition II
         </p>
-        <h1 className="font-display text-[34px] font-bold text-ink mb-3.5" style={{ lineHeight: 1.1, letterSpacing: '-0.02em' }}>
+        <h1 className="font-display text-[30px] font-bold text-white mb-3" style={{ lineHeight: 1.15, letterSpacing: '-0.01em' }}>
           Every great institution begins with a single conversation.
         </h1>
-        <p className="text-sm text-ink/50 mb-11" style={{ lineHeight: 1.65 }}>
+        <p className="text-sm text-white/85 mb-7" style={{ lineHeight: 1.5 }}>
           Log in to review the shortlist and allocate your investment interest.
         </p>
-        <form onSubmit={submit}>
-          <input className={field} placeholder="Full name" value={form.name} onChange={set('name')} />
-          <input className={field} type="email" placeholder="Email address" value={form.email} onChange={set('email')} />
-          <input className={`${field} mb-2`} type="password" placeholder="Password" value={form.password} onChange={set('password')} />
-          {error && <p className="text-[13px] text-orange py-2">{error}</p>}
-          <button type="submit"
-                  className="mt-7 w-full bg-orange text-white py-[17px] font-display font-bold text-[15px]"
-                  style={{ letterSpacing: '0.04em' }}>
+
+        <form onSubmit={submit} className="bg-white rounded-[22px] p-5 shadow-xl">
+          <label className="block text-[13px] font-semibold text-ink mb-1.5">Full Name*</label>
+          <input className={`${field} mb-4`} placeholder="e.g Raj Devayani" value={form.name} onChange={set('name')} />
+
+          <label className="block text-[13px] font-semibold text-ink mb-1.5">Email id</label>
+          <input className={`${field} mb-4`} type="email" placeholder="rajdev@abc.com" value={form.email} onChange={set('email')} />
+
+          <label className="block text-[13px] font-semibold text-ink mb-1.5">Password</label>
+          <input className={`${field} mb-4`} type="password" placeholder="••••••••••" value={form.password} onChange={set('password')} />
+
+          <label className="flex items-center gap-2 mb-2 text-[13px] text-ink/70">
+            <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+            Agree all the Terms and Conditions
+          </label>
+
+          {error && <p className="text-[13px] text-orange py-1">{error}</p>}
+
+          <button
+            type="submit"
+            className="mt-3 w-full text-white py-[15px] rounded-[14px] font-display font-bold text-[15px] shadow-lg"
+            style={{
+              letterSpacing: '0.02em',
+              background: 'linear-gradient(180deg, #F2604F 0%, #EF4E3D 45%, #C33017 100%)',
+            }}
+          >
             Start Investing
           </button>
         </form>
       </div>
-      <div className="px-8 py-[18px] border-t border-ink/8">
-        <p className="text-[11px] text-ink/30" style={{ lineHeight: 1.6 }}>
-          Demo build — any credentials accepted. Data stored locally, not transmitted.
-        </p>
+
+      <div className="pb-6 text-center">
+        <p className="text-[11px] text-white/70">Copyright @ 2026</p>
       </div>
     </Frame>
   )
