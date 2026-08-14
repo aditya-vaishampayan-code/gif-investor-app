@@ -53,10 +53,10 @@ export default function Login() {
         <p className="text-[11px] font-semibold text-white/80 uppercase mb-4" style={{ letterSpacing: '0.14em' }}>
           Global Impact Forum – Edition II
         </p>
-        <h1 className="font-display text-[30px] font-bold text-white mb-3" style={{ lineHeight: 1.15, letterSpacing: '-0.01em' }}>
+        <h1 className="font-display text-[34px] font-medium text-white mb-3" style={{ lineHeight: 1.15, letterSpacing: '-0.01em' }}>
           Every great institution begins with a single conversation.
         </h1>
-        <p className="text-sm text-white/85 mb-7" style={{ lineHeight: 1.5 }}>
+        <p className="font-body font-normal text-[12px] text-white/85 mb-7" style={{ lineHeight: 1.5 }}>
           Log in to review the shortlist and allocate your investment interest.
         </p>
 
@@ -91,7 +91,7 @@ export default function Login() {
       </div>
 
       <div className="pb-6 text-center">
-        <p className="text-[11px] text-white/70">Copyright @ 2026</p>
+        <p className="font-body font-normal text-[9px] text-white/70">Copyright @ 2026</p>
       </div>
     </Frame>
   )
