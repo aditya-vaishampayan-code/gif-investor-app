@@ -41,7 +41,7 @@ export default function Grid() {
           </div>
           <button onClick={() => nav('/gala')}
                   className="w-full text-left rounded-2xl overflow-hidden relative active:scale-[0.98] transition-transform border-none p-0 block"
-                  style={{ height: 220, background: 'linear-gradient(135deg,#F06428 0%,#E8521A 35%,#C43D0F 70%,#8B2A08 100%)' }}>
+                  style={{ height: 220, background: 'linear-gradient(135deg,#EF4E3D 0%,#DA4028 35%,#C33017 70%,#8A210C 100%)' }}>
             <div className="absolute inset-0 opacity-25 pointer-events-none" style={{ background: 'var(--stripe-gradient)' }} />
             <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top,rgba(27,23,20,0.75) 0%,transparent 55%)' }} />
             <div className="absolute top-3.5 left-3.5">
@@ -80,7 +80,7 @@ export default function Grid() {
             </button>
             <button onClick={() => nav('/event/xyz')}
                     className="rounded-xl overflow-hidden relative border-none p-0 cursor-pointer active:scale-[0.98] transition-transform"
-                    style={{ height: 160, background: 'linear-gradient(135deg,#F06428 0%,#D4501E 100%)' }}>
+                    style={{ height: 160, background: 'linear-gradient(135deg,#EF4E3D 0%,#D33E2E 100%)' }}>
               <div className="absolute inset-0 opacity-20" style={{ background: 'var(--stripe-gradient)' }} />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(0,0,0,0.5) 0%,transparent 60%)' }} />
               <div className="absolute top-2.5 right-2.5 px-[7px] py-[3px] rounded-[10px]" style={{ background: 'rgba(255,255,255,0.2)' }}>

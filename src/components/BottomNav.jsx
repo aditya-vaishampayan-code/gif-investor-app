@@ -33,7 +33,7 @@ export default function BottomNav({ active }) {
     <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] z-20 flex border-t border-ink/10"
          style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)', paddingBottom: 'env(safe-area-inset-bottom)' }}>
       {TABS.map(({ id, label, Icon, path }) => {
-        const color = id === active ? '#F06428' : 'rgba(27,23,20,0.35)'
+        const color = id === active ? '#EF4E3D' : 'rgba(27,23,20,0.35)'
         return (
           <button key={id} onClick={() => nav(path)}
                   className="flex-1 flex flex-col items-center gap-[3px] py-3 pb-3.5 border-none bg-transparent cursor-pointer">

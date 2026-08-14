@@ -6,7 +6,7 @@ import { STARTUPS } from '../data/startups'
 
 const NODE = {
   startup: { size: 24 },
-  keynote: { size: 20, color: '#F06428' },
+  keynote: { size: 20, color: '#EF4E3D' },
   break: { size: 14, color: '#B0A89E' },
   event: { size: 14, color: '#1B1714' },
 }
@@ -41,7 +41,7 @@ export default function Agenda() {
         <div className="absolute top-0 w-0.5" style={{
           left: 44,
           height: `${linePct}%`,
-          background: 'linear-gradient(to bottom, #F06428, rgba(240,100,40,0.6))',
+          background: 'linear-gradient(to bottom, #EF4E3D, rgba(239,78,61,0.6))',
           transition: 'height 0.15s ease',
         }} />
         {AGENDA.map((item, idx) => {

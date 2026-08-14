@@ -1,28 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* Korto (heading font) — self-hosted, licensed via Talbot Type.
+   Drop the licensed files at these paths; falls back to Plus Jakarta Sans until they exist. */
+@font-face {
+  font-family: 'Korto';
+  src: url('/fonts/Korto-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Korto';
+  src: url('/fonts/Korto-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  /* Kern Culture design system — GIF II handoff rev.2 (light) */
+  /* Kern Culture design system — GIF II brand identity rev.3 */
   --color-ink: #1B1714;
   --color-ink-2: #3A3530;
   --color-muted: #7A726A;
   --color-bg: #EDEAE3;
   --color-card: #FAFAF8;
-  --color-orange: #F06428;
-  --font-display: "Plus Jakarta Sans", sans-serif;
-  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-orange: #EF4E3D;
+  --color-sky: #B5DEF6;
+  --color-steel: #6591B0;
+  --color-slate: #4B546B;
+  --font-display: "Korto", "Plus Jakarta Sans", sans-serif;
+  --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
   --stripe-gradient: repeating-linear-gradient(
     to right,
-    #F5C4A0 0px,
-    #F09A72 40px,
-    #EC7240 80px,
-    #E85C20 120px,
-    #EC7240 160px,
-    #F09A72 200px,
-    #F5C4A0 240px
+    #F7C2B8 0px,
+    #F49C82 40px,
+    #F06E54 80px,
+    #EF4E3D 120px,
+    #F06E54 160px,
+    #F49C82 200px,
+    #F7C2B8 240px
   );
 }
 
@@ -58,14 +78,14 @@ input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 30px;
   height: 30px;
-  background: #F06428;
+  background: #EF4E3D;
   border-radius: 50%;
   margin-top: -13px;
 }
 input[type='range']::-moz-range-thumb {
   width: 30px;
   height: 30px;
-  background: #F06428;
+  background: #EF4E3D;
   border-radius: 50%;
   border: none;
 }

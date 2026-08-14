@@ -58,9 +58,9 @@ export default function AncientMedicine() {
           <p className="text-[10px] font-semibold text-ink/40 uppercase mb-3.5" style={{ letterSpacing: '0.14em' }}>Confirmed Lineup</p>
           <div className="flex flex-col gap-2.5 mb-5">
             {[
-              { initials: 'NK', name: 'Nina Kraviz', role: 'Main Stage · 01:00 AM', bg: '#F06428' },
+              { initials: 'NK', name: 'Nina Kraviz', role: 'Main Stage · 01:00 AM', bg: '#EF4E3D' },
               { initials: 'BK', name: 'Ben Klock', role: 'The Terrace · 11:30 PM', bg: '#1B1714' },
-              { initials: 'LA', name: 'Lena Abrahamsson', role: 'Rooftop · 02:30 AM', bg: '#F06428' },
+              { initials: 'LA', name: 'Lena Abrahamsson', role: 'Rooftop · 02:30 AM', bg: '#EF4E3D' },
             ].map((p) => (
               <div key={p.name} className="flex items-center gap-3 px-3 py-2.5 border border-ink/7"
                    style={{ background: 'rgba(255,255,255,0.7)', borderRadius: 8 }}>

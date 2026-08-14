@@ -22,7 +22,7 @@ export default function Gala() {
     <Frame>
       <div className="flex-1 flex flex-col pb-[72px]">
         {/* Hero */}
-        <div className="relative flex-shrink-0 overflow-hidden" style={{ height: 180, background: 'linear-gradient(135deg,#F06428 0%,#C43D0F 60%,#8B2A08 100%)' }}>
+        <div className="relative flex-shrink-0 overflow-hidden" style={{ height: 180, background: 'linear-gradient(135deg,#EF4E3D 0%,#C33017 60%,#8A210C 100%)' }}>
           <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ background: 'var(--stripe-gradient)' }} />
           <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top,rgba(27,23,20,0.6) 0%,transparent 50%)' }} />
           <button onClick={() => nav('/')} className="absolute top-4 left-4 text-white text-xs font-semibold px-3 py-1.5 border border-white/25 cursor-pointer"

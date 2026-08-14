@@ -59,9 +59,9 @@ export default function XYZ() {
           <div className="flex flex-col gap-2.5 mb-5">
             {[
               { initials: 'MO', name: 'Mia Okafor', role: 'Founder · Deepvoid Systems', bg: '#1B1714' },
-              { initials: 'JR', name: 'James Reyes', role: 'Founder · Lattice Audio', bg: '#F06428' },
+              { initials: 'JR', name: 'James Reyes', role: 'Founder · Lattice Audio', bg: '#EF4E3D' },
               { initials: 'SP', name: 'Sasha Petrova', role: 'Founder · Formless Labs', bg: '#1B1714' },
-              { initials: 'TN', name: 'Takeshi Noda', role: 'Founder · Zerobase', bg: '#F06428' },
+              { initials: 'TN', name: 'Takeshi Noda', role: 'Founder · Zerobase', bg: '#EF4E3D' },
             ].map((p) => (
               <div key={p.name} className="flex items-center gap-3 px-3 py-2.5 border border-ink/7"
                    style={{ background: 'rgba(255,255,255,0.7)', borderRadius: 8 }}>
