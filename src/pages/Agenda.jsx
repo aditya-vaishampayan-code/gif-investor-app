@@ -31,7 +31,7 @@ function SessionCard({ session }) {
       {session.description && <p className="text-[12px] text-ink/40">{session.description}</p>}
 
       {session.tracks?.map((track, i) => (
-        <div key={i} className={track.name || i > 0 ? 'mt-3 pt-3 border-t border-ink/8' : 'mt-3 pt-3 border-t border-ink/8'}>
+        <div key={i} className="mt-3 pt-3 border-t border-ink/8">
           {track.name && (
             <p className="text-[12px] font-bold text-ink mb-2">{track.name}</p>
           )}
@@ -106,18 +106,18 @@ export default function Agenda() {
         </div>
 
         {/* Agenda card */}
-        <div className="flex-1 bg-white/90 rounded-t-[28px] px-5 pt-6 pb-8">
+        <div className="flex-1 px-5 pb-6">
+        <div className="rounded-[20px] px-5 pt-6 pb-8" style={{ background: '#EAF9FF' }}>
           {/* Day tabs */}
-          <div className="flex gap-2.5 justify-center mb-6">
+          <div className="flex gap-3 mb-6">
             {AGENDA_DAYS.map((d) => {
               const active = d.id === dayId
               return (
                 <button
                   key={d.id}
                   onClick={() => setDayId(d.id)}
-                  className={`px-6 py-2 rounded-xl border-none font-display text-[13px] font-bold cursor-pointer transition-colors ${
-                    active ? 'bg-orange text-white' : 'bg-ink/10 text-ink/50'
-                  }`}
+                  className="flex-1 py-3 rounded-2xl border-none font-display text-[14px] font-bold cursor-pointer transition-colors"
+                  style={{ background: active ? '#EF4E3D' : '#E4E7E9', color: active ? '#FFFFFF' : '#1B1714' }}
                 >
                   {d.label.toUpperCase()}
                 </button>
@@ -139,6 +139,7 @@ export default function Agenda() {
               ))}
             </div>
           </div>
+        </div>
         </div>
       </div>
 
