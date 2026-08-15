@@ -1,85 +1,152 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Frame from '../components/Frame'
 import BottomNav from '../components/BottomNav'
-import { AGENDA } from '../data/agenda'
-import { STARTUPS } from '../data/startups'
+import ProfileSheet from '../components/ProfileSheet'
+import { AGENDA_DAYS } from '../data/agenda'
+import { initials } from '../data/startups'
+import { getUser } from '../services/dataService'
 
-const NODE = {
-  startup: { size: 24 },
-  keynote: { size: 20, color: '#EF4E3D' },
-  break: { size: 14, color: '#B0A89E' },
-  event: { size: 14, color: '#1B1714' },
+function SpeakerRow({ speaker }) {
+  return (
+    <div className="flex items-center gap-2.5 py-1.5">
+      <div className="w-8 h-8 rounded-full bg-ink/10 text-ink/60 shrink-0 flex items-center justify-center font-display text-[10px] font-bold">
+        {initials(speaker.name)}
+      </div>
+      <div className="min-w-0">
+        <div className="text-[13px] font-semibold text-ink leading-tight">{speaker.name}</div>
+        <div className="text-[11px] text-ink/50 leading-tight">{speaker.role}</div>
+      </div>
+    </div>
+  )
+}
+
+function SessionCard({ session }) {
+  return (
+    <div className="bg-white rounded-2xl shadow-md p-4">
+      <p className="text-[12px] font-bold text-orange mb-1">{session.time}</p>
+      <p className="font-display text-[15px] font-bold text-ink mb-0.5" style={{ lineHeight: 1.25 }}>
+        {session.title}
+      </p>
+      {session.location && <p className="text-[12px] text-ink/45 mb-0.5">{session.location}</p>}
+      {session.description && <p className="text-[12px] text-ink/40">{session.description}</p>}
+
+      {session.tracks?.map((track, i) => (
+        <div key={i} className={track.name || i > 0 ? 'mt-3 pt-3 border-t border-ink/8' : 'mt-3 pt-3 border-t border-ink/8'}>
+          {track.name && (
+            <p className="text-[12px] font-bold text-ink mb-2">{track.name}</p>
+          )}
+          <span className="inline-block px-2.5 py-1 rounded-full bg-orange text-white text-[9px] font-bold uppercase mb-1.5" style={{ letterSpacing: '0.06em' }}>
+            Speakers
+          </span>
+          <div>
+            {track.speakers.map((sp) => (
+              <SpeakerRow key={sp.name} speaker={sp} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function BreakRow({ session }) {
+  return (
+    <div className="text-center py-1">
+      <p className="text-[13px] font-bold text-orange mb-0.5">{session.time}</p>
+      <p className="font-display text-[14px] font-bold text-ink uppercase mb-0.5" style={{ letterSpacing: '0.04em' }}>
+        {session.title}
+      </p>
+      {session.location && <p className="text-[11px] text-ink/40">{session.location}</p>}
+    </div>
+  )
 }
 
 export default function Agenda() {
-  const [linePct, setLinePct] = useState(0)
-
-  useEffect(() => {
-    const onScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-      setLinePct(maxScroll > 0 ? Math.min(100, (scrollY / maxScroll) * 100) : 0)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [, setTick] = useState(0)
+  const [dayId, setDayId] = useState(AGENDA_DAYS[0].id)
+  const user = getUser()
+  const initial = user?.name ? user.name[0].toUpperCase() : '?'
+  const day = AGENDA_DAYS.find((d) => d.id === dayId) ?? AGENDA_DAYS[0]
 
   return (
-    <Frame>
-      <div className="px-5 pt-6 pb-4 border-b border-ink/7">
-        <p className="text-[10px] font-semibold text-orange uppercase mb-2" style={{ letterSpacing: '0.16em' }}>
-          Global Impact Forum II
-        </p>
-        <h1 className="font-display text-[28px] font-bold text-ink mb-1" style={{ lineHeight: 1.05, letterSpacing: '-0.02em' }}>
-          Forum Day Agenda
-        </h1>
-        <p className="text-[13px] text-ink/45">Full schedule · Startup pitches & events</p>
-      </div>
-      <div className="px-5 pb-[86px] relative">
-        <div className="absolute top-0 bottom-0 w-0.5 bg-ink/10" style={{ left: 44 }} />
-        <div className="absolute top-0 w-0.5" style={{
-          left: 44,
-          height: `${linePct}%`,
-          background: 'linear-gradient(to bottom, #EF4E3D, rgba(239,78,61,0.6))',
-          transition: 'height 0.15s ease',
-        }} />
-        {AGENDA.map((item, idx) => {
-          const s = item.type === 'startup' ? STARTUPS.find((x) => x.id === item.startupId) : null
-          const size = NODE[item.type].size
-          const color = s ? s.monoBg : NODE[item.type].color
-          return (
-            <div key={idx} className="flex gap-4 pt-7 relative">
-              <div className="shrink-0 w-12 flex justify-center relative z-[1] mt-0.5">
-                <div className="rounded-full border-2 border-white flex items-center justify-center shrink-0"
-                     style={{ width: size, height: size, background: color }}>
-                  {s && (
-                    <span className="font-display font-bold leading-none" style={{ fontSize: 8, color: s.monoFg }}>
-                      {s.monogram}
-                    </span>
+    <Frame className="relative overflow-hidden">
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          background:
+            'linear-gradient(180deg, #EF4E3D 0%, #E85A45 20%, #B97270 40%, #7C87A0 60%, #6591B0 78%, #4B546B 100%)',
+        }}
+      />
+
+      <div className="flex-1 flex flex-col pb-[88px]">
+        {/* Top bar */}
+        <div className="px-5 pt-5 flex justify-between items-start">
+          <img src="/logo-lockup-white.png" alt="Global Impact Forum" className="w-[187px] h-[57px]" />
+          <button
+            onClick={() => setProfileOpen(true)}
+            aria-label="Profile"
+            className="w-9 h-9 rounded-full overflow-hidden border-2 border-white/70 shrink-0 bg-orange text-white font-display text-sm font-bold flex items-center justify-center"
+          >
+            {initial}
+          </button>
+        </div>
+
+        {/* Heading */}
+        <div className="px-6 pt-5 pb-6 text-center">
+          <p className="text-[11px] font-semibold text-white/80 uppercase mb-2" style={{ letterSpacing: '0.14em' }}>
+            Global Impact Forum – Edition II
+          </p>
+          <h1 className="font-display text-[22px] font-bold text-white mb-2" style={{ lineHeight: 1.15 }}>
+            The Forum in Conversation
+          </h1>
+          <p className="text-[12px] text-white/85" style={{ lineHeight: 1.5 }}>
+            Explore two days of thoughtfully curated programme of conversations around business, policy and global collaboration.
+          </p>
+        </div>
+
+        {/* Agenda card */}
+        <div className="flex-1 bg-white/90 rounded-t-[28px] px-5 pt-6 pb-8">
+          {/* Day tabs */}
+          <div className="flex gap-2.5 justify-center mb-6">
+            {AGENDA_DAYS.map((d) => {
+              const active = d.id === dayId
+              return (
+                <button
+                  key={d.id}
+                  onClick={() => setDayId(d.id)}
+                  className={`px-6 py-2 rounded-xl border-none font-display text-[13px] font-bold cursor-pointer transition-colors ${
+                    active ? 'bg-orange text-white' : 'bg-ink/10 text-ink/50'
+                  }`}
+                >
+                  {d.label.toUpperCase()}
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Timeline */}
+          <div className="relative pl-5">
+            <div className="absolute top-2 bottom-2 w-0.5 bg-orange/70" style={{ left: 3 }} />
+            <div className="flex flex-col gap-5">
+              {day.sessions.map((session) => (
+                <div key={session.id} className="relative">
+                  {session.showDot !== false && (
+                    <div className="absolute w-2.5 h-2.5 rounded-full bg-orange border-2 border-white shadow" style={{ left: -25, top: 6 }} />
                   )}
+                  {session.type === 'break' ? <BreakRow session={session} /> : <SessionCard session={session} />}
                 </div>
-              </div>
-              <div className="flex-1 pb-1">
-                <p className="text-[11px] font-semibold text-orange mb-1" style={{ letterSpacing: '0.08em' }}>{item.time}</p>
-                <p className="font-display text-[15px] font-bold text-ink mb-[3px]" style={{ lineHeight: 1.2, letterSpacing: '-0.01em' }}>
-                  {item.title}
-                </p>
-                <p className="text-xs text-ink/50" style={{ lineHeight: 1.5 }}>{item.subtitle}</p>
-                {s && (
-                  <span className="inline-block mt-2 px-2 py-[3px]"
-                        style={{ background: 'rgba(240,100,40,0.08)', border: '1px solid rgba(240,100,40,0.2)' }}>
-                    <span className="text-[10px] font-semibold text-orange" style={{ letterSpacing: '0.06em' }}>
-                      {s.sector} · {s.metrics.stage}
-                    </span>
-                  </span>
-                )}
-              </div>
+              ))}
             </div>
-          )
-        })}
+          </div>
+        </div>
       </div>
+
       <BottomNav active="agenda" />
+
+      {profileOpen && (
+        <ProfileSheet user={user} onClose={() => setProfileOpen(false)} onSaved={() => setTick((t) => t + 1)} />
+      )}
     </Frame>
   )
 }

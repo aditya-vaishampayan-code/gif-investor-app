@@ -52,7 +52,7 @@ export default function Grid() {
       <div className="flex-1 flex flex-col pb-[88px]">
         {/* Top bar */}
         <div className="px-5 pt-5 flex justify-between items-start">
-          <img src="/logo-lockup-white.png" alt="Global Impact Forum" className="w-[140px] h-auto" />
+          <img src="/logo-lockup-white.png" alt="Global Impact Forum" className="w-[187px] h-[57px]" />
           <button
             onClick={() => setProfileOpen(true)}
             aria-label="Profile"
