@@ -17,14 +17,14 @@ function QRCode() {
   return <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ display: 'block' }}>{rects}</svg>
 }
 
-const TicketSVG = ({ color = 'white' }) => (
+export const TicketSVG = ({ color = 'white' }) => (
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
     <rect x="1.5" y="4.5" width="15" height="9" rx="1" stroke={color} strokeWidth="1.5" />
     <line x1="6" y1="4.5" x2="6" y2="13.5" stroke={color} strokeWidth="1.5" strokeDasharray="1.5 1.5" />
   </svg>
 )
 
-const UPCOMING = [
+export const UPCOMING = [
   { label: 'Ancient Medicine', date: 'Sat, Aug 2 · 11:00 PM', ready: 'Ready in 2 days' },
   { label: 'XYZ Pitch Night',  date: 'Fri, Aug 8 · 11:00 PM', ready: 'Ready in 8 days' },
 ]
