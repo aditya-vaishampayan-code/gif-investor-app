@@ -7,7 +7,7 @@ export default function XYZ() {
 
   return (
     <Frame>
-      <div className="flex-1 flex flex-col pb-[72px]">
+      <div className="flex-1 flex flex-col pb-[88px]">
         {/* Hero */}
         <div className="relative flex-shrink-0 overflow-hidden" style={{ height: 260, background: 'linear-gradient(135deg,#2A1F3D 0%,#1A1228 60%,#0F0A1A 100%)' }}>
           <div className="absolute inset-0 opacity-15 pointer-events-none" style={{ background: 'var(--stripe-gradient)' }} />
@@ -20,7 +20,7 @@ export default function XYZ() {
           <div className="absolute bottom-0 left-0 right-0 px-5 pb-5">
             <div className="flex gap-1.5 mb-2.5">
               <span className="text-[10px] font-semibold text-orange uppercase px-2.5 py-[3px]"
-                    style={{ background: 'rgba(240,100,40,0.25)', border: '1px solid rgba(240,100,40,0.4)', borderRadius: 12, letterSpacing: '0.08em' }}>
+                    style={{ background: 'rgba(239,78,61,0.25)', border: '1px solid rgba(239,78,61,0.4)', borderRadius: 12, letterSpacing: '0.08em' }}>
                 Coming Soon
               </span>
               <span className="text-[10px] font-semibold text-white/65 px-2.5 py-[3px]"
@@ -28,7 +28,7 @@ export default function XYZ() {
                 Fri, Aug 8 · 12:30 AM
               </span>
             </div>
-            <h1 className="font-display font-extrabold text-white" style={{ fontSize: 52, lineHeight: 0.88, letterSpacing: '-0.04em' }}>
+            <h1 className="font-display font-bold text-white" style={{ fontSize: 52, lineHeight: 0.88, letterSpacing: '-0.04em' }}>
               XYZ
             </h1>
           </div>
@@ -78,7 +78,7 @@ export default function XYZ() {
           </div>
 
           {/* Ticket */}
-          <div className="p-4 text-center border border-orange/15" style={{ background: 'rgba(240,100,40,0.06)', borderRadius: 10 }}>
+          <div className="p-4 text-center border border-orange/15" style={{ background: 'rgba(239,78,61,0.06)', borderRadius: 10 }}>
             <p className="text-[12px] text-ink/50 mb-2">Your ticket activates in 8 days.</p>
             <p className="font-mono text-[15px] font-bold text-ink/30" style={{ letterSpacing: '0.15em' }}>GIF-XYZ-888</p>
           </div>

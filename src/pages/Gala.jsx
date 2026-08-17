@@ -20,9 +20,9 @@ export default function Gala() {
 
   return (
     <Frame>
-      <div className="flex-1 flex flex-col pb-[72px]">
+      <div className="flex-1 flex flex-col pb-[88px]">
         {/* Hero */}
-        <div className="relative flex-shrink-0 overflow-hidden" style={{ height: 180, background: 'linear-gradient(135deg,#EF4E3D 0%,#C33017 60%,#8A210C 100%)' }}>
+        <div className="relative flex-shrink-0 overflow-hidden" style={{ height: 180, background: 'linear-gradient(135deg,#EF4E3D 0%,#6591B0 60%,#4B546B 100%)' }}>
           <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ background: 'var(--stripe-gradient)' }} />
           <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top,rgba(27,23,20,0.6) 0%,transparent 50%)' }} />
           <button onClick={() => nav('/')} className="absolute top-4 left-4 text-white text-xs font-semibold px-3 py-1.5 border border-white/25 cursor-pointer"
@@ -31,7 +31,7 @@ export default function Gala() {
           </button>
           <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
             <div className="text-[10px] font-semibold text-white/60 uppercase mb-1" style={{ letterSpacing: '0.14em' }}>Live Now</div>
-            <div className="font-display text-[26px] font-extrabold text-white" style={{ lineHeight: 1, letterSpacing: '-0.02em' }}>Pitch Night Gala</div>
+            <div className="font-display text-[26px] font-bold text-white" style={{ lineHeight: 1, letterSpacing: '-0.02em' }}>Pitch Night Gala</div>
           </div>
         </div>
 
@@ -49,7 +49,7 @@ export default function Gala() {
 
         {/* Portfolio summary */}
         {portfolio.length > 0 && (
-          <div className="mx-3.5 mt-3.5 p-4 border border-orange/18 rounded-xl" style={{ background: 'rgba(240,100,40,0.06)' }}>
+          <div className="mx-3.5 mt-3.5 p-4 border border-orange/18 rounded-xl" style={{ background: 'rgba(239,78,61,0.06)' }}>
             <div className="flex justify-between items-center mb-2.5">
               <span className="text-[11px] font-semibold text-orange uppercase" style={{ letterSpacing: '0.08em' }}>Your Portfolio</span>
               <span className="font-display text-[13px] font-bold text-orange">{formatMoney(totalMoney)}</span>
@@ -90,7 +90,7 @@ export default function Gala() {
                   {r && (
                     <span className="absolute top-1.5 right-1.5 bg-ink/80 text-white text-[9px] font-semibold px-1.5 py-[2px]"
                           style={{ borderRadius: 10, letterSpacing: '0.06em' }}>
-                      {r.score}/10
+                      🔒 {r.score}/10
                     </span>
                   )}
                 </button>

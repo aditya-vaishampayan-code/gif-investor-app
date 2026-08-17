@@ -9,7 +9,6 @@ const field =
 export default function Login() {
   const nav = useNavigate()
   const [form, setForm] = useState({ name: '', email: '', password: '' })
-  const [agreed, setAgreed] = useState(false)
   const [error, setError] = useState('')
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value })
 
@@ -17,10 +16,6 @@ export default function Login() {
     e.preventDefault()
     if (!form.name.trim() || !form.email.trim() || !form.password.trim()) {
       setError('Please complete all fields.')
-      return
-    }
-    if (!agreed) {
-      setError('Please agree to the Terms and Conditions.')
       return
     }
     try {
@@ -36,16 +31,7 @@ export default function Login() {
       <div
         className="absolute inset-0 -z-10"
         style={{
-          background:
-            'linear-gradient(165deg, #EF4E3D 0%, #E85A45 24%, #B97270 44%, #7C87A0 64%, #6591B0 82%, #4B546B 100%)',
-        }}
-      />
-
-      <div
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            'linear-gradient(165deg, #EF4E3D 0%, #E85A45 24%, #B97270 44%, #7C87A0 64%, #6591B0 82%, #4B546B 100%)',
+          background: 'linear-gradient(165deg, #EF4E3D 0%, #6591B0 55%, #4B546B 100%)',
         }}
       />
       <img
@@ -66,7 +52,7 @@ export default function Login() {
           Log in to review the shortlist and allocate your investment interest.
         </p>
 
-        <form onSubmit={submit} className="bg-white rounded-[22px] p-5 shadow-xl">
+        <form onSubmit={submit} className="bg-white rounded-[16px] p-5 shadow-xl">
           <label className="block text-[13px] font-semibold text-ink mb-1.5">Full Name*</label>
           <input className={`${field} mb-4`} placeholder="e.g Raj Devayani" value={form.name} onChange={set('name')} />
 
@@ -75,11 +61,6 @@ export default function Login() {
 
           <label className="block text-[13px] font-semibold text-ink mb-1.5">Password</label>
           <input className={`${field} mb-4`} type="password" placeholder="••••••••••" value={form.password} onChange={set('password')} />
-
-          <label className="flex items-center gap-2 mb-2 text-[13px] text-ink/70">
-            <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
-            I agree to all the Terms and Conditions
-          </label>
 
           {error && <p className="text-[13px] text-orange py-1">{error}</p>}
 
@@ -91,7 +72,7 @@ export default function Login() {
               background: 'linear-gradient(180deg, #F2604F 0%, #EF4E3D 45%, #C33017 100%)',
             }}
           >
-            Start Investing
+            Enter the Forum
           </button>
         </form>
       </div>

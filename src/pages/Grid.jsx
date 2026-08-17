@@ -44,8 +44,7 @@ export default function Grid() {
       <div
         className="absolute inset-0 -z-10"
         style={{
-          background:
-            'linear-gradient(180deg, #EF4E3D 0%, #E85A45 20%, #B97270 40%, #7C87A0 60%, #6591B0 78%, #4B546B 100%)',
+          background: 'linear-gradient(180deg, #EF4E3D 0%, #6591B0 55%, #4B546B 100%)',
         }}
       />
 
@@ -93,11 +92,11 @@ export default function Grid() {
             onClick={() => nav('/gala')}
             className="w-full text-left rounded-2xl overflow-hidden border-none p-0 block bg-white active:scale-[0.98] transition-transform shadow-lg"
           >
-            <div className="relative" style={{ height: 160, background: 'linear-gradient(135deg,#EF4E3D 0%,#DA4028 35%,#C33017 70%,#8A210C 100%)' }}>
+            <div className="relative" style={{ height: 160, background: 'linear-gradient(135deg,#EF4E3D 0%,#6591B0 60%,#4B546B 100%)' }}>
               <div className="absolute inset-0 opacity-25 pointer-events-none" style={{ background: 'var(--stripe-gradient)' }} />
             </div>
             <div className="p-4">
-              <div className="font-display text-[22px] font-extrabold text-orange mb-0.5" style={{ letterSpacing: '-0.02em' }}>
+              <div className="font-display text-[22px] font-bold text-orange mb-0.5" style={{ letterSpacing: '-0.02em' }}>
                 Pitch Night Gala
               </div>
               <div className="text-[13px] text-ink/55 font-semibold">All 10 Startups</div>
@@ -120,7 +119,7 @@ export default function Grid() {
               >
                 <div className="w-20 h-20 rounded-xl shrink-0" style={{ background: 'linear-gradient(135deg,#1B1714 0%,#3A2E28 100%)' }} />
                 <div className="flex-1 min-w-0">
-                  <div className="font-display text-[16px] font-extrabold text-white mb-0.5">{ev.title}</div>
+                  <div className="font-display text-[16px] font-bold text-white mb-0.5">{ev.title}</div>
                   <div className="text-[11px] text-white/70 mb-1.5">{ev.desc}</div>
                   <span className="inline-block px-2.5 py-1 rounded-full bg-orange text-white text-[10px] font-semibold mb-1.5">
                     {ev.time}

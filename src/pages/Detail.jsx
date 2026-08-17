@@ -1,4 +1,4 @@
-import { Link, useParams, Navigate } from 'react-router-dom'
+import { Link, useNavigate, useParams, Navigate } from 'react-router-dom'
 import Frame from '../components/Frame'
 import { STARTUPS, MONEY_BY_SCORE, formatMoney, initials } from '../data/startups'
 import { getRating } from '../services/dataService'
@@ -7,6 +7,7 @@ const label = 'text-[10px] font-semibold text-muted uppercase mb-3.5'
 
 export default function Detail() {
   const { id } = useParams()
+  const nav = useNavigate()
   const s = STARTUPS.find((x) => x.id === id)
   if (!s) return <Navigate to="/" replace />
   const r = getRating(id)
@@ -17,10 +18,10 @@ export default function Detail() {
       <div className="relative flex-shrink-0 overflow-hidden" style={{ height: 220, background: s.monoBg }}>
         <div className="absolute inset-0 opacity-15 pointer-events-none" style={{ background: 'var(--stripe-gradient)' }} />
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top,rgba(27,23,20,0.7) 0%,transparent 55%)' }} />
-        <Link to="/gala" className="absolute top-4 left-4 text-white text-xs font-semibold px-3 py-1.5 border border-white/25"
+        <button onClick={() => nav(-1)} className="absolute top-4 left-4 text-white text-xs font-semibold px-3 py-1.5 border border-white/25 cursor-pointer"
               style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(4px)', borderRadius: 20, lineHeight: 1 }}>
           ← Back
-        </Link>
+        </button>
         <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
           <div className="flex gap-1.5 mb-2">
             <span className="text-[10px] font-semibold text-white uppercase px-2 py-[3px]"
@@ -28,11 +29,11 @@ export default function Detail() {
               {s.sector}
             </span>
             <span className="text-[10px] font-semibold text-white uppercase px-2 py-[3px]"
-                  style={{ background: 'rgba(240,100,40,0.8)', borderRadius: 12, letterSpacing: '0.06em' }}>
+                  style={{ background: 'rgba(239,78,61,0.8)', borderRadius: 12, letterSpacing: '0.06em' }}>
               {s.metrics.stage}
             </span>
           </div>
-          <h1 className="font-display text-[28px] font-extrabold text-white mb-1" style={{ lineHeight: 1, letterSpacing: '-0.03em' }}>{s.name}</h1>
+          <h1 className="font-display text-[28px] font-bold text-white mb-1" style={{ lineHeight: 1, letterSpacing: '-0.03em' }}>{s.name}</h1>
           <p className="text-[12px] text-white/65 italic">{s.tagline}</p>
         </div>
       </div>
@@ -40,11 +41,17 @@ export default function Detail() {
       {/* Meta row */}
       <div className="px-5 py-3.5 flex gap-5 border-b border-ink/7" style={{ background: 'rgba(255,255,255,0.85)' }}>
         <div className="flex items-center gap-1.5">
-          <div className="w-3.5 h-3.5 bg-orange rounded-[2px] shrink-0" />
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-orange shrink-0" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="16" rx="2" />
+            <path d="M3 9h18M8 3v4M16 3v4" />
+          </svg>
           <span className="text-[12px] text-ink/60">Tonight, Forum II</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3.5 h-3.5 border border-ink/30 rounded-full shrink-0" />
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-ink/50 shrink-0" aria-hidden="true">
+            <circle cx="12" cy="12" r="8" />
+            <path d="M12 7.5v9M9.5 9.5c0-.9.9-1.5 2.5-1.5s2.5.7 2.5 1.6-1 1.4-2.5 1.9-2.5 1-2.5 1.9 1 1.6 2.5 1.6 2.5-.6 2.5-1.5" />
+          </svg>
           <span className="text-[12px] text-ink/60">{s.metrics.ask} ask</span>
         </div>
       </div>
@@ -81,9 +88,9 @@ export default function Detail() {
         </div>
 
         {r ? (
-          <div className="border-2 border-orange p-5 text-center" style={{ borderRadius: 10, background: 'rgba(240,100,40,0.04)' }}>
+          <div className="border-2 border-orange p-5 text-center" style={{ borderRadius: 10, background: 'rgba(239,78,61,0.04)' }}>
             <p className="text-[10px] font-semibold text-orange uppercase mb-2" style={{ letterSpacing: '0.14em' }}>Interest Locked</p>
-            <p className="font-display text-[44px] font-extrabold text-ink leading-none mb-1" style={{ letterSpacing: '-0.03em' }}>{r.score}/10</p>
+            <p className="font-display text-[44px] font-bold text-ink leading-none mb-1" style={{ letterSpacing: '-0.03em' }}>{r.score}/10</p>
             <p className="text-[15px] text-orange font-semibold mb-1.5">{formatMoney(MONEY_BY_SCORE[r.score])}</p>
             <p className="text-[11px] text-muted">Ratings are final.</p>
           </div>

@@ -40,27 +40,27 @@ export default function MoneyStack({ score }) {
               {/* portrait oval */}
               <div className="absolute flex items-center justify-center"
                    style={{ left: 14, top: '50%', transform: 'translateY(-50%)', width: 46, height: 60, border: '1px solid rgba(40,70,20,0.35)', borderRadius: '50%', background: 'rgba(255,255,255,0.15)' }}>
-                <span style={{ fontFamily: 'serif', fontSize: 18, color: 'rgba(40,70,20,0.4)', lineHeight: 1 }}>$</span>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: 18, color: 'rgba(40,70,20,0.4)', lineHeight: 1 }}>$</span>
               </div>
               {/* corner denominations */}
-              <div className="absolute" style={{ left: 9, top: 8, fontFamily: 'serif', fontSize: 9, fontWeight: 700, color: 'rgba(20,50,10,0.55)', letterSpacing: '0.05em' }}>
+              <div className="absolute" style={{ left: 9, top: 8, fontFamily: 'var(--font-display)', fontSize: 9, fontWeight: 700, color: 'rgba(20,50,10,0.55)', letterSpacing: '0.05em' }}>
                 {denomCorner}
               </div>
               {/* center denomination */}
               <div className="absolute text-center" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)', lineHeight: 1 }}>
-                <div style={{ fontFamily: 'Georgia, serif', fontSize: 26, fontWeight: 700, color: 'rgba(20,55,10,0.65)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 700, color: 'rgba(20,55,10,0.65)', letterSpacing: '-0.02em', lineHeight: 1 }}>
                   {denom >= 1000 ? '$1,000K' : `$${denom}K`}
                 </div>
               </div>
               {/* top center text */}
               <div className="absolute uppercase whitespace-nowrap"
-                   style={{ top: 9, left: '50%', transform: 'translateX(-50%)', fontFamily: 'serif', fontSize: 6, color: 'rgba(20,50,10,0.45)', letterSpacing: '0.15em' }}>
+                   style={{ top: 9, left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--font-body)', fontSize: 6, color: 'rgba(20,50,10,0.45)', letterSpacing: '0.15em' }}>
                 Forum Note · Series II
               </div>
               {/* serial row */}
               <div className="absolute flex justify-between items-center" style={{ bottom: 9, left: 68, right: 10 }}>
-                <span style={{ fontFamily: 'monospace', fontSize: 7, color: 'rgba(20,50,10,0.4)', letterSpacing: '0.1em' }}>{serialFor(i)}</span>
-                <span style={{ fontFamily: 'monospace', fontSize: 7, color: 'rgba(20,50,10,0.4)', letterSpacing: '0.06em' }}>GIF · {i + 1}</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: 7, color: 'rgba(20,50,10,0.4)', letterSpacing: '0.1em' }}>{serialFor(i)}</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: 7, color: 'rgba(20,50,10,0.4)', letterSpacing: '0.06em' }}>GIF · {i + 1}</span>
               </div>
             </motion.div>
           )

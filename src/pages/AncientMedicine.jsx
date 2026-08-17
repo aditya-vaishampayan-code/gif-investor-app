@@ -7,7 +7,7 @@ export default function AncientMedicine() {
 
   return (
     <Frame>
-      <div className="flex-1 flex flex-col pb-[72px]">
+      <div className="flex-1 flex flex-col pb-[88px]">
         {/* Hero */}
         <div className="relative flex-shrink-0 overflow-hidden" style={{ height: 260, background: 'linear-gradient(135deg,#1B1714 0%,#2E2520 60%,#3A2E28 100%)' }}>
           <div className="absolute inset-0 opacity-15 pointer-events-none" style={{ background: 'var(--stripe-gradient)' }} />
@@ -20,7 +20,7 @@ export default function AncientMedicine() {
           <div className="absolute bottom-0 left-0 right-0 px-5 pb-5">
             <div className="flex gap-1.5 mb-2.5">
               <span className="text-[10px] font-semibold text-orange uppercase px-2.5 py-[3px]"
-                    style={{ background: 'rgba(240,100,40,0.25)', border: '1px solid rgba(240,100,40,0.4)', borderRadius: 12, letterSpacing: '0.08em' }}>
+                    style={{ background: 'rgba(239,78,61,0.25)', border: '1px solid rgba(239,78,61,0.4)', borderRadius: 12, letterSpacing: '0.08em' }}>
                 Coming Soon
               </span>
               <span className="text-[10px] font-semibold text-white/70 px-2.5 py-[3px]"
@@ -28,7 +28,7 @@ export default function AncientMedicine() {
                 Sat, Aug 2 · 11:00 PM
               </span>
             </div>
-            <h1 className="font-display text-[36px] font-extrabold text-white" style={{ lineHeight: 0.95, letterSpacing: '-0.03em' }}>
+            <h1 className="font-display text-[36px] font-bold text-white" style={{ lineHeight: 0.95, letterSpacing: '-0.03em' }}>
               Ancient<br />Medicine
             </h1>
           </div>
@@ -76,7 +76,7 @@ export default function AncientMedicine() {
           </div>
 
           {/* Ticket */}
-          <div className="p-4 text-center border border-orange/15" style={{ background: 'rgba(240,100,40,0.06)', borderRadius: 10 }}>
+          <div className="p-4 text-center border border-orange/15" style={{ background: 'rgba(239,78,61,0.06)', borderRadius: 10 }}>
             <p className="text-[12px] text-ink/50 mb-2">Your ticket is ready. Opens in 2 days.</p>
             <p className="font-mono text-[15px] font-bold text-orange" style={{ letterSpacing: '0.15em' }}>PLSE-882-991</p>
           </div>

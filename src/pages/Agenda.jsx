@@ -74,8 +74,7 @@ export default function Agenda() {
       <div
         className="absolute inset-0 -z-10"
         style={{
-          background:
-            'linear-gradient(180deg, #EF4E3D 0%, #E85A45 20%, #B97270 40%, #7C87A0 60%, #6591B0 78%, #4B546B 100%)',
+          background: 'linear-gradient(180deg, #EF4E3D 0%, #6591B0 55%, #4B546B 100%)',
         }}
       />
 
