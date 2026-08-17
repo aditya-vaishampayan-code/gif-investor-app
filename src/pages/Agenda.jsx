@@ -97,7 +97,7 @@ export default function Agenda() {
           <p className="text-[11px] font-semibold text-white/80 uppercase mb-2" style={{ letterSpacing: '0.14em' }}>
             Global Impact Forum – Edition II
           </p>
-          <h1 className="font-display text-[22px] font-bold text-white mb-2" style={{ lineHeight: 1.15 }}>
+          <h1 className="font-display text-[20px] font-medium text-white mb-2" style={{ lineHeight: 1.15 }}>
             The Forum in Conversation
           </h1>
           <p className="text-[12px] text-white/85" style={{ lineHeight: 1.5 }}>
@@ -132,7 +132,7 @@ export default function Agenda() {
               {day.sessions.map((session) => (
                 <div key={session.id} className="relative">
                   {session.showDot !== false && (
-                    <div className="absolute w-2.5 h-2.5 rounded-full bg-orange border-2 border-white shadow" style={{ left: -25, top: 6 }} />
+                    <div className="absolute w-2.5 h-2.5 rounded-full bg-orange border-2 border-white shadow" style={{ left: -21, top: 6 }} />
                   )}
                   {session.type === 'break' ? <BreakRow session={session} /> : <SessionCard session={session} />}
                 </div>
