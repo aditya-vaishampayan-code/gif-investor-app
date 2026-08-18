@@ -17,14 +17,14 @@ function QRCode() {
   return <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ display: 'block' }}>{rects}</svg>
 }
 
-export const TicketSVG = ({ color = 'white' }) => (
+const TicketSVG = ({ color = 'white' }) => (
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
     <rect x="1.5" y="4.5" width="15" height="9" rx="1" stroke={color} strokeWidth="1.5" />
     <line x1="6" y1="4.5" x2="6" y2="13.5" stroke={color} strokeWidth="1.5" strokeDasharray="1.5 1.5" />
   </svg>
 )
 
-export const UPCOMING = [
+const UPCOMING = [
   { label: 'Ancient Medicine', date: 'Sat, Aug 2 · 11:00 PM', ready: 'Ready in 2 days' },
   { label: 'XYZ Pitch Night',  date: 'Fri, Aug 8 · 11:00 PM', ready: 'Ready in 8 days' },
 ]
@@ -32,9 +32,9 @@ export const UPCOMING = [
 export default function Tickets() {
   return (
     <Frame>
-      <div className="flex-1 flex flex-col pb-[72px]">
+      <div className="flex-1 flex flex-col pb-[88px]">
         <div className="px-5 pt-6 pb-4">
-          <div className="font-display text-[26px] font-extrabold text-ink mb-1" style={{ letterSpacing: '-0.02em' }}>My Tickets</div>
+          <div className="font-display text-[26px] font-bold text-ink mb-1" style={{ letterSpacing: '-0.02em' }}>My Tickets</div>
           <div className="text-[12px] font-semibold text-ink/40 uppercase" style={{ letterSpacing: '0.08em' }}>3 Upcoming Events</div>
         </div>
 
@@ -73,7 +73,7 @@ export default function Tickets() {
                 <div className="w-8 h-8 rounded-md flex items-center justify-center" style={{ background: 'rgba(27,23,20,0.08)' }}>
                   <TicketSVG color="rgba(27,23,20,0.35)" />
                 </div>
-                <div className="text-[10px] text-ink/35" style={{ letterSpacing: '0.04em' }}>{ready}</div>
+                <div className="text-[10px] text-ink/55" style={{ letterSpacing: '0.04em' }}>{ready}</div>
               </div>
             </div>
           ))}
