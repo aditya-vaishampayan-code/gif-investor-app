@@ -99,7 +99,7 @@ export default function Gala() {
           </div>
         </div>
       </div>
-      <BottomNav active="tonight" />
+      <BottomNav active="pitchNight" />
     </Frame>
   )
 }

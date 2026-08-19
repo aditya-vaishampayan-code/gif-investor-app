@@ -8,7 +8,6 @@ import Portfolio from './pages/Portfolio'
 import Admin from './pages/Admin'
 import Agenda from './pages/Agenda'
 import Gala from './pages/Gala'
-import Tickets from './pages/Tickets'
 import AncientMedicine from './pages/AncientMedicine'
 import XYZ from './pages/XYZ'
 
@@ -26,7 +25,6 @@ export default function App() {
       <Route path="/portfolio" element={<RequireUser><Portfolio /></RequireUser>} />
       <Route path="/gala" element={<RequireUser><Gala /></RequireUser>} />
       <Route path="/agenda" element={<RequireUser><Agenda /></RequireUser>} />
-      <Route path="/tickets" element={<RequireUser><Tickets /></RequireUser>} />
       <Route path="/event/ancient-medicine" element={<RequireUser><AncientMedicine /></RequireUser>} />
       <Route path="/event/xyz" element={<RequireUser><XYZ /></RequireUser>} />
       <Route path="/admin" element={<Admin />} />

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 const TABS = [
   { id: 'tonight', label: 'Tonight', icon: '/icons/nav-tonight.svg', path: '/' },
   { id: 'agenda',  label: 'Agenda',  icon: '/icons/nav-agenda.svg', path: '/agenda' },
-  { id: 'tickets', label: 'Tickets', icon: '/icons/nav-tickets.svg', path: '/tickets' },
+  { id: 'pitchNight', label: 'Pitch Night', icon: '/icons/nav-pitchnight.svg', path: '/gala' },
 ]
 
 export default function BottomNav({ active }) {

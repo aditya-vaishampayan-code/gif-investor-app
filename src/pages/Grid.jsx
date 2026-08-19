@@ -66,17 +66,6 @@ export default function Grid() {
           </span>
         </div>
 
-        {/* Search */}
-        <div className="px-5 pt-4">
-          <div className="flex items-center gap-2.5 bg-white rounded-full px-4 py-3 shadow-md">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#7A726A" strokeWidth="1.6">
-              <circle cx="7" cy="7" r="5.5" />
-              <path d="M11 11 14.5 14.5" strokeLinecap="round" />
-            </svg>
-            <span className="text-[14px] text-ink/40">Discover</span>
-          </div>
-        </div>
-
         {/* HAPPENING NOW */}
         <div className="px-5 pt-6 pb-3">
           <div className="flex items-center justify-between mb-3.5">

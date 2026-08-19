@@ -25,7 +25,7 @@ export default function ProfileSheet({ user, onClose, onSaved }) {
   }
 
   return (
-    <div className="absolute inset-0 z-50 flex flex-col min-h-screen">
+    <div className="fixed top-0 bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] z-50 flex flex-col">
       <div className="flex-1" style={{ background: 'rgba(27,23,20,0.4)' }} onClick={onClose} />
       <motion.div initial={{ y: '100%' }} animate={{ y: 0 }}
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
