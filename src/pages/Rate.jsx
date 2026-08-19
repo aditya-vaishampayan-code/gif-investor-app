@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, useParams, Navigate, Link } from 'react-router-dom'
+import { useNavigate, useParams, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Frame from '../components/Frame'
 import MoneyStack from '../components/MoneyStack'
@@ -39,9 +39,9 @@ export default function Rate() {
       {phase === 'sliding' && (
         <>
           <div className="px-5 pt-4 border-b border-ink/7" style={{ background: 'rgba(255,255,255,0.6)' }}>
-            <Link to={`/startup/${id}`} className="inline-block text-ink/40 text-xs font-semibold pb-4" style={{ letterSpacing: '0.08em' }}>
+            <button onClick={() => nav(-1)} className="inline-block text-ink/40 text-xs font-semibold pb-4 border-none bg-transparent cursor-pointer p-0" style={{ letterSpacing: '0.08em' }}>
               ← BACK
-            </Link>
+            </button>
           </div>
           <div className="flex-1 flex flex-col items-center px-7 pt-2 pb-10">
             <p className="text-[11px] font-semibold text-ink/40 uppercase mb-5 mt-4 text-center" style={{ letterSpacing: '0.12em' }}>

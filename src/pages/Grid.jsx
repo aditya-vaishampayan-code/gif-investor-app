@@ -1,43 +1,32 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Frame from '../components/Frame'
 import BottomNav from '../components/BottomNav'
 import ProfileSheet from '../components/ProfileSheet'
 import { getUser } from '../services/dataService'
+import { getStandaloneSessions } from '../data/agenda'
 
-const EVENTS = [
-  {
-    id: 'ancient-medicine',
-    path: '/event/ancient-medicine',
-    title: 'Ancient Medicine',
-    desc: 'Tech Talent and Transformation',
-    time: '9:00 pm to 11:00 pm',
-    blurb: 'Lorem Ipsum has been the industry\u2019s standard dummy text ever since 1966, when designers…',
-  },
-  {
-    id: 'xyz',
-    path: '/event/xyz',
-    title: 'XYZ',
-    desc: 'Tech Talent and Transformation',
-    time: '9:00 pm to 11:00 pm',
-    blurb: 'Lorem Ipsum has been the industry\u2019s standard dummy text ever since 1966, when designers…',
-  },
-  {
-    id: 'connecting-power',
-    path: '/event/connecting-power',
-    title: 'Connecting Power',
-    desc: 'Tech Talent and Transformation',
-    time: '9:00 pm to 11:00 pm',
-    blurb: 'Lorem Ipsum has been the industry\u2019s standard dummy text ever since 1966, when designers…',
-  },
-]
+// An agenda session moves into "Next Up" this long after its scheduled start.
+const NEXT_UP_TRIGGER_BUFFER_MS = 5 * 60 * 1000
+// How often we re-check the clock to catch a session crossing its trigger time.
+const NEXT_UP_POLL_MS = 30 * 1000
 
 export default function Grid() {
   const [profileOpen, setProfileOpen] = useState(false)
   const [, setTick] = useState(0)
+  const [now, setNow] = useState(() => Date.now())
   const nav = useNavigate()
   const user = getUser()
   const initial = user?.name ? user.name[0].toUpperCase() : '?'
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), NEXT_UP_POLL_MS)
+    return () => clearInterval(id)
+  }, [])
+
+  const nextUpEvents = getStandaloneSessions()
+    .filter((session) => now >= session.start.getTime() + NEXT_UP_TRIGGER_BUFFER_MS)
+    .sort((a, b) => a.start - b.start)
 
   return (
     <Frame className="relative overflow-hidden">
@@ -93,30 +82,35 @@ export default function Grid() {
           </button>
         </div>
 
-        {/* LATER TONIGHT */}
+        {/* NEXT UP */}
         <div className="px-5 pt-1 pb-6">
           <div className="font-display text-[13px] font-bold text-white/90 uppercase mb-3.5" style={{ letterSpacing: '0.08em' }}>
-            Later Tonight
+            Next Up
           </div>
           <div className="flex flex-col gap-3">
-            {EVENTS.map((ev) => (
+            {nextUpEvents.map((session) => (
               <button
-                key={ev.id}
-                onClick={() => nav(ev.path)}
+                key={session.id}
+                onClick={() => nav('/agenda')}
                 className="flex gap-3 items-start text-left rounded-2xl p-3 border-none cursor-pointer active:scale-[0.98] transition-transform"
                 style={{ background: 'rgba(255,255,255,0.16)', backdropFilter: 'blur(6px)' }}
               >
                 <div className="w-20 h-20 rounded-xl shrink-0" style={{ background: 'linear-gradient(135deg,#1B1714 0%,#3A2E28 100%)' }} />
                 <div className="flex-1 min-w-0">
-                  <div className="font-display text-[16px] font-bold text-white mb-0.5">{ev.title}</div>
-                  <div className="text-[11px] text-white/70 mb-1.5">{ev.desc}</div>
+                  <div className="font-display text-[16px] font-bold text-white mb-0.5">{session.title}</div>
+                  {session.location && <div className="text-[11px] text-white/70 mb-1.5">{session.location}</div>}
                   <span className="inline-block px-2.5 py-1 rounded-full bg-orange text-white text-[10px] font-semibold mb-1.5">
-                    {ev.time}
+                    {session.time}
                   </span>
-                  <div className="text-[11px] text-white/60 line-clamp-2">{ev.blurb}</div>
+                  {session.description && (
+                    <div className="text-[11px] text-white/60 line-clamp-2">{session.description}</div>
+                  )}
                 </div>
               </button>
             ))}
+            {nextUpEvents.length === 0 && (
+              <div className="text-[12px] text-white/60 px-1">Nothing queued up yet — check back soon.</div>
+            )}
           </div>
         </div>
       </div>

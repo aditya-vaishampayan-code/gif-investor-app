@@ -9,6 +9,7 @@ export const AGENDA_DAYS = [
   {
     id: 'day1',
     label: 'Day 1',
+    date: '2026-09-04',
     sessions: [
       {
         id: 'opening-ceremony',
@@ -92,6 +93,7 @@ export const AGENDA_DAYS = [
   {
     id: 'day2',
     label: 'Day 2',
+    date: '2026-09-05',
     sessions: [
       {
         id: 'welcome-note',
@@ -139,3 +141,28 @@ export const AGENDA_DAYS = [
     ],
   },
 ]
+
+// Parses the leading "H:MM AM/PM" out of a session's `time` string (handles
+// ranges like "10:00 AM – 10:45 AM" and open-ended ones like "10:30am onwards").
+function parseSessionStart(day, session) {
+  const match = session.time.match(/^(\d{1,2}):(\d{2})\s*([AaPp][Mm])/)
+  if (!match || !day.date) return null
+  let hours = parseInt(match[1], 10)
+  const minutes = parseInt(match[2], 10)
+  const isPM = match[3].toLowerCase() === 'pm'
+  if (isPM && hours !== 12) hours += 12
+  if (!isPM && hours === 12) hours = 0
+  const start = new Date(`${day.date}T00:00:00`)
+  start.setHours(hours, minutes, 0, 0)
+  return start
+}
+
+// Standalone (non-break, showDot:true) sessions across both days, each with
+// a resolved `start` Date — used to drive the Tonight page's "Next Up" feed.
+export function getStandaloneSessions() {
+  return AGENDA_DAYS.flatMap((day) =>
+    day.sessions
+      .filter((session) => session.type !== 'break' && session.showDot === true)
+      .map((session) => ({ ...session, dayId: day.id, start: parseSessionStart(day, session) }))
+  ).filter((session) => session.start)
+}
