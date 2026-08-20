@@ -1,10 +1,34 @@
+import { useState } from 'react'
 import { initials } from '../data/startups'
 
+// Derives the expected photo filename from a speaker's name (e.g. "Dr John
+// Chelladurai" -> "dr-john-chelladurai.jpg") so photos just need to be dropped
+// into public/speakers/ with matching names — no per-speaker data wiring needed.
+function speakerPhotoSrc(name) {
+  const slug = name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+  return `/speakers/${slug}.jpg`
+}
+
 function SpeakerRow({ speaker }) {
+  const [photoFailed, setPhotoFailed] = useState(false)
   return (
     <div className="flex items-center gap-2.5 py-1.5">
-      <div className="w-8 h-8 rounded-full bg-ink/10 text-ink/60 shrink-0 flex items-center justify-center font-display text-[10px] font-bold">
-        {initials(speaker.name)}
+      <div className="w-8 h-8 rounded-full bg-ink/10 text-ink/60 shrink-0 flex items-center justify-center font-display text-[10px] font-bold overflow-hidden">
+        {photoFailed ? (
+          initials(speaker.name)
+        ) : (
+          <img
+            src={speakerPhotoSrc(speaker.name)}
+            alt={speaker.name}
+            className="w-full h-full object-cover"
+            onError={() => setPhotoFailed(true)}
+          />
+        )}
       </div>
       <div className="min-w-0">
         <div className="text-[13px] font-semibold text-ink leading-tight">{speaker.name}</div>
