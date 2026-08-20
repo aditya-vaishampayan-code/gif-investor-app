@@ -44,8 +44,12 @@ export default function Portfolio() {
                     className="flex items-center gap-3 border border-ink/9 p-3.5 text-left"
                     style={{ background: 'rgba(255,255,255,0.75)' }}>
               <span className="font-display text-base font-bold text-ink/18 w-[26px] shrink-0 text-right">#{i + 1}</span>
-              <div className="w-[38px] h-[38px] flex items-center justify-center shrink-0" style={{ background: s.monoBg }}>
-                <span style={{ color: s.monoFg }}><Logo id={s.id} size={20} /></span>
+              <div className="w-[38px] h-[38px] flex items-center justify-center shrink-0 overflow-hidden" style={{ background: s.monoBg }}>
+                {s.logo ? (
+                  <img src={s.logo} alt={s.name} className="w-full h-full object-cover" />
+                ) : (
+                  <span style={{ color: s.monoFg }}><Logo id={s.id} size={20} /></span>
+                )}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-ink" style={{ lineHeight: 1.3 }}>{s.name}</p>

@@ -22,6 +22,11 @@ export default function Detail() {
               style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(4px)', borderRadius: 20, lineHeight: 1 }}>
           ← Back
         </button>
+        {s.logo && (
+          <div className="absolute top-4 right-4 w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center overflow-hidden p-1.5">
+            <img src={s.logo} alt={`${s.name} logo`} className="w-full h-full object-contain" />
+          </div>
+        )}
         <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
           <div className="flex gap-1.5 mb-2">
             <span className="text-[10px] font-semibold text-white uppercase px-2 py-[3px]"
@@ -47,13 +52,15 @@ export default function Detail() {
           </svg>
           <span className="text-[12px] text-ink/60">Tonight, Forum II</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-ink/50 shrink-0" aria-hidden="true">
-            <circle cx="12" cy="12" r="8" />
-            <path d="M12 7.5v9M9.5 9.5c0-.9.9-1.5 2.5-1.5s2.5.7 2.5 1.6-1 1.4-2.5 1.9-2.5 1-2.5 1.9 1 1.6 2.5 1.6 2.5-.6 2.5-1.5" />
-          </svg>
-          <span className="text-[12px] text-ink/60">{s.metrics.ask} ask</span>
-        </div>
+        {s.website && (
+          <a href={s.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 ml-auto text-orange">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M3 12h18M12 3c2.5 2.7 3.8 6 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-6-3.8-9s1.3-6.3 3.8-9z" />
+            </svg>
+            <span className="text-[12px] font-semibold">Visit Website ↗</span>
+          </a>
+        )}
       </div>
 
       <div className="px-5 pt-5 pb-12 overflow-y-auto">
@@ -62,18 +69,27 @@ export default function Detail() {
         <div className="mb-6">
           <p className={label} style={{ letterSpacing: '0.14em' }}>The Lineup</p>
           <div className="flex flex-col gap-2.5">
-            {s.founders.map((f) => (
-              <div key={f.name} className="flex items-center gap-3 px-3 py-2.5 border border-ink/7"
-                   style={{ background: 'rgba(255,255,255,0.7)', borderRadius: 8 }}>
-                <div className="w-9 h-9 bg-orange flex items-center justify-center shrink-0 rounded-full">
-                  <span className="font-display text-[11px] font-bold text-white">{initials(f.name)}</span>
-                </div>
-                <div>
-                  <p className="text-[13px] font-semibold text-ink" style={{ lineHeight: 1.3 }}>{f.name}</p>
-                  <p className="text-[11px] text-orange font-medium uppercase" style={{ letterSpacing: '0.04em' }}>{f.role}</p>
-                </div>
-              </div>
-            ))}
+            {s.founders.map((f) => {
+              const Tag = f.linkedin ? 'a' : 'div'
+              return (
+                <Tag key={f.name} {...(f.linkedin ? { href: f.linkedin, target: '_blank', rel: 'noopener noreferrer' } : {})}
+                     className="flex items-center gap-3 px-3 py-2.5 border border-ink/7"
+                     style={{ background: 'rgba(255,255,255,0.7)', borderRadius: 8 }}>
+                  <div className="w-9 h-9 bg-orange flex items-center justify-center shrink-0 rounded-full">
+                    <span className="font-display text-[11px] font-bold text-white">{initials(f.name)}</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-semibold text-ink" style={{ lineHeight: 1.3 }}>{f.name}</p>
+                    <p className="text-[11px] text-orange font-medium uppercase" style={{ letterSpacing: '0.04em' }}>{f.role}</p>
+                  </div>
+                  {f.linkedin && (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="shrink-0" style={{ color: '#0A66C2' }} aria-hidden="true">
+                      <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8.5h4.56V23H.22V8.5zM8.5 8.5h4.37v1.98h.06c.61-1.15 2.1-2.37 4.32-2.37 4.62 0 5.47 3.04 5.47 6.99V23h-4.55v-6.98c0-1.67-.03-3.81-2.32-3.81-2.33 0-2.69 1.82-2.69 3.7V23H8.5V8.5z" />
+                    </svg>
+                  )}
+                </Tag>
+              )
+            })}
           </div>
         </div>
 

@@ -9,7 +9,7 @@ export const AGENDA_DAYS = [
   {
     id: 'day1',
     label: 'Day 1',
-    date: '2026-09-04',
+    date: '2026-08-20', // TEMP: for local testing — revert to 2026-09-04
     sessions: [
       {
         id: 'opening-ceremony',
@@ -110,25 +110,41 @@ export const AGENDA_DAYS = [
         showDot: false,
       },
       {
-        id: 'panel-1-tagore-tolstoy',
+        id: 'words-that-outlive-empires',
         time: '10:30am – 11:10am',
-        title: 'Panel 1 (Russia) Tagore Tolstoy',
+        title: 'Words That Outlive Empires',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
         showDot: true,
         tracks: [
           {
             speakers: [
-              { name: 'Umadas Gupta', role: 'Indian actress and historian' },
+              { name: 'Smt Umadas Gupta', role: 'Indian actress and historian' },
               { name: 'Matvei', role: 'Russian ice hockey player' },
             ],
           },
         ],
       },
       {
-        id: 'panel-2-cinema',
+        id: 'the-sound-of-the-soul',
         time: '11:15am – 12:05pm',
-        title: 'Panel 2 (Russia) Cinema',
-        showDot: false,
+        title: 'The Sound of the Soul',
+        location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        showDot: true,
+        tracks: [
+          {
+            speakers: [
+              { name: 'Konstantin Zenkin', role: 'Musicologist' },
+              { name: 'Shri Purbayan Chatterjee', role: 'Indian sitar maestro' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'frames-of-a-civilisation',
+        time: '12:10pm – 01:00pm',
+        title: 'Frames of a Civilisation',
+        location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        showDot: true,
         tracks: [
           {
             speakers: [
@@ -137,6 +153,119 @@ export const AGENDA_DAYS = [
             ],
           },
         ],
+      },
+      {
+        id: 'networking-lunch-day2',
+        time: '1:00 PM – 2:00 PM',
+        title: 'Networking Lunch',
+        location: 'Ballroom – The Taj Mahal Palace, Mumbai',
+        type: 'break',
+      },
+      {
+        id: 'guardians-of-the-wild',
+        time: '02:00pm – 02:40pm',
+        title: 'Guardians of the Wild',
+        location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        showDot: true,
+        tracks: [
+          {
+            speakers: [
+              { name: 'Anand Shinde', role: 'Founder of Trunk Call The Wildlife Foundation' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'voices-carried-forward',
+        time: '02:45pm – 03:25pm',
+        title: 'Voices Carried Forward',
+        location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        showDot: true,
+      },
+      {
+        id: 'the-long-walk-to-selfhood',
+        time: '03:30pm – 04:15pm',
+        title: 'The Long Walk to Selfhood',
+        location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        showDot: true,
+        tracks: [
+          {
+            speakers: [
+              { name: 'Dr John Chelladurai', role: 'South African Consul General' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'high-tea',
+        time: '4:15 PM – 4:45 PM',
+        title: 'High Tea',
+        location: 'Ballroom – The Taj Mahal Palace, Mumbai',
+        type: 'break',
+      },
+      {
+        id: 'special-guest-media-bite',
+        time: '04:15pm – 04:45pm',
+        title: 'Special Guest (MCEE) – Media Bite',
+        location: 'Prince’s – The Taj Mahal Palace, Mumbai',
+        showDot: false,
+      },
+      {
+        id: 'gala-night-awards-opening',
+        time: '04:45pm – 05:00pm',
+        title: 'Gala Night & Awards Ceremony Opening',
+        location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        showDot: true,
+      },
+      {
+        id: 'cultural-icon-of-the-year-award',
+        time: '05:00pm – 05:15pm',
+        title: 'Cultural Icon of the Year Award',
+        location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        showDot: true,
+        tracks: [
+          {
+            speakers: [
+              { name: 'Ashish Shelar', role: 'Indian politician' },
+              { name: 'Suniel Shetty', role: 'Actor' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'the-legacy-hour',
+        time: '05:20pm – 06:50pm',
+        title: 'The Legacy Hour',
+        location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        showDot: true,
+      },
+      {
+        id: 'ministerial-keynote',
+        time: '07:00pm – 07:25pm',
+        title: 'Ministerial Keynote',
+        location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        showDot: true,
+        tracks: [
+          {
+            speakers: [
+              { name: 'Piyush Goyal', role: 'Union Minister of Commerce and Industry, MP' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'capital-council-pitches',
+        time: '07:30pm onwards',
+        title: 'The Capital Council (6) Pitches',
+        location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        showDot: true,
+      },
+      {
+        id: 'networking-reception-closing-dinner',
+        time: '8:00 PM onwards',
+        title: 'Networking Reception & Closing Dinner',
+        location: 'Ballroom – The Taj Mahal Palace, Mumbai',
+        type: 'break',
       },
     ],
   },

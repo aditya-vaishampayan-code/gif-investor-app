@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Frame from '../components/Frame'
 import BottomNav from '../components/BottomNav'
 import ProfileSheet from '../components/ProfileSheet'
+import SessionCard from '../components/SessionCard'
 import { getUser } from '../services/dataService'
 import { getStandaloneSessions } from '../data/agenda'
 
@@ -15,6 +16,7 @@ export default function Grid() {
   const [profileOpen, setProfileOpen] = useState(false)
   const [, setTick] = useState(0)
   const [now, setNow] = useState(() => Date.now())
+  const [expandedIds, setExpandedIds] = useState(() => new Set())
   const nav = useNavigate()
   const user = getUser()
   const initial = user?.name ? user.name[0].toUpperCase() : '?'
@@ -27,6 +29,15 @@ export default function Grid() {
   const nextUpEvents = getStandaloneSessions()
     .filter((session) => now >= session.start.getTime() + NEXT_UP_TRIGGER_BUFFER_MS)
     .sort((a, b) => a.start - b.start)
+
+  const toggleExpanded = (id) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
 
   return (
     <Frame className="relative overflow-hidden">
@@ -89,24 +100,13 @@ export default function Grid() {
           </div>
           <div className="flex flex-col gap-3">
             {nextUpEvents.map((session) => (
-              <button
+              <SessionCard
                 key={session.id}
-                onClick={() => nav('/agenda')}
-                className="flex gap-3 items-start text-left rounded-2xl p-3 border-none cursor-pointer active:scale-[0.98] transition-transform"
-                style={{ background: 'rgba(255,255,255,0.16)', backdropFilter: 'blur(6px)' }}
-              >
-                <div className="w-20 h-20 rounded-xl shrink-0" style={{ background: 'linear-gradient(135deg,#1B1714 0%,#3A2E28 100%)' }} />
-                <div className="flex-1 min-w-0">
-                  <div className="font-display text-[16px] font-bold text-white mb-0.5">{session.title}</div>
-                  {session.location && <div className="text-[11px] text-white/70 mb-1.5">{session.location}</div>}
-                  <span className="inline-block px-2.5 py-1 rounded-full bg-orange text-white text-[10px] font-semibold mb-1.5">
-                    {session.time}
-                  </span>
-                  {session.description && (
-                    <div className="text-[11px] text-white/60 line-clamp-2">{session.description}</div>
-                  )}
-                </div>
-              </button>
+                session={session}
+                collapsible
+                expanded={expandedIds.has(session.id)}
+                onToggle={() => toggleExpanded(session.id)}
+              />
             ))}
             {nextUpEvents.length === 0 && (
               <div className="text-[12px] text-white/60 px-1">Nothing queued up yet — check back soon.</div>

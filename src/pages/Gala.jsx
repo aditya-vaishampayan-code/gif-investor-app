@@ -58,8 +58,12 @@ export default function Gala() {
               {portfolio.map(({ id, score, startup }) => (
                 <button key={id} onClick={() => nav(`/startup/${id}`)}
                         className="flex items-center gap-2.5 w-full text-left bg-transparent border-none cursor-pointer p-0">
-                  <div className="w-7 h-7 rounded-[6px] flex items-center justify-center shrink-0" style={{ background: startup.monoBg }}>
-                    <span className="font-display text-[9px] font-bold" style={{ color: startup.monoFg }}>{startup.monogram}</span>
+                  <div className="w-7 h-7 rounded-[6px] flex items-center justify-center shrink-0 overflow-hidden" style={{ background: startup.monoBg }}>
+                    {startup.logo ? (
+                      <img src={startup.logo} alt={startup.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="font-display text-[9px] font-bold" style={{ color: startup.monoFg }}>{startup.monogram}</span>
+                    )}
                   </div>
                   <span className="flex-1 text-[13px] font-semibold text-ink">{startup.name}</span>
                   <span className="font-display text-[13px] font-bold text-orange">{score}/10</span>
@@ -81,7 +85,11 @@ export default function Gala() {
                         style={{ background: 'rgba(255,255,255,0.8)' }}>
                   <div className="h-16 flex items-center justify-center relative overflow-hidden" style={{ background: s.monoBg }}>
                     <div className="absolute inset-0 opacity-10" style={{ background: 'var(--stripe-gradient)' }} />
-                    <span className="relative" style={{ color: s.monoFg }}><Logo id={s.id} size={28} /></span>
+                    {s.logo ? (
+                      <img src={s.logo} alt={s.name} className="absolute inset-0 w-full h-full object-cover" />
+                    ) : (
+                      <span className="relative" style={{ color: s.monoFg }}><Logo id={s.id} size={28} /></span>
+                    )}
                   </div>
                   <div className="px-2.5 pt-2 pb-3">
                     <p className="text-[12px] font-semibold text-ink mb-0.5" style={{ lineHeight: 1.2 }}>{s.name}</p>
