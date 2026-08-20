@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Raw Drive export (bios, RAW/video originals) — public/speakers/*.jpg are the
+# actual files served by the app; this staging folder is source material only.
+public/speakers/drive-download-*/
