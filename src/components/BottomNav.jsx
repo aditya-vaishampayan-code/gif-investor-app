@@ -4,6 +4,7 @@ const TABS = [
   { id: 'tonight', label: 'Tonight', icon: '/icons/nav-tonight.svg', path: '/' },
   { id: 'agenda',  label: 'Agenda',  icon: '/icons/nav-agenda.svg', path: '/agenda' },
   { id: 'pitchNight', label: 'Pitch Night', icon: '/icons/nav-pitchnight.svg', path: '/gala' },
+  { id: 'meetings', label: 'Meetings', icon: '/icons/nav-meetings.svg', path: '/meetings' },
 ]
 
 export default function BottomNav({ active }) {

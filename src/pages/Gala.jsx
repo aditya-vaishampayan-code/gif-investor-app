@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Frame from '../components/Frame'
 import BottomNav from '../components/BottomNav'
@@ -6,6 +7,7 @@ import { STARTUPS, MONEY_BY_SCORE, formatMoney } from '../data/startups'
 import { getRatings } from '../services/dataService'
 
 export default function Gala() {
+  const [thumbFailed, setThumbFailed] = useState(false)
   const nav = useNavigate()
   const ratings = getRatings()
   const ratedCount = Object.keys(ratings).length
@@ -23,13 +25,21 @@ export default function Gala() {
       <div className="flex-1 flex flex-col pb-[88px]">
         {/* Hero */}
         <div className="relative flex-shrink-0 overflow-hidden" style={{ height: 180, background: 'linear-gradient(135deg,#EF4E3D 0%,#6591B0 60%,#4B546B 100%)' }}>
-          <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ background: 'var(--stripe-gradient)' }} />
-          <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top,rgba(27,23,20,0.6) 0%,transparent 50%)' }} />
-          <button onClick={() => nav('/')} className="absolute top-4 left-4 text-white text-xs font-semibold px-3 py-1.5 border border-white/25 cursor-pointer"
+          {!thumbFailed && (
+            <img
+              src="/pitch-night-thumb.jpg"
+              alt="Pitch Night Gala"
+              className="absolute inset-0 w-full h-full object-cover z-0"
+              onError={() => setThumbFailed(true)}
+            />
+          )}
+          <div className="absolute inset-0 opacity-20 pointer-events-none z-10" style={{ background: 'var(--stripe-gradient)' }} />
+          <div className="absolute inset-0 pointer-events-none z-10" style={{ background: 'linear-gradient(to top,rgba(27,23,20,0.7) 0%,transparent 70%)' }} />
+          <button onClick={() => nav('/')} className="absolute top-4 left-4 text-white text-xs font-semibold px-3 py-1.5 border border-white/25 cursor-pointer z-20"
                   style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(4px)', borderRadius: 20, lineHeight: 1 }}>
             ← Back
           </button>
-          <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
+          <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 z-20">
             <div className="text-[10px] font-semibold text-white/60 uppercase mb-1" style={{ letterSpacing: '0.14em' }}>Live Now</div>
             <div className="font-display text-[26px] font-bold text-white" style={{ lineHeight: 1, letterSpacing: '-0.02em' }}>Pitch Night Gala</div>
           </div>

@@ -6,15 +6,37 @@ import SessionCard from '../components/SessionCard'
 import { AGENDA_DAYS } from '../data/agenda'
 import { getUser } from '../services/dataService'
 
+import VenueMapModal from '../components/VenueMapModal'
+
 function BreakRow({ session }) {
+  const [mapOpen, setMapOpen] = useState(false)
   return (
-    <div className="text-center py-1">
-      <p className="text-[13px] font-bold text-orange mb-0.5">{session.time}</p>
-      <p className="font-display text-[14px] font-bold text-ink uppercase mb-0.5" style={{ letterSpacing: '0.04em' }}>
-        {session.title}
-      </p>
-      {session.location && <p className="text-[11px] text-ink/40">{session.location}</p>}
-    </div>
+    <>
+      <div className="text-center py-1 flex flex-col items-center">
+        <p className="text-[13px] font-bold text-orange mb-0.5">{session.time}</p>
+        <p className="font-display text-[14px] font-bold text-ink uppercase mb-0.5" style={{ letterSpacing: '0.04em' }}>
+          {session.title}
+        </p>
+        {session.location && (
+          <div className="flex items-center gap-1.5 justify-center flex-wrap">
+            <span className="text-[11px] text-ink/40">{session.location}</span>
+            <button
+              type="button"
+              onClick={() => setMapOpen(true)}
+              className="inline-flex items-center gap-0.5 text-[9px] font-bold text-orange bg-orange/10 hover:bg-orange/20 px-1.5 py-0.5 rounded-full border-none cursor-pointer"
+            >
+              📍 Map
+            </button>
+          </div>
+        )}
+      </div>
+      <VenueMapModal
+        isOpen={mapOpen}
+        onClose={() => setMapOpen(false)}
+        location={session.location}
+        roomKey={session.roomKey}
+      />
+    </>
   )
 }
 

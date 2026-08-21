@@ -88,6 +88,14 @@ export const AGENDA_DAYS = [
           },
         ],
       },
+      {
+        id: 'pitch-night-gala-day1',
+        time: '04:30 PM – 07:00 PM',
+        title: 'Pitch Night Gala',
+        location: 'Crystal Ballroom – The Taj Mahal Palace, Mumbai',
+        description: 'Startup presentations and live investor ratings',
+        showDot: true,
+      },
     ],
   },
   {
