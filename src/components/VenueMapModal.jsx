@@ -1,8 +1,24 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 export default function VenueMapModal({ isOpen, onClose, location = '', roomKey = '' }) {
+  const [imageSrc, setImageSrc] = useState('/venue-plan.jpeg')
   const [imageFailed, setImageFailed] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState(null)
+  
+  // Pan and Zoom states
+  const [scale, setScale] = useState(1)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [isDragging, setIsDragging] = useState(false)
+  const dragStartRef = useRef({ x: 0, y: 0 })
+  const posStartRef = useRef({ x: 0, y: 0 })
+
+  // Reset zoom & pan when modal opens or active room changes
+  useEffect(() => {
+    if (isOpen) {
+      setScale(1)
+      setPosition({ x: 0, y: 0 })
+    }
+  }, [isOpen, location, roomKey])
 
   if (!isOpen) return null
 
@@ -22,30 +38,100 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
 
   const activeRoom = selectedRoom || derivedRoom
 
-  // Approximate relative pin coordinates on the Taj Mahal Palace floorplan image
+  // Coordinates on the venue-plan.jpeg floorplan
   const pinCoordinates = {
-    crystal: { top: '48%', left: '50%', label: 'Crystal Ballroom' },
-    ballroom: { top: '22%', left: '32%', label: 'Ballroom' },
-    gateway: { top: '22%', left: '73%', label: 'Gateway Room' },
-    princes: { top: '12%', left: '86%', label: 'Prince’s Room' },
+    crystal: { top: '44%', left: '52%', label: 'Crystal Ballroom', desc: 'Main Summit & Keynote Sessions' },
+    ballroom: { top: '20%', left: '30%', label: 'Ballroom', desc: 'Networking Lunch, High Tea & Dinner' },
+    gateway: { top: '20%', left: '73%', label: 'Gateway Room', desc: 'VIP Deal Making & 1-on-1 Investor Syncs' },
+    princes: { top: '11%', left: '86%', label: 'Prince’s Room', desc: 'Media Bites & Executive Lounge' },
   }
 
   const currentPin = pinCoordinates[activeRoom] || pinCoordinates.crystal
 
+  const handleImageError = () => {
+    if (imageSrc === '/venue-plan.jpeg') {
+      setImageSrc('/venue-map.jpg')
+    } else {
+      setImageFailed(true)
+    }
+  }
+
+  // Zoom helpers
+  const handleZoomIn = () => setScale((s) => Math.min(s + 0.5, 3.5))
+  const handleZoomOut = () => {
+    setScale((s) => {
+      const next = Math.max(s - 0.5, 1)
+      if (next === 1) setPosition({ x: 0, y: 0 })
+      return next
+    })
+  }
+  const handleResetZoom = () => {
+    setScale(1)
+    setPosition({ x: 0, y: 0 })
+  }
+
+  // Pan Handlers (Mouse & Touch)
+  const handleMouseDown = (e) => {
+    if (scale <= 1) return
+    setIsDragging(true)
+    dragStartRef.current = { x: e.clientX, y: e.clientY }
+    posStartRef.current = { ...position }
+  }
+
+  const handleMouseMove = (e) => {
+    if (!isDragging || scale <= 1) return
+    const dx = e.clientX - dragStartRef.current.x
+    const dy = e.clientY - dragStartRef.current.y
+    setPosition({
+      x: posStartRef.current.x + dx,
+      y: posStartRef.current.y + dy,
+    })
+  }
+
+  const handleMouseUp = () => setIsDragging(false)
+
+  const handleTouchStart = (e) => {
+    if (scale <= 1 || e.touches.length !== 1) return
+    setIsDragging(true)
+    dragStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    posStartRef.current = { ...position }
+  }
+
+  const handleTouchMove = (e) => {
+    if (!isDragging || scale <= 1 || e.touches.length !== 1) return
+    const dx = e.touches[0].clientX - dragStartRef.current.x
+    const dy = e.touches[0].clientY - dragStartRef.current.y
+    setPosition({
+      x: posStartRef.current.x + dx,
+      y: posStartRef.current.y + dy,
+    })
+  }
+
+  const handleTouchEnd = () => setIsDragging(false)
+
+  const handleWheel = (e) => {
+    e.preventDefault()
+    if (e.deltaY < 0) {
+      handleZoomIn()
+    } else {
+      handleZoomOut()
+    }
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(6px)' }}
+      style={{ background: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(8px)' }}
       onClick={onClose}
     >
       <div
-        className="w-full max-w-[380px] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] animate-in fade-in zoom-in duration-200"
+        className="w-full max-w-[390px] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] animate-in fade-in zoom-in duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="px-4 py-3 bg-ink text-white flex justify-between items-center border-b border-white/10">
           <div>
-            <div className="text-[10px] uppercase font-semibold text-white/60 tracking-wider">Venue Layout</div>
+            <div className="text-[10px] uppercase font-semibold text-white/60 tracking-wider">Venue Map & Floorplan</div>
             <div className="font-display text-[15px] font-bold text-white">The Taj Mahal Palace, Mumbai</div>
           </div>
           <button
@@ -62,12 +148,9 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
           <div className="flex items-center gap-2 min-w-0">
             <div className="w-2.5 h-2.5 rounded-full bg-orange animate-pulse shrink-0" />
             <div className="text-[12px] font-bold text-orange truncate">
-              {location || currentPin.label}
+              📍 {currentPin.label} ({location || currentPin.desc})
             </div>
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-orange bg-orange/15 px-2 py-0.5 rounded-full shrink-0">
-            {currentPin.label}
-          </span>
         </div>
 
         {/* Room selector pills */}
@@ -82,7 +165,10 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
             return (
               <button
                 key={r.id}
-                onClick={() => setSelectedRoom(r.id)}
+                onClick={() => {
+                  setSelectedRoom(r.id)
+                  handleResetZoom()
+                }}
                 className={`px-3 py-1 rounded-full text-[11px] font-bold border transition-colors cursor-pointer shrink-0 ${
                   active
                     ? 'bg-orange text-white border-orange shadow-sm'
@@ -95,105 +181,100 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
           })}
         </div>
 
-        {/* Map View Content */}
-        <div className="p-3.5 flex-1 overflow-y-auto flex flex-col items-center">
-          {!imageFailed ? (
-            <div className="relative w-full rounded-xl overflow-hidden border border-ink/15 bg-black">
-              <img
-                src="/venue-map.jpg"
-                alt="Taj Mahal Palace Event Floorplan"
-                className="w-full h-auto object-contain block"
-                onError={() => setImageFailed(true)}
-              />
+        {/* Map Container Viewport */}
+        <div className="relative p-2 flex-1 overflow-hidden bg-slate-900 flex items-center justify-center select-none min-h-[260px]">
+          {/* Zoom controls floating toolbar */}
+          <div className="absolute top-4 right-4 z-30 flex flex-col bg-white/90 backdrop-blur rounded-xl shadow-lg border border-ink/10 overflow-hidden text-ink">
+            <button
+              onClick={handleZoomIn}
+              title="Zoom In"
+              className="w-8 h-8 flex items-center justify-center font-bold text-base hover:bg-slate-100 border-b border-ink/10 border-none cursor-pointer"
+            >
+              +
+            </button>
+            <button
+              onClick={handleZoomOut}
+              title="Zoom Out"
+              className="w-8 h-8 flex items-center justify-center font-bold text-base hover:bg-slate-100 border-b border-ink/10 border-none cursor-pointer"
+            >
+              −
+            </button>
+            <button
+              onClick={handleResetZoom}
+              title="Reset Zoom"
+              className="w-8 h-7 flex items-center justify-center text-[10px] font-bold hover:bg-slate-100 border-none cursor-pointer uppercase text-orange"
+            >
+              Reset
+            </button>
+          </div>
 
-              {/* Pin Callout Overlay */}
+          {/* Scale indicator badge */}
+          <div className="absolute bottom-4 left-4 z-30 bg-black/60 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full backdrop-blur">
+            {scale > 1 ? `${Math.round(scale * 100)}% (Drag to Pan)` : '100% · Pinch / Drag to Zoom'}
+          </div>
+
+          {!imageFailed ? (
+            <div
+              className="relative w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing touch-none"
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onWheel={handleWheel}
+            >
               <div
-                className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none transition-all duration-300 z-20"
-                style={{ top: currentPin.top, left: currentPin.left }}
+                className="relative w-full transition-transform duration-75 ease-out"
+                style={{
+                  transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+                  transformOrigin: 'center center',
+                }}
               >
-                <div className="bg-orange text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg border border-white whitespace-nowrap mb-0.5 flex items-center gap-1">
-                  <span>📍</span>
-                  <span>{currentPin.label}</span>
+                <img
+                  src={imageSrc}
+                  alt="Taj Mahal Palace Event Floorplan"
+                  className="w-full h-auto object-contain block rounded-lg shadow"
+                  onError={handleImageError}
+                />
+
+                {/* Pin Callout Marker */}
+                <div
+                  className="absolute -translate-x-1/2 -translate-y-full flex flex-col items-center pointer-events-none z-20"
+                  style={{ top: currentPin.top, left: currentPin.left }}
+                >
+                  {/* Floating Pin Label Box */}
+                  <div className="bg-orange text-white text-[11px] font-bold px-2.5 py-1 rounded-lg shadow-xl border border-white whitespace-nowrap mb-1 flex items-center gap-1.5 animate-bounce">
+                    <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+                    <span>📍 {currentPin.label}</span>
+                  </div>
+                  {/* Pin Pointer Icon */}
+                  <div className="w-4 h-4 bg-orange transform rotate-45 border-r border-b border-white -mt-2 shadow-md" />
                 </div>
-                <div className="w-3 h-3 bg-orange rounded-full border-2 border-white shadow-lg animate-ping absolute top-5" />
-                <div className="w-3 h-3 bg-orange rounded-full border-2 border-white shadow-lg" />
               </div>
             </div>
           ) : (
-            /* Built-in Fallback Interactive SVG Map */
-            <div className="w-full bg-slate-50 p-3 rounded-xl border border-ink/10 flex flex-col gap-3">
-              <div className="text-[11px] font-bold text-ink/50 uppercase tracking-wider text-center">
-                Interactive Event Floorplan
-              </div>
-              <div className="grid grid-cols-2 gap-2 text-center text-[12px] font-bold">
-                <div
-                  className={`p-3 rounded-lg border transition-all ${
-                    activeRoom === 'crystal'
-                      ? 'bg-orange text-white border-orange shadow-md scale-[1.02]'
-                      : 'bg-white text-ink border-ink/15'
-                  }`}
-                >
-                  <div className="text-[10px] opacity-75 uppercase">Main Hall</div>
-                  Crystal Ballroom
-                  {activeRoom === 'crystal' && <div className="text-[9px] mt-1 bg-white/20 rounded py-0.5">📍 Selected</div>}
-                </div>
-
-                <div
-                  className={`p-3 rounded-lg border transition-all ${
-                    activeRoom === 'ballroom'
-                      ? 'bg-orange text-white border-orange shadow-md scale-[1.02]'
-                      : 'bg-white text-ink border-ink/15'
-                  }`}
-                >
-                  <div className="text-[10px] opacity-75 uppercase">Dining & Networking</div>
-                  Ballroom
-                  {activeRoom === 'ballroom' && <div className="text-[9px] mt-1 bg-white/20 rounded py-0.5">📍 Selected</div>}
-                </div>
-
-                <div
-                  className={`p-3 rounded-lg border transition-all ${
-                    activeRoom === 'gateway'
-                      ? 'bg-orange text-white border-orange shadow-md scale-[1.02]'
-                      : 'bg-white text-ink border-ink/15'
-                  }`}
-                >
-                  <div className="text-[10px] opacity-75 uppercase">1-on-1 Deals</div>
-                  Gateway Room
-                  {activeRoom === 'gateway' && <div className="text-[9px] mt-1 bg-white/20 rounded py-0.5">📍 Selected</div>}
-                </div>
-
-                <div
-                  className={`p-3 rounded-lg border transition-all ${
-                    activeRoom === 'princes'
-                      ? 'bg-orange text-white border-orange shadow-md scale-[1.02]'
-                      : 'bg-white text-ink border-ink/15'
-                  }`}
-                >
-                  <div className="text-[10px] opacity-75 uppercase">Media Lounge</div>
-                  Prince’s Room
-                  {activeRoom === 'princes' && <div className="text-[9px] mt-1 bg-white/20 rounded py-0.5">📍 Selected</div>}
-                </div>
-              </div>
+            /* Fallback layout if no image */
+            <div className="w-full bg-slate-50 p-4 rounded-xl border border-ink/10 text-center text-ink text-sm">
+              Map image unavailable
             </div>
           )}
+        </div>
 
-          {/* Quick Info & Google Maps link */}
-          <div className="mt-3 w-full flex items-center justify-between gap-2 pt-2.5 border-t border-ink/8">
-            <a
-              href="https://maps.google.com/?q=The+Taj+Mahal+Palace+Mumbai"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[12px] font-bold text-orange flex items-center gap-1 hover:underline decoration-orange"
-            >
-              <span>🗺 Open Google Maps</span>
-            </a>
-            <button
-              onClick={onClose}
-              className="px-4 py-1.5 rounded-lg bg-ink text-white font-display text-[12px] font-bold border-none cursor-pointer"
-            >
-              Done
-            </button>
+        {/* Room Description Footer */}
+        <div className="p-3 bg-slate-50 border-t border-ink/10 flex items-center justify-between gap-2">
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-orange">Program Location</div>
+            <div className="text-[12px] font-bold text-ink truncate">{currentPin.label}</div>
+            <div className="text-[11px] text-ink/60 truncate">{currentPin.desc}</div>
           </div>
+          <button
+            onClick={onClose}
+            className="px-4 py-2 rounded-xl bg-ink text-white font-display text-[12px] font-bold border-none cursor-pointer shrink-0"
+          >
+            Close Map
+          </button>
         </div>
       </div>
     </div>
