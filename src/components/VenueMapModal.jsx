@@ -9,8 +9,11 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
   const [scale, setScale] = useState(1)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
+  
   const dragStartRef = useRef({ x: 0, y: 0 })
   const posStartRef = useRef({ x: 0, y: 0 })
+  const pinchDistRef = useRef(null)
+  const initialScaleRef = useRef(1)
 
   // Reset zoom & pan when modal opens or active room changes
   useEffect(() => {
@@ -57,10 +60,10 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
   }
 
   // Zoom helpers
-  const handleZoomIn = () => setScale((s) => Math.min(s + 0.5, 3.5))
+  const handleZoomIn = () => setScale((s) => Math.min(s + 0.4, 4))
   const handleZoomOut = () => {
     setScale((s) => {
-      const next = Math.max(s - 0.5, 1)
+      const next = Math.max(s - 0.4, 1)
       if (next === 1) setPosition({ x: 0, y: 0 })
       return next
     })
@@ -70,7 +73,7 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
     setPosition({ x: 0, y: 0 })
   }
 
-  // Pan Handlers (Mouse & Touch)
+  // Mouse Pan Handlers
   const handleMouseDown = (e) => {
     if (scale <= 1) return
     setIsDragging(true)
@@ -90,24 +93,50 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
 
   const handleMouseUp = () => setIsDragging(false)
 
+  // Touch Pinch & Pan Handlers
+  const getTouchDist = (touches) => {
+    const dx = touches[0].clientX - touches[1].clientX
+    const dy = touches[0].clientY - touches[1].clientY
+    return Math.hypot(dx, dy)
+  }
+
   const handleTouchStart = (e) => {
-    if (scale <= 1 || e.touches.length !== 1) return
-    setIsDragging(true)
-    dragStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
-    posStartRef.current = { ...position }
+    if (e.touches.length === 2) {
+      setIsDragging(false)
+      pinchDistRef.current = getTouchDist(e.touches)
+      initialScaleRef.current = scale
+    } else if (e.touches.length === 1 && scale > 1) {
+      setIsDragging(true)
+      dragStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+      posStartRef.current = { ...position }
+    }
   }
 
   const handleTouchMove = (e) => {
-    if (!isDragging || scale <= 1 || e.touches.length !== 1) return
-    const dx = e.touches[0].clientX - dragStartRef.current.x
-    const dy = e.touches[0].clientY - dragStartRef.current.y
-    setPosition({
-      x: posStartRef.current.x + dx,
-      y: posStartRef.current.y + dy,
-    })
+    if (e.touches.length === 2 && pinchDistRef.current) {
+      const currentDist = getTouchDist(e.touches)
+      const factor = currentDist / pinchDistRef.current
+      const newScale = Math.min(Math.max(initialScaleRef.current * factor, 1), 4)
+      setScale(newScale)
+      if (newScale === 1) setPosition({ x: 0, y: 0 })
+    } else if (e.touches.length === 1 && isDragging && scale > 1) {
+      const dx = e.touches[0].clientX - dragStartRef.current.x
+      const dy = e.touches[0].clientY - dragStartRef.current.y
+      setPosition({
+        x: posStartRef.current.x + dx,
+        y: posStartRef.current.y + dy,
+      })
+    }
   }
 
-  const handleTouchEnd = () => setIsDragging(false)
+  const handleTouchEnd = (e) => {
+    if (e.touches.length < 2) {
+      pinchDistRef.current = null
+    }
+    if (e.touches.length === 0) {
+      setIsDragging(false)
+    }
+  }
 
   const handleWheel = (e) => {
     e.preventDefault()
@@ -148,7 +177,7 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
           <div className="flex items-center gap-2 min-w-0">
             <div className="w-2.5 h-2.5 rounded-full bg-orange animate-pulse shrink-0" />
             <div className="text-[12px] font-bold text-orange truncate">
-              📍 {currentPin.label} ({location || currentPin.desc})
+              {currentPin.label} ({location || currentPin.desc})
             </div>
           </div>
         </div>
@@ -183,34 +212,34 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
 
         {/* Map Container Viewport */}
         <div className="relative p-2 flex-1 overflow-hidden bg-slate-900 flex items-center justify-center select-none min-h-[260px]">
-          {/* Zoom controls floating toolbar */}
-          <div className="absolute top-4 right-4 z-30 flex flex-col bg-white/90 backdrop-blur rounded-xl shadow-lg border border-ink/10 overflow-hidden text-ink">
+          {/* Smaller Compact Zoom Controls floating toolbar */}
+          <div className="absolute top-3 right-3 z-30 flex flex-col bg-white/90 backdrop-blur rounded-lg shadow-md border border-ink/10 overflow-hidden text-ink">
             <button
               onClick={handleZoomIn}
               title="Zoom In"
-              className="w-8 h-8 flex items-center justify-center font-bold text-base hover:bg-slate-100 border-b border-ink/10 border-none cursor-pointer"
+              className="w-6 h-6 flex items-center justify-center font-bold text-xs hover:bg-slate-100 border-b border-ink/10 border-none cursor-pointer"
             >
               +
             </button>
             <button
               onClick={handleZoomOut}
               title="Zoom Out"
-              className="w-8 h-8 flex items-center justify-center font-bold text-base hover:bg-slate-100 border-b border-ink/10 border-none cursor-pointer"
+              className="w-6 h-6 flex items-center justify-center font-bold text-xs hover:bg-slate-100 border-b border-ink/10 border-none cursor-pointer"
             >
               −
             </button>
             <button
               onClick={handleResetZoom}
               title="Reset Zoom"
-              className="w-8 h-7 flex items-center justify-center text-[10px] font-bold hover:bg-slate-100 border-none cursor-pointer uppercase text-orange"
+              className="w-6 h-5 flex items-center justify-center text-[8px] font-bold hover:bg-slate-100 border-none cursor-pointer uppercase text-orange"
             >
-              Reset
+              RST
             </button>
           </div>
 
           {/* Scale indicator badge */}
-          <div className="absolute bottom-4 left-4 z-30 bg-black/60 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full backdrop-blur">
-            {scale > 1 ? `${Math.round(scale * 100)}% (Drag to Pan)` : '100% · Pinch / Drag to Zoom'}
+          <div className="absolute bottom-3 left-3 z-30 bg-black/60 text-white text-[9px] font-medium px-2 py-0.5 rounded-full backdrop-blur pointer-events-none">
+            {scale > 1 ? `${Math.round(scale * 100)}% · Drag to Pan` : 'Pinch or tap + to zoom'}
           </div>
 
           {!imageFailed ? (
@@ -239,18 +268,27 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
                   onError={handleImageError}
                 />
 
-                {/* Pin Callout Marker */}
+                {/* Arrow Pin Marker (scaled down 20%, no bouncing text) */}
                 <div
                   className="absolute -translate-x-1/2 -translate-y-full flex flex-col items-center pointer-events-none z-20"
-                  style={{ top: currentPin.top, left: currentPin.left }}
+                  style={{
+                    top: currentPin.top,
+                    left: currentPin.left,
+                    transform: 'translate(-50%, -100%) scale(0.8)',
+                    transformOrigin: 'bottom center',
+                  }}
                 >
-                  {/* Floating Pin Label Box */}
-                  <div className="bg-orange text-white text-[11px] font-bold px-2.5 py-1 rounded-lg shadow-xl border border-white whitespace-nowrap mb-1 flex items-center gap-1.5 animate-bounce">
-                    <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-                    <span>📍 {currentPin.label}</span>
+                  {/* Clean Static Label Box */}
+                  <div className="bg-orange text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-md border border-white whitespace-nowrap mb-0.5 flex items-center gap-1">
+                    <span>{currentPin.label}</span>
                   </div>
-                  {/* Pin Pointer Icon */}
-                  <div className="w-4 h-4 bg-orange transform rotate-45 border-r border-b border-white -mt-2 shadow-md" />
+
+                  {/* Downward Arrow Icon */}
+                  <div className="w-5 h-5 text-orange drop-shadow-md">
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
