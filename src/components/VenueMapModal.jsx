@@ -41,12 +41,16 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
 
   const activeRoom = selectedRoom || derivedRoom
 
-  // Coordinates on the venue-plan.jpeg floorplan
+  // Exact coordinates relative to venue-plan.jpeg floorplan dimensions:
+  // - Crystal Ballroom: Central main hall box (center y: 50%, x: 52%)
+  // - Ballroom: Top-left hall box (center y: 27%, x: 33%)
+  // - Gateway Room: Top-right hall box (center y: 22%, x: 73%)
+  // - Prince’s Room: Top-far-right hall box (center y: 14%, x: 86%)
   const pinCoordinates = {
-    crystal: { top: '44%', left: '52%', label: 'Crystal Ballroom', desc: 'Main Summit & Keynote Sessions' },
-    ballroom: { top: '20%', left: '30%', label: 'Ballroom', desc: 'Networking Lunch, High Tea & Dinner' },
-    gateway: { top: '20%', left: '73%', label: 'Gateway Room', desc: 'VIP Deal Making & 1-on-1 Investor Syncs' },
-    princes: { top: '11%', left: '86%', label: 'Prince’s Room', desc: 'Media Bites & Executive Lounge' },
+    crystal: { top: '50%', left: '52%', label: 'Crystal Ballroom', desc: 'Main Summit & Keynote Sessions' },
+    ballroom: { top: '27%', left: '33%', label: 'Ballroom', desc: 'Networking Lunch, High Tea & Dinner' },
+    gateway: { top: '22%', left: '73%', label: 'Gateway Room', desc: 'VIP Deal Making & 1-on-1 Investor Syncs' },
+    princes: { top: '14%', left: '86%', label: 'Prince’s Room', desc: 'Media Bites & Executive Lounge' },
   }
 
   const currentPin = pinCoordinates[activeRoom] || pinCoordinates.crystal
@@ -210,10 +214,10 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
           })}
         </div>
 
-        {/* Map Container Viewport */}
-        <div className="relative p-2 flex-1 overflow-hidden bg-slate-900 flex items-center justify-center select-none min-h-[260px]">
-          {/* Smaller Compact Zoom Controls floating toolbar */}
-          <div className="absolute top-3 right-3 z-30 flex flex-col bg-white/90 backdrop-blur rounded-lg shadow-md border border-ink/10 overflow-hidden text-ink">
+        {/* Map Viewport Area */}
+        <div className="relative p-3 flex-1 overflow-hidden bg-slate-900 flex items-center justify-center select-none min-h-[260px]">
+          {/* Zoom Controls floating toolbar */}
+          <div className="absolute top-4 right-4 z-30 flex flex-col bg-white/90 backdrop-blur rounded-lg shadow-md border border-ink/10 overflow-hidden text-ink">
             <button
               onClick={handleZoomIn}
               title="Zoom In"
@@ -238,13 +242,13 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
           </div>
 
           {/* Scale indicator badge */}
-          <div className="absolute bottom-3 left-3 z-30 bg-black/60 text-white text-[9px] font-medium px-2 py-0.5 rounded-full backdrop-blur pointer-events-none">
+          <div className="absolute bottom-4 left-4 z-30 bg-black/60 text-white text-[9px] font-medium px-2 py-0.5 rounded-full backdrop-blur pointer-events-none">
             {scale > 1 ? `${Math.round(scale * 100)}% · Drag to Pan` : 'Pinch or tap + to zoom'}
           </div>
 
           {!imageFailed ? (
             <div
-              className="relative w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing touch-none"
+              className="w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing touch-none"
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
@@ -254,8 +258,9 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
               onTouchEnd={handleTouchEnd}
               onWheel={handleWheel}
             >
+              {/* Transform Container - strictly wrapped around img */}
               <div
-                className="relative w-full transition-transform duration-75 ease-out"
+                className="relative inline-block transition-transform duration-75 ease-out"
                 style={{
                   transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
                   transformOrigin: 'center center',
@@ -264,13 +269,13 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
                 <img
                   src={imageSrc}
                   alt="Taj Mahal Palace Event Floorplan"
-                  className="w-full h-auto object-contain block rounded-lg shadow"
+                  className="w-full h-auto block rounded-lg shadow"
                   onError={handleImageError}
                 />
 
-                {/* Arrow Pin Marker (scaled down 20%, no bouncing text) */}
+                {/* Arrow Pin Callout - Positioned strictly relative to the image dimensions */}
                 <div
-                  className="absolute -translate-x-1/2 -translate-y-full flex flex-col items-center pointer-events-none z-20"
+                  className="absolute flex flex-col items-center pointer-events-none z-20"
                   style={{
                     top: currentPin.top,
                     left: currentPin.left,
@@ -278,12 +283,12 @@ export default function VenueMapModal({ isOpen, onClose, location = '', roomKey 
                     transformOrigin: 'bottom center',
                   }}
                 >
-                  {/* Clean Static Label Box */}
+                  {/* Static Label Box */}
                   <div className="bg-orange text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-md border border-white whitespace-nowrap mb-0.5 flex items-center gap-1">
                     <span>{currentPin.label}</span>
                   </div>
 
-                  {/* Downward Arrow Icon */}
+                  {/* Location Arrow Marker pointing directly at room location */}
                   <div className="w-5 h-5 text-orange drop-shadow-md">
                     <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
                       <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
