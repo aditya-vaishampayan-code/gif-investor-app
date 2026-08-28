@@ -86,7 +86,7 @@ export default function Grid() {
               {!thumbFailed && (
                 <img
                   src="/pitch-night-thumb.jpg"
-                  alt="Pitch Night Gala"
+                  alt="Innovators Gala"
                   className="absolute inset-0 w-full h-full object-cover z-0"
                   onError={() => setThumbFailed(true)}
                 />
@@ -96,9 +96,9 @@ export default function Grid() {
             </div>
             <div className="p-4">
               <div className="font-display text-[22px] font-bold text-orange mb-0.5" style={{ letterSpacing: '-0.02em' }}>
-                Pitch Night Gala
+                Innovators Gala
               </div>
-              <div className="text-[13px] text-ink/55 font-semibold">All 10 Startups</div>
+              <div className="text-[13px] text-ink/55 font-semibold">6 Startups</div>
             </div>
           </button>
         </div>

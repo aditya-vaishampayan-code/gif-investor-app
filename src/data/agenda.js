@@ -91,9 +91,9 @@ export const AGENDA_DAYS = [
       {
         id: 'pitch-night-gala-day1',
         time: '04:30 PM – 07:00 PM',
-        title: 'Pitch Night Gala',
+        title: 'Innovators Gala',
         location: 'Crystal Ballroom – The Taj Mahal Palace, Mumbai',
-        description: 'Startup presentations and live investor ratings',
+        description: 'Startup showcases from this edition’s Innovators cohort',
         showDot: true,
       },
     ],
@@ -264,7 +264,7 @@ export const AGENDA_DAYS = [
       {
         id: 'capital-council-pitches',
         time: '07:30pm onwards',
-        title: 'The Capital Council (6) Pitches',
+        title: 'The Capital Council (6) Innovators',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
         showDot: true,
       },

@@ -10,6 +10,8 @@ const avg = (scores) => scores.reduce((a, b) => a + b, 0) / scores.length
 
 const seed = (scores) => ({ avgScore: Math.round(avg(scores) * 10) / 10, raterCount: scores.length })
 
+// The 5 rateable startups shown in the Meetings section. Keep this export name —
+// Rate.jsx, Detail.jsx, Portfolio.jsx, Admin.jsx and dataService.js all import it.
 export const STARTUPS = [
   {
     id: 'zingbus', name: 'Zingbus', sector: 'Mobility', monogram: 'ZB',
@@ -24,65 +26,118 @@ export const STARTUPS = [
       { name: 'Ravi Kumar Verma', role: 'Co-founder & CTO', linkedin: 'https://www.linkedin.com/in/ravi-kumar-verma-b2946797/' },
     ],
     metrics: { stage: 'Series A', ask: '$9M', traction: '2M+ users across 300 cities · 70 operator partners · backed by bp Ventures, Info Edge Ventures, Y Combinator' },
-    seed: avg([6, 7, 5, 8, 6, 7, 6, 5, 7, 6, 8, 7]),
-  },
-  {
-    id: 'rooter', name: 'Rooter', sector: 'Gaming', monogram: 'RT',
-    monoBg: '#7C3AED', monoFg: '#FFFFFF',
-    logo: '/logos/rooter.jpg',
-    website: 'https://www.rooter.gg/',
-    tagline: 'India\u2019s largest game-streaming and esports content platform.',
-    description: 'Rooter is India\u2019s largest integrated platform for gaming, live streaming, and in-app purchase (IAP) commerce, blending the functionality of Twitch and Steam for mobile-first gamers. By combining game content, creator monetization, and digital goods commerce, Rooter is redefining how India\u2019s 500M+ gamers engage and transact. Founded by Piyush Kumar (ex-Swatch Group, Dish TV) and Dipesh Agarwal, 9+ year veterans of scaling Rooter across India\u2019s gaming and media ecosystem. With 85M+ users and strong revenue momentum, Rooter is building a creator-led gaming commerce ecosystem addressing inefficiencies in discovery, monetization, and platform commissions. Backed by marquee investors including Lightbox, Pivot Ventures, 100Unicorns, Paytm, Boman Irani, March Capital, and Duane Park.',
-    founders: [
-      { name: 'Piyush Kumar', role: 'CEO & Co-founder', linkedin: 'https://www.linkedin.com/in/writetopiyush/' },
-      { name: 'Dipesh Agarwal', role: 'Co-founder & COO', linkedin: 'https://www.linkedin.com/in/agarwal-dipesh/' },
-      { name: 'Akshat Goel', role: 'Co-founder & CTO' },
-    ],
-    metrics: { stage: 'Growth', ask: '$16M', traction: '80M+ app installs · ~17M MAUs · $7M ARR · backed by March Capital, Lightbox, Paytm' },
-    seed: avg([8, 7, 9, 6, 8, 7, 9, 8, 6, 7, 8, 9]),
+    seed: seed([6, 7, 5, 8, 6, 7, 6, 5, 7, 6, 8, 7]),
   },
   {
     id: 'zypp-electric', name: 'Zypp Electric', sector: 'EV Logistics & Mobility', monogram: 'ZE',
     monoBg: '#16A34A', monoFg: '#FFFFFF',
     logo: '/logos/zypp-electric.jpg',
     website: 'https://zypp.app/',
-    tagline: 'Electric two-wheelers, as-a-service, for India\u2019s gig economy.',
-    description: 'Zypp Electric is India\u2019s leading tech-enabled EV rental platform, building the operating system for India\u2019s gig economy, starting with mobility and expanding into financial identity, credit, and AI-powered earnings optimization for 100M gig entrepreneurs. Founded in 2017 by Akash Gupta, Rashi Agarwal, and Mukesh Singla, with a mission to make India carbon-free through a fully electric, IoT- and AI-enabled last-mile delivery ecosystem. Its proprietary FleetOS powers 28,000+ EVs across 8+ cities, delivering groceries, food, medicines, and e-commerce packages at 96% uptime and 12+ deliveries per EV daily. Beyond mobility, Zypp is driving real social impact, enabling 2.5 Lakh+ gig entrepreneurs with 27% higher take-home income, formal credit access via Zypp CIBIL, and 60M+ kg of CO\u2082 emissions saved.',
+    tagline: 'Electric two-wheelers, as-a-service, for India’s gig economy.',
+    description: 'Zypp Electric is India’s leading tech-enabled EV rental platform, building the operating system for India’s gig economy, starting with mobility and expanding into financial identity, credit, and AI-powered earnings optimization for 100M gig entrepreneurs. Founded in 2017 by Akash Gupta, Rashi Agarwal, and Mukesh Singla, with a mission to make India carbon-free through a fully electric, IoT- and AI-enabled last-mile delivery ecosystem. Its proprietary FleetOS powers 28,000+ EVs across 8+ cities, delivering groceries, food, medicines, and e-commerce packages at 96% uptime and 12+ deliveries per EV daily. Beyond mobility, Zypp is driving real social impact, enabling 2.5 Lakh+ gig entrepreneurs with 27% higher take-home income, formal credit access via Zypp CIBIL, and 60M+ kg of CO₂ emissions saved.',
     founders: [
       { name: 'Akash Gupta', role: 'CEO & Co-founder', linkedin: 'https://www.linkedin.com/in/akashg/' },
       { name: 'Rashi Agarwal', role: 'Co-founder & COO', linkedin: 'https://www.linkedin.com/in/rashiagarwalzypp/' },
-      { name: 'Tushar Mehta', role: 'Co-founder & COO', linkedin: 'https://www.linkedin.com/in/tushar-mehta-26859311/' },
+      { name: 'Mukesh Singla', role: 'Co-founder' },
     ],
     metrics: { stage: 'Series C', ask: '$15M', traction: '20,000+ e-scooters deployed · Rs 438 Cr FY25 revenue (+50% YoY) · backed by ENEOS, Goodyear Ventures' },
-    seed: avg([7, 6, 8, 7, 6, 8, 7, 5, 7, 8, 6, 7]),
+    seed: seed([7, 6, 8, 7, 6, 8, 7, 5, 7, 8, 6, 7]),
   },
   {
-    id: 'impactguru', name: 'ImpactGuru', sector: 'Healthcare', monogram: 'IG',
+    id: 'impactguru', name: 'ImpactGuru', sector: 'Healthcare | Financing', monogram: 'IG',
     monoBg: '#DC2626', monoFg: '#FFFFFF',
     logo: '/logos/impact-guru.jpg',
     website: 'https://www.impactguru.com/',
     tagline: 'Crowdfunding and financing to make healthcare affordable.',
-    description: 'ImpactGuru is India\u2019s leading medical crowdfunding platform, having enabled 50K+ patients and 50L+ donors to raise over ₹1,500 Cr for life-saving treatment, becoming the default lifeline for millions battling India\u2019s low insurance penetration. Founded in 2014 by Piyush Jain and Khushboo Jain, ex-J.P. Morgan and BCG, who left careers in investment banking and design to build India\u2019s first dedicated healthcare crowdfunding platform, incubated at Harvard Innovation Lab. Powered by a 50L+ strong donor community across 15+ countries, ImpactGuru has turned everyday generosity into life-saving outcomes for over a lakh families, backed by marquee investors like Sony Group, HealthQuad, and Apollo Hospitals — proof that its asset-light, tech-first model has scaled into India\u2019s most credible bridge between medical urgency and financial access.',
+    description: 'CarePal Group is India’s category-defining healthcare financing ecosystem, built around three integrated marketplaces: ImpactGuru (medical crowdfunding), CarePal Money (healthcare lending), and CarePal Secure (health insurance and benefits). Since inception, the platform has processed over USD 200 million (₹1,900 Cr+) in cumulative GMV, helped 60,000+ patients and families, and mobilized a community of 60 lakh+ unique donors across 90 lakh+ donations — at a median ticket of just ₹500 ($5) — making it the default financial lifeline for India’s "missing middle," the 600 million+ people with zero or inadequate health insurance. Founded by a team with backgrounds spanning investment banking (J.P. Morgan), strategy consulting (BCG), and design (Jimmy Choo, Michael Kors), and incubated at the Harvard Innovation Lab, CarePal Group has grown into a ~650-person organization with 1,000+ hospital partners nationwide. Backed by marquee global investors including Merck’s Global Health Innovation Fund, Sony Corporation, Apis Partners, HealthQuad, Apollo Hospitals, and Dream Incubator, CarePal Group has raised over $18.5 million in equity funding to date.',
     founders: [
       { name: 'Piyush Jain', role: 'CEO & Co-founder', linkedin: 'https://www.linkedin.com/in/piyushcrjain/' },
       { name: 'Khushboo Jain', role: 'Co-founder', linkedin: 'https://www.linkedin.com/in/khushboopjain/' },
     ],
-    metrics: { stage: 'Series B', ask: '$5M', traction: '$21M+ raised to date · hospital network incl. Apollo · backed by Venture Catalysts, RB Investments' },
-    seed: avg([7, 8, 6, 7, 9, 6, 8, 7, 6, 8, 7, 6]),
+    metrics: { stage: 'Series B', ask: '$5M', traction: '$18.5M+ raised to date · 1,000+ hospital partners incl. Apollo · backed by Merck GHI Fund, Sony, Apis Partners, HealthQuad' },
+    seed: seed([7, 8, 6, 7, 9, 6, 8, 7, 6, 8, 7, 6]),
   },
   {
-    id: 'rare-planet', name: 'Rare Planet', sector: 'Retail Consumer', monogram: 'RP',
-    monoBg: '#EA580C', monoFg: '#FFFFFF',
-    logo: '/logos/rare-planet.jpg',
-    website: 'https://rareplanet.com/',
-    tagline: 'Reviving Indian handicrafts, one artisan at a time.',
-    description: 'Rare Planet is India’s largest airport handicraft retailer, empowering 25,000+ rural artisans across 32+ stores nationwide while preserving India’s craft heritage under the AtmaNirbhar Bharat mission. Founded in 2015 by Ranodeep Saha, an IIIT Kolkata computer science graduate who started the business while still in college, and later joined by co-founder Vijay Kumar, an experienced luxury and airport retail executive. Curating 10+ product categories, from hand-painted ceramics to textiles, jewellery, and wooden toys, Rare Planet has built a sustainable ecosystem that gives artisans fair wages and market access, showcasing the beauty of Indian craftsmanship to travellers across every state of India.',
+    id: 'navadhan-capital', name: 'Navadhan Capital', sector: 'Fintech | Alternative Lending (Rural)', monogram: 'NC',
+    monoBg: '#0891B2', monoFg: '#FFFFFF',
+    logo: null, // TODO: add public/logos/navadhan-capital.jpg and set this path — falls back to the Logo.jsx mark until then
+    website: 'https://www.navadhan.com/',
+    tagline: 'Tech-led financing for India’s rural nano-enterprises.',
+    description: 'Navadhan Capital is an RBI-registered NBFC building tech-led financing for India’s rural nano-enterprises, having disbursed ₹807 Cr to 46,000+ active loans across 5 states and 700+ PIN codes via its proprietary underwriting platform, AceN. Founded in 2019 by Nitin Agrawal, a 25-year BFSI veteran and former CEO of a listed NBFC, alongside a founding team with 80+ years of combined experience across ICICI, HDFC Bank, Amazon, and SAP. Operating a phygital model with 99%+ collection efficiency and sub-1% NNPA, Navadhan serves the "missing middle" households earning ₹4-40 lakh, above microfinance yet underserved by MSME lenders, addressing a $500 billion credit gap across India’s 70 million nano-enterprises, backed by marquee investors like Prime Venture Partners, NABVentures, and Gemba Capital.',
     founders: [
-      { name: 'Ranodeep Saha', role: 'CEO & Founder', linkedin: 'https://www.linkedin.com/in/ranodeep-saha-rareplanet/' },
-      { name: 'Vijay Kumar TR', role: 'Co-founder' },
+      { name: 'Nitin Agrawal', role: 'Founder & CEO' },
     ],
-    metrics: { stage: 'Series A', ask: '$2M', traction: '10,000+ artisans in 23 states · 35+ airport stores · Rs 40 Cr revenue · backed by Adani family, Venture Catalysts' },
-    seed: avg([6, 7, 5, 6, 8, 7, 5, 6, 7, 6, 8, 7]),
+    metrics: { stage: 'TBD', ask: 'TBD', traction: '₹807 Cr disbursed · 46,000+ active loans · 5 states, 700+ PIN codes · backed by Prime Venture Partners, NABVentures, Gemba Capital' },
+    seed: seed([6, 7, 6, 8, 5, 7, 6, 7, 8, 6, 7, 6]),
+  },
+  {
+    id: 'kisankonnect', name: 'KisanKonnect', sector: 'AgriTech | D2C Fresh Food | Supply Chain', monogram: 'KK',
+    monoBg: '#4D7C0F', monoFg: '#FFFFFF',
+    logo: null, // TODO: add public/logos/kisankonnect.jpg and set this path — falls back to the Logo.jsx mark until then
+    website: 'https://www.kisankonnect.com/',
+    tagline: 'Farm-to-fork fresh essentials, delivered in hours.',
+    description: 'KisanKonnect is building India’s leading habit-driven D2C fresh essentials platform, combining deep control over the fresh supply chain with a proprietary tech stack (KNET) and rapid delivery. With 8,000+ farmer partners, 45 delivery depots, and an omni-channel network of farm stores and app-based delivery, KisanKonnect delivers farm-to-fork in 8-36 hours at ~7% wastage versus the 10-15% industry average — backed by an industry-leading AOV of ₹475 and 3.0x monthly order frequency. Founded by Vivek Nirmal (Founder & CEO), with over two decades in dairy and fresh food supply chains and a former leadership role at Prabhat Dairy, and Nidhi Nirmal (Co-Founder), who leads brand, consumer experience, and growth.',
+    founders: [
+      { name: 'Vivek Nirmal', role: 'Founder & CEO' },
+      { name: 'Nidhi Nirmal', role: 'Co-Founder' },
+    ],
+    metrics: { stage: 'TBD', ask: 'TBD', traction: '1 Mn+ app downloads · 170K active users · 1.0 Mn total customers · 8,000+ Kisan Partners · 45 delivery depots · 15 farm stores' },
+    seed: seed([6, 6, 7, 7, 5, 6, 7, 6, 8, 6, 7, 6]),
+  },
+]
+
+// Placeholder lineup for the Innovators section (route /gala) — no real company
+// data yet and no rating. Every field below is a TODO: swap in the real tagline,
+// description, founders and metrics before the event. The `id`s already have
+// matching hand-drawn marks in components/Logo.jsx, so logos render as-is.
+export const INNOVATOR_STARTUPS = [
+  {
+    id: 'nimbusgrid', name: 'NimbusGrid', sector: 'Cleantech / Energy', monogram: 'NG',
+    monoBg: '#1D4ED8', monoFg: '#FFFFFF', logo: null,
+    tagline: 'TODO placeholder — replace with NimbusGrid’s real one-line pitch.',
+    description: 'TODO placeholder — replace with NimbusGrid’s real company description before the event.',
+    founders: [{ name: 'Founder TBA', role: 'Founder (placeholder)' }],
+    metrics: { stage: 'TBD', ask: 'TBD', traction: 'TODO placeholder — real traction numbers pending.' },
+  },
+  {
+    id: 'medloop', name: 'MedLoop', sector: 'Healthtech', monogram: 'ML',
+    monoBg: '#DB2777', monoFg: '#FFFFFF', logo: null,
+    tagline: 'TODO placeholder — replace with MedLoop’s real one-line pitch.',
+    description: 'TODO placeholder — replace with MedLoop’s real company description before the event.',
+    founders: [{ name: 'Founder TBA', role: 'Founder (placeholder)' }],
+    metrics: { stage: 'TBD', ask: 'TBD', traction: 'TODO placeholder — real traction numbers pending.' },
+  },
+  {
+    id: 'cratewise', name: 'CrateWise', sector: 'Logistics', monogram: 'CW',
+    monoBg: '#EA580C', monoFg: '#FFFFFF', logo: null,
+    tagline: 'TODO placeholder — replace with CrateWise’s real one-line pitch.',
+    description: 'TODO placeholder — replace with CrateWise’s real company description before the event.',
+    founders: [{ name: 'Founder TBA', role: 'Founder (placeholder)' }],
+    metrics: { stage: 'TBD', ask: 'TBD', traction: 'TODO placeholder — real traction numbers pending.' },
+  },
+  {
+    id: 'fluentbee', name: 'FluentBee', sector: 'EdTech', monogram: 'FB',
+    monoBg: '#CA8A04', monoFg: '#FFFFFF', logo: null,
+    tagline: 'TODO placeholder — replace with FluentBee’s real one-line pitch.',
+    description: 'TODO placeholder — replace with FluentBee’s real company description before the event.',
+    founders: [{ name: 'Founder TBA', role: 'Founder (placeholder)' }],
+    metrics: { stage: 'TBD', ask: 'TBD', traction: 'TODO placeholder — real traction numbers pending.' },
+  },
+  {
+    id: 'terraform-farms', name: 'Terraform Farms', sector: 'AgriTech', monogram: 'TF',
+    monoBg: '#16A34A', monoFg: '#FFFFFF', logo: null,
+    tagline: 'TODO placeholder — replace with Terraform Farms’ real one-line pitch.',
+    description: 'TODO placeholder — replace with Terraform Farms’ real company description before the event.',
+    founders: [{ name: 'Founder TBA', role: 'Founder (placeholder)' }],
+    metrics: { stage: 'TBD', ask: 'TBD', traction: 'TODO placeholder — real traction numbers pending.' },
+  },
+  {
+    id: 'paylattice', name: 'PayLattice', sector: 'Fintech', monogram: 'PL',
+    monoBg: '#7C3AED', monoFg: '#FFFFFF', logo: null,
+    tagline: 'TODO placeholder — replace with PayLattice’s real one-line pitch.',
+    description: 'TODO placeholder — replace with PayLattice’s real company description before the event.',
+    founders: [{ name: 'Founder TBA', role: 'Founder (placeholder)' }],
+    metrics: { stage: 'TBD', ask: 'TBD', traction: 'TODO placeholder — real traction numbers pending.' },
   },
 ]
 

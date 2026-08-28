@@ -67,6 +67,19 @@ const MARKS = {
       <path d="M12 12.3V15" strokeWidth="1.6" />
     </>
   ),
+  'navadhan-capital': ( // coin with upward growth arrow — placeholder until a real logo lands
+    <>
+      <circle cx="12" cy="12" r="8.5" strokeWidth="1.6" />
+      <path d="M8.5 13.5 11 11l2 2 3.5-3.5M13.5 9.5H16.5V12.5" strokeWidth="1.6" />
+    </>
+  ),
+  kisankonnect: ( // sprout rising from a furrow — placeholder until a real logo lands
+    <>
+      <path d="M12 20v-7" strokeWidth="1.6" />
+      <path d="M12 13c0-3-2.5-5-5.5-5 0 3 2.5 5 5.5 5zM12 13c0-3 2.5-5 5.5-5 0 3-2.5 5-5.5 5z" strokeWidth="1.6" />
+      <path d="M4 20h16" strokeWidth="1.6" opacity="0.5" />
+    </>
+  ),
 }
 
 export default function Logo({ id, size = 22 }) {

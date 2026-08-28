@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams, Navigate } from 'react-router-dom'
 import Frame from '../components/Frame'
-import { STARTUPS, MONEY_BY_SCORE, formatMoney, initials } from '../data/startups'
+import { STARTUPS, INNOVATOR_STARTUPS, MONEY_BY_SCORE, formatMoney, initials } from '../data/startups'
 import { getRating } from '../services/dataService'
 
 const label = 'text-[10px] font-semibold text-muted uppercase mb-3.5'
@@ -8,9 +8,10 @@ const label = 'text-[10px] font-semibold text-muted uppercase mb-3.5'
 export default function Detail() {
   const { id } = useParams()
   const nav = useNavigate()
-  const s = STARTUPS.find((x) => x.id === id)
+  const rateable = STARTUPS.find((x) => x.id === id)
+  const s = rateable ?? INNOVATOR_STARTUPS.find((x) => x.id === id)
   if (!s) return <Navigate to="/" replace />
-  const r = getRating(id)
+  const r = rateable ? getRating(id) : null
 
   return (
     <Frame>
@@ -103,7 +104,7 @@ export default function Detail() {
           </div>
         </div>
 
-        {r ? (
+        {rateable && (r ? (
           <div className="border-2 border-orange p-5 text-center" style={{ borderRadius: 10, background: 'rgba(239,78,61,0.04)' }}>
             <p className="text-[10px] font-semibold text-orange uppercase mb-2" style={{ letterSpacing: '0.14em' }}>Interest Locked</p>
             <p className="font-display text-[44px] font-bold text-ink leading-none mb-1" style={{ letterSpacing: '-0.03em' }}>{r.score}/10</p>
@@ -116,7 +117,7 @@ export default function Detail() {
                 style={{ borderRadius: 10, letterSpacing: '0.02em' }}>
             Rate this startup →
           </Link>
-        )}
+        ))}
       </div>
     </Frame>
   )

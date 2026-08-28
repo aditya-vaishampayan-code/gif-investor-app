@@ -1,7 +1,7 @@
 # GIF Investor App — Handoff
 
 ## What this is
-A mobile-first investor app for the Global Impact Forum II event. Attendees log in, browse the 10 pitching startups, rate their investment interest (1–10, converted to a mock dollar amount), and track their picks. Includes a live event hub (Gala, tickets w/ QR code, agenda timeline) and an admin leaderboard.
+A mobile-first investor app for the Global Impact Forum II event. Attendees log in, browse the 6 Innovators startups (Innovators Gala), rate their investment interest in the 5 Meetings startups (1–10, converted to a mock dollar amount), and track their picks. Includes a live event hub (Gala, tickets w/ QR code, agenda timeline) and an admin leaderboard.
 
 ## Live links
 - **Public app (attendees):** https://gif-investor-kyighyhoy-siddhantdey17-4431s-projects.vercel.app

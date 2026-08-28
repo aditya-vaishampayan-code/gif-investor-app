@@ -33,7 +33,7 @@ export default function Portfolio() {
         <div className="px-5 py-16 text-center">
           <p className="font-display text-[22px] font-bold text-ink mb-2.5">No investments yet.</p>
           <p className="text-sm text-muted mb-8" style={{ lineHeight: 1.6 }}>Rate at least one startup to build your portfolio.</p>
-          <Link to="/" className="inline-block bg-orange text-white px-7 py-3.5 font-display font-bold text-sm" style={{ letterSpacing: '0.02em' }}>
+          <Link to="/meetings" className="inline-block bg-orange text-white px-7 py-3.5 font-display font-bold text-sm" style={{ letterSpacing: '0.02em' }}>
             View startups →
           </Link>
         </div>
