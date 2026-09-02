@@ -1,10 +1,22 @@
+import { useState, useEffect } from 'react'
 import Frame from '../components/Frame'
 import Logo from '../components/Logo'
 import { STARTUPS } from '../data/startups'
-import { getAggregates } from '../services/dataService'
+import { getAggregates, subscribeLeaderboard } from '../services/dataService'
 
 export default function Admin() {
-  const rows = [...getAggregates()].sort((a, b) => b.avgScore - a.avgScore)
+  const [aggregates, setAggregates] = useState(() => getAggregates())
+
+  useEffect(() => {
+    const unsubscribe = subscribeLeaderboard((data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        setAggregates(data)
+      }
+    })
+    return () => unsubscribe()
+  }, [])
+
+  const rows = [...aggregates].sort((a, b) => b.avgScore - a.avgScore)
   const totalRaters = rows.length > 0 ? Math.max(...rows.map((r) => r.raterCount)) : 0
 
   return (

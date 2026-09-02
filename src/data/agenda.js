@@ -36,21 +36,24 @@ export const AGENDA_DAYS = [
         showDot: true,
         tracks: [
           {
-            name: 'Music & Movement',
-            speakers: [
-              { name: 'Ananda Shankar Jayant', role: 'Director, Sakal Media Group' },
-              { name: 'Professor Reza Baba', role: 'Minister of Tourism of India' },
-            ],
-          },
-          {
-            name: 'Beauty',
+            name: 'The Face of a Nation',
+            description: 'Beauty — Miss India and Miss Brazil.',
             speakers: [
               { name: 'Sadhvi Sail', role: 'Miss India World 2026' },
               { name: 'Luana Cavalcante', role: 'Model, Founder, Miss Universe Brazil 2024' },
             ],
           },
           {
-            name: 'Sports & National Identity',
+            name: 'Movement as Memory',
+            description: 'Classical dance, Capoeira and Samba.',
+            speakers: [
+              { name: 'Ananda Shankar Jayant', role: 'Director, Sakal Media Group' },
+              { name: 'Professor Reza Baba', role: 'Minister of Tourism of India' },
+            ],
+          },
+          {
+            name: 'The Nation on the Field',
+            description: 'Sport as national identity.',
             speakers: [
               { name: 'Cafu', role: 'Brazilian former footballer' },
               { name: 'Bhaichung Bhutia', role: 'Indian former footballer' },
@@ -73,14 +76,21 @@ export const AGENDA_DAYS = [
         showDot: true,
         tracks: [
           {
-            name: 'Martial Arts',
+            name: 'Ancient Systems of Healing',
+            description: 'Ayurveda and Traditional Chinese Medicine in dialogue.',
+            speakers: [],
+          },
+          {
+            name: 'The Disciplined Body',
+            description: 'Martial arts — Kalaripayattu, Kung Fu and Tai Chi.',
             speakers: [
               { name: 'Tuhon Shifu Kanishka Sharma', role: 'Director, Sakal Media Group' },
               { name: 'Shinto Mathew', role: 'Indian martial arts expert' },
             ],
           },
           {
-            name: 'Calligraphy',
+            name: 'Ink, Line and Meaning',
+            description: 'Calligraphy and script traditions.',
             speakers: [
               { name: 'Abhishek Vardhan Singh', role: 'Calligrapher, Researcher, and Academician' },
               { name: 'Achyut Palav', role: 'Indian calligrapher and educator' },
@@ -122,6 +132,7 @@ export const AGENDA_DAYS = [
         time: '10:30am – 11:10am',
         title: 'Words That Outlive Empires',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        description: 'India x Russia · Literature — Tagore and Tolstoy',
         showDot: true,
         tracks: [
           {
@@ -137,6 +148,7 @@ export const AGENDA_DAYS = [
         time: '11:15am – 12:05pm',
         title: 'The Sound of the Soul',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        description: 'India x Russia · Classical music traditions',
         showDot: true,
         tracks: [
           {
@@ -152,6 +164,7 @@ export const AGENDA_DAYS = [
         time: '12:10pm – 01:00pm',
         title: 'Frames of a Civilisation',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        description: 'India x Russia · Cinema as a civilisational mirror',
         showDot: true,
         tracks: [
           {
@@ -174,6 +187,7 @@ export const AGENDA_DAYS = [
         time: '02:00pm – 02:40pm',
         title: 'Guardians of the Wild',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        description: 'India x South Africa · Wildlife and conservation',
         showDot: true,
         tracks: [
           {
@@ -188,6 +202,7 @@ export const AGENDA_DAYS = [
         time: '02:45pm – 03:25pm',
         title: 'Voices Carried Forward',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        description: 'India x South Africa · Indigenous oral traditions (Adivasi, Zulu, Xhosa)',
         showDot: true,
       },
       {
@@ -195,6 +210,7 @@ export const AGENDA_DAYS = [
         time: '03:30pm – 04:15pm',
         title: 'The Long Walk to Selfhood',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        description: 'India x South Africa · Resistance, identity and freedom',
         showDot: true,
         tracks: [
           {

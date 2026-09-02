@@ -1,70 +1,42 @@
 /* Dummy SVG logo marks, one distinct glyph per startup, drawn in the tile's foreground color. */
 const MARKS = {
-  nimbusgrid: ( // energy bolt over grid
+  // --- Innovators cohort (placeholder marks until real logo files land) ---
+  cautio: ( // dashcam lens over a road
     <>
-      <path d="M4 9h16M4 15h16M9 4v16M15 4v16" strokeWidth="1.2" opacity="0.45" />
-      <path d="M13 3 7 13h4l-1 8 7-11h-4l1-7z" fill="currentColor" stroke="none" />
+      <rect x="3" y="7" width="18" height="12" rx="2" strokeWidth="1.6" />
+      <path d="M8.5 7 10 4.5h4L15.5 7" strokeWidth="1.6" />
+      <circle cx="12" cy="13" r="3.2" strokeWidth="1.6" />
     </>
   ),
-  medloop: ( // pulse loop
+  flawsome: ( // dissolving water droplet
     <>
-      <circle cx="12" cy="12" r="8.5" strokeWidth="1.6" />
-      <path d="M5 12h4l1.5-3.5 3 7L15 12h4" strokeWidth="1.6" />
+      <path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z" strokeWidth="1.6" />
+      <path d="M9.5 14c.6 1.6 2 2.6 3.7 2.6" strokeWidth="1.4" opacity="0.65" />
     </>
   ),
-  cratewise: ( // crate
+  'just-deliveries': ( // cold-chain crate
     <>
       <path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5v-7z" strokeWidth="1.6" />
       <path d="M4 8.5 12 13l8-4.5M12 13v7" strokeWidth="1.6" />
     </>
   ),
-  fluentbee: ( // speech bubble with stripes
+  zerocircle: ( // circular economy — wave inside a ring
     <>
-      <path d="M4 5h16v11H10l-4 4v-4H4V5z" strokeWidth="1.6" />
-      <path d="M8 9h8M8 12h5" strokeWidth="1.6" />
+      <circle cx="12" cy="12" r="8.5" strokeWidth="1.6" />
+      <path d="M5.5 13c2 0 2-2 4-2s2 2 4 2 2-2 4-2" strokeWidth="1.6" />
+      <path d="M12 7.5c2.2 0 4 1.8 4 4" strokeWidth="1.3" opacity="0.55" />
     </>
   ),
-  'terraform-farms': ( // leaf over furrows
+  'nautical-wings': ( // four-blade propeller
     <>
-      <path d="M4 19c5 0 8-2 8-7V6c-5 0-8 3-8 7v6z" strokeWidth="1.6" />
-      <path d="M12 12c0-3 3-6 8-6v5c0 5-3 7-8 7" strokeWidth="1.6" />
+      <circle cx="12" cy="12" r="1.9" fill="currentColor" stroke="none" />
+      <path d="M11 10c-1-3-3-4.8-6-4.8 0 3 2 4.8 6 4.8zM13 14c1 3 3 4.8 6 4.8 0-3-2-4.8-6-4.8zM10 13c-3 1-4.8 3-4.8 6 3 0 4.8-2 4.8-6zM14 11c3-1 4.8-3 4.8-6-3 0-4.8 2-4.8 6z" strokeWidth="1.4" />
     </>
   ),
-  paylattice: ( // lattice of nodes
+  sunfox: ( // ECG pulse across a ring
     <>
-      <circle cx="6" cy="6" r="2.2" strokeWidth="1.5" />
-      <circle cx="18" cy="6" r="2.2" strokeWidth="1.5" />
-      <circle cx="6" cy="18" r="2.2" strokeWidth="1.5" />
-      <circle cx="18" cy="18" r="2.2" strokeWidth="1.5" />
-      <path d="M8 7.5 16 16.5M16 7.5 8 16.5M8.2 6h7.6M8.2 18h7.6M6 8.2v7.6M18 8.2v7.6" strokeWidth="1.2" opacity="0.7" />
-    </>
-  ),
-  quietdesk: ( // focus dot in brackets
-    <>
-      <path d="M8 4H4v4M16 4h4v4M8 20H4v-4M16 20h4v-4" strokeWidth="1.6" />
-      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none" />
-    </>
-  ),
-  aurorasense: ( // radar waves
-    <>
-      <circle cx="12" cy="14" r="1.8" fill="currentColor" stroke="none" />
-      <path d="M7.5 10.5a6.4 6.4 0 0 1 9 0M4.8 7.6a10.2 10.2 0 0 1 14.4 0" strokeWidth="1.6" />
-      <path d="M12 14v6" strokeWidth="1.6" />
-    </>
-  ),
-  snackcircle: ( // bitten cookie circle
-    <>
-      <path d="M20 12a8 8 0 1 1-4.5-7.2 3.2 3.2 0 0 0 4 4A8 8 0 0 1 20 12z" strokeWidth="1.6" />
-      <circle cx="9.5" cy="10" r="1" fill="currentColor" stroke="none" />
-      <circle cx="13" cy="14.5" r="1" fill="currentColor" stroke="none" />
-      <circle cx="8.5" cy="14.8" r="1" fill="currentColor" stroke="none" />
-    </>
-  ),
-  vaultic: ( // shield with keyhole
-    <>
-      <path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3z" strokeWidth="1.6" />
-      <circle cx="12" cy="10.5" r="1.8" strokeWidth="1.5" />
-      <path d="M12 12.3V15" strokeWidth="1.6" />
+      <circle cx="12" cy="12" r="8.5" strokeWidth="1.3" opacity="0.5" />
+      <path d="M4 12h3.5l1.5-4 3 8 1.5-4H20" strokeWidth="1.7" />
     </>
   ),
   'navadhan-capital': ( // coin with upward growth arrow — placeholder until a real logo lands

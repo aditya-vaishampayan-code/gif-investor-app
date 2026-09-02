@@ -10,26 +10,38 @@ const inputStyle = { borderRadius: 8, background: 'rgba(255,255,255,0.8)' }
 export default function ProfileSheet({ user, onClose, onSaved }) {
   const nav = useNavigate()
   const [name, setName] = useState(user?.name ?? '')
+  const [company, setCompany] = useState(user?.company ?? '')
   const [email, setEmail] = useState(user?.email ?? '')
+  const [saving, setSaving] = useState(false)
   const initial = user?.name ? user.name[0].toUpperCase() : '?'
 
-  const save = () => {
-    updateUser({ name, email })
-    onSaved?.()
-    onClose()
+  const save = async () => {
+    setSaving(true)
+    try {
+      await updateUser({ name, company, email })
+      onSaved?.()
+      onClose()
+    } catch (err) {
+      console.error('Failed to update profile:', err)
+    } finally {
+      setSaving(false)
+    }
   }
 
-  const signOut = () => {
-    logout()
+  const signOut = async () => {
+    await logout()
     nav('/login')
   }
 
   return (
     <div className="fixed top-0 bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] z-50 flex flex-col">
       <div className="flex-1" style={{ background: 'rgba(27,23,20,0.4)' }} onClick={onClose} />
-      <motion.div initial={{ y: '100%' }} animate={{ y: 0 }}
-                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  className="bg-white pb-10 relative overflow-hidden">
+      <motion.div
+        initial={{ y: '100%' }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="bg-white pb-10 relative overflow-hidden"
+      >
         <div className="absolute inset-0 opacity-25 pointer-events-none" style={{ background: 'var(--stripe-gradient)' }} />
         <div className="relative">
           <div className="px-6 pt-5 pb-4 border-b border-ink/8 flex justify-between items-center">
@@ -41,26 +53,37 @@ export default function ProfileSheet({ user, onClose, onSaved }) {
               <div className="w-12 h-12 bg-orange flex items-center justify-center shrink-0 rounded-full">
                 <span className="font-display text-lg font-bold text-white">{initial}</span>
               </div>
-              <div>
-                <p className="text-[15px] font-semibold text-ink">{user?.name}</p>
-                <p className="text-[13px] text-muted mt-0.5">{user?.email}</p>
+              <div className="min-w-0">
+                <p className="text-[15px] font-semibold text-ink truncate">{user?.name}</p>
+                {user?.company && <p className="text-[13px] font-medium text-orange truncate mt-0.5">{user.company}</p>}
+                <p className="text-[12px] text-muted truncate mt-0.5">{user?.email}</p>
               </div>
             </div>
             <div className="mb-3">
               <p className="text-[10px] font-semibold text-muted uppercase mb-1.5" style={{ letterSpacing: '0.12em' }}>Full name</p>
-              <input className={inputCls} style={inputStyle} value={name} onChange={(e) => setName(e.target.value)} />
+              <input className={inputCls} style={inputStyle} value={name} onChange={(e) => setName(e.target.value)} disabled={saving} />
+            </div>
+            <div className="mb-3">
+              <p className="text-[10px] font-semibold text-muted uppercase mb-1.5" style={{ letterSpacing: '0.12em' }}>Company / Organization</p>
+              <input className={inputCls} style={inputStyle} value={company} onChange={(e) => setCompany(e.target.value)} disabled={saving} placeholder="e.g. Acme Capital" />
             </div>
             <div className="mb-5">
               <p className="text-[10px] font-semibold text-muted uppercase mb-1.5" style={{ letterSpacing: '0.12em' }}>Email</p>
-              <input className={inputCls} style={inputStyle} type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input className={inputCls} style={inputStyle} type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={saving} />
             </div>
-            <button onClick={save}
-                    className="w-full bg-orange text-white py-3.5 font-display font-bold text-sm mb-2.5"
-                    style={{ borderRadius: 8, letterSpacing: '0.02em' }}>
-              Save changes
+            <button
+              onClick={save}
+              disabled={saving}
+              className="w-full bg-orange text-white py-3.5 font-display font-bold text-sm mb-2.5 disabled:opacity-60"
+              style={{ borderRadius: 8, letterSpacing: '0.02em' }}
+            >
+              {saving ? 'Saving...' : 'Save changes'}
             </button>
-            <button onClick={signOut} className="w-full border border-ink/18 text-ink/60 py-3.5 text-sm font-medium"
-                    style={{ borderRadius: 8, background: 'transparent' }}>
+            <button
+              onClick={signOut}
+              className="w-full border border-ink/18 text-ink/60 py-3.5 text-sm font-medium"
+              style={{ borderRadius: 8, background: 'transparent' }}
+            >
               Sign out
             </button>
           </div>

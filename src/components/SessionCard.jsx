@@ -114,16 +114,25 @@ export default function SessionCard({ session, collapsible = false, expanded = t
             {session.tracks?.map((track, i) => (
               <div key={i} className="mt-3 pt-3 border-t border-ink/8">
                 {track.name && (
-                  <p className="text-[12px] font-bold text-ink mb-2">{track.name}</p>
+                  <p className="text-[12px] font-bold text-ink mb-1">{track.name}</p>
                 )}
-                <span className="inline-block px-2.5 py-1 rounded-full bg-orange text-white text-[9px] font-bold uppercase mb-1.5" style={{ letterSpacing: '0.06em' }}>
-                  Speakers
-                </span>
-                <div>
-                  {track.speakers.map((sp) => (
-                    <SpeakerRow key={sp.name} speaker={sp} />
-                  ))}
-                </div>
+                {track.description && (
+                  <p className="text-[11px] text-ink/45 mb-2">{track.description}</p>
+                )}
+                {track.speakers?.length > 0 ? (
+                  <>
+                    <span className="inline-block px-2.5 py-1 rounded-full bg-orange text-white text-[9px] font-bold uppercase mb-1.5" style={{ letterSpacing: '0.06em' }}>
+                      Speakers
+                    </span>
+                    <div>
+                      {track.speakers.map((sp) => (
+                        <SpeakerRow key={sp.name} speaker={sp} />
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-[11px] text-ink/35 italic">Speakers to be announced</p>
+                )}
               </div>
             ))}
           </>

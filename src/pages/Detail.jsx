@@ -67,6 +67,7 @@ export default function Detail() {
       <div className="px-5 pt-5 pb-12 overflow-y-auto">
         <p className="text-[14px] text-ink-2 mb-6" style={{ lineHeight: 1.7 }}>{s.description}</p>
 
+        {s.founders?.length > 0 && (
         <div className="mb-6">
           <p className={label} style={{ letterSpacing: '0.14em' }}>The Lineup</p>
           <div className="flex flex-col gap-2.5">
@@ -93,6 +94,7 @@ export default function Detail() {
             })}
           </div>
         </div>
+        )}
 
         <div className="mb-8">
           <div className="flex justify-between items-center mb-3">

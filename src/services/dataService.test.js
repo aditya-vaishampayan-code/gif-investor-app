@@ -1,41 +1,51 @@
-import { beforeEach, describe, expect, it } from 'vitest'
-import { login, getUser, logout, saveRating, getRatings, getRating, getAggregates } from './dataService'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+vi.mock('./firebase', () => ({
+  auth: null,
+  db: null,
+  isFirebaseConfigured: false,
+}))
+
+import { login, register, getUser, logout, saveRating, getRatings, getRating, getAggregates } from './dataService'
 import { STARTUPS } from '../data/startups'
 
 beforeEach(() => localStorage.clear())
 
-describe('auth (mock FPD capture)', () => {
-  it('stores name, email and loginAt on login', () => {
-    const u = login({ name: 'Sid', email: 'sid@example.com' })
+describe('auth (mock capture)', () => {
+  it('stores registration details and loginAt', async () => {
+    const u = await register({ name: 'Sid', company: 'Acme Ventures', email: 'sid@example.com', password: 'secret1' })
     expect(u.name).toBe('Sid')
+    expect(u.company).toBe('Acme Ventures')
     expect(getUser().email).toBe('sid@example.com')
+    expect(getUser().company).toBe('Acme Ventures')
     expect(new Date(getUser().loginAt).getTime()).not.toBeNaN()
   })
-  it('rejects empty credentials', () => {
-    expect(() => login({ name: '', email: 'x@y.z' })).toThrow('name and email required')
+  it('rejects empty credentials', async () => {
+    await expect(register({ name: '', company: 'Acme', email: 'x@y.z', password: 'secret1' })).rejects.toThrow('Name and company are required.')
+    await expect(login({ email: 'x@y.z', password: '' })).rejects.toThrow('Password must be at least 6 characters.')
   })
-  it('logout clears user', () => {
-    login({ name: 'Sid', email: 'sid@example.com' })
-    logout()
+  it('logout clears user', async () => {
+    await register({ name: 'Sid', company: 'Acme', email: 'sid@example.com', password: 'secret1' })
+    await logout()
     expect(getUser()).toBeNull()
   })
 })
 
 describe('ratings', () => {
-  it('saves and reads a rating', () => {
-    saveRating('zingbus', 8)
+  it('saves and reads a rating', async () => {
+    await saveRating('zingbus', 8)
     expect(getRating('zingbus').score).toBe(8)
     expect(getRatings().zingbus.score).toBe(8)
   })
-  it('locks ratings permanently', () => {
-    saveRating('zingbus', 8)
-    expect(() => saveRating('zingbus', 3)).toThrow('rating already locked')
+  it('locks ratings permanently', async () => {
+    await saveRating('zingbus', 8)
+    await expect(saveRating('zingbus', 3)).rejects.toThrow('rating already locked')
     expect(getRating('zingbus').score).toBe(8)
   })
-  it('validates score range', () => {
-    expect(() => saveRating('zingbus', 0)).toThrow('score must be 1-10')
-    expect(() => saveRating('zingbus', 11)).toThrow('score must be 1-10')
-    expect(() => saveRating('zingbus', 5.5)).toThrow('score must be 1-10')
+  it('validates score range', async () => {
+    await expect(saveRating('zingbus', 0)).rejects.toThrow('score must be 1-10')
+    await expect(saveRating('zingbus', 11)).rejects.toThrow('score must be 1-10')
+    await expect(saveRating('zingbus', 5.5)).rejects.toThrow('score must be 1-10')
   })
 })
 
@@ -46,9 +56,9 @@ describe('aggregates', () => {
     expect(zing.avgScore).toBe(seed.avgScore)
     expect(zing.raterCount).toBe(seed.raterCount)
   })
-  it('blends the local rating into the aggregate', () => {
+  it('blends the local rating into the aggregate', async () => {
     const seed = STARTUPS.find((s) => s.id === 'zingbus').seed
-    saveRating('zingbus', 10)
+    await saveRating('zingbus', 10)
     const zing = getAggregates().find((a) => a.id === 'zingbus')
     expect(zing.raterCount).toBe(seed.raterCount + 1)
     const expected = Math.round(((seed.avgScore * seed.raterCount + 10) / (seed.raterCount + 1)) * 10) / 10

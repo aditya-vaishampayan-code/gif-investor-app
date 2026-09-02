@@ -4,6 +4,7 @@ import Frame from '../components/Frame'
 import BottomNav from '../components/BottomNav'
 import ProfileSheet from '../components/ProfileSheet'
 import VenueMapModal from '../components/VenueMapModal'
+import NotificationBell from '../components/NotificationBell'
 import Logo from '../components/Logo'
 import { getUser, getRatings } from '../services/dataService'
 import { getMeetingsForUser } from '../data/meetings'
@@ -41,13 +42,16 @@ export default function Meetings() {
         {/* Top bar */}
         <div className="px-5 pt-5 flex justify-between items-start">
           <img src="/logo-lockup-white.png" alt="Global Impact Forum" className="w-[187px] h-[57px]" />
-          <button
-            onClick={() => setProfileOpen(true)}
-            aria-label="Profile"
-            className="w-9 h-9 rounded-full overflow-hidden border-2 border-white/70 shrink-0 bg-orange text-white font-display text-sm font-bold flex items-center justify-center cursor-pointer"
-          >
-            {initial}
-          </button>
+          <div className="flex items-center gap-2">
+            <NotificationBell meetings={meetings} />
+            <button
+              onClick={() => setProfileOpen(true)}
+              aria-label="Profile"
+              className="w-9 h-9 rounded-full overflow-hidden border-2 border-white/70 shrink-0 bg-orange text-white font-display text-sm font-bold flex items-center justify-center cursor-pointer"
+            >
+              {initial}
+            </button>
+          </div>
         </div>
 
         {/* Heading */}
