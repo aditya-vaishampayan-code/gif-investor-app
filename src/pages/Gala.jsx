@@ -51,7 +51,7 @@ export default function Gala() {
                 <div className="h-16 flex items-center justify-center relative overflow-hidden" style={{ background: s.monoBg }}>
                   <div className="absolute inset-0 opacity-10" style={{ background: 'var(--stripe-gradient)' }} />
                   {s.logo ? (
-                    <img src={s.logo} alt={s.name} className="absolute inset-0 w-full h-full object-cover" />
+                    <img src={s.logo} alt={s.name} className="absolute inset-0 w-full h-full object-contain p-2.5 bg-white" />
                   ) : (
                     <span className="relative" style={{ color: s.monoFg }}><Logo id={s.id} size={28} /></span>
                   )}

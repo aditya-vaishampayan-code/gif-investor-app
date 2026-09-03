@@ -46,7 +46,7 @@ export default function Admin() {
               <span className="font-display text-[13px] font-bold text-ink/20 w-[22px] text-right shrink-0">{i + 1}</span>
               <div className="w-11 h-11 flex items-center justify-center shrink-0 overflow-hidden" style={{ background: s.monoBg }}>
                 {s.logo ? (
-                  <img src={s.logo} alt={s.name} className="w-full h-full object-cover" />
+                  <img src={s.logo} alt={s.name} className="w-full h-full object-contain p-0.5 bg-white" />
                 ) : (
                   <span style={{ color: s.monoFg }}><Logo id={s.id} size={24} /></span>
                 )}

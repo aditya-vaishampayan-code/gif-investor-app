@@ -14,19 +14,18 @@ const seed = (scores) => ({ avgScore: Math.round(avg(scores) * 10) / 10, raterCo
 // Rate.jsx, Detail.jsx, Portfolio.jsx, Admin.jsx and dataService.js all import it.
 export const STARTUPS = [
   {
-    id: 'zingbus', name: 'Zingbus', sector: 'Mobility', monogram: 'ZB',
+    id: 'biddano', name: 'Biddano', sector: 'PharmaTech | B2B Supply Chain | AI Infrastructure', monogram: 'BD',
     monoBg: '#1D4ED8', monoFg: '#FFFFFF',
-    logo: '/logos/zingbus.jpg',
-    website: 'https://www.zingbus.com/',
-    tagline: 'Tech-driven intercity bus travel, going electric.',
-    description: 'Zingbus is India’s largest asset-light intercity bus platform, organizing a USD 4Bn market that is growing at a 17% CAGR across 30,000+ buses and 5,200+ operators. Founded by Prashant Kumar, Mratunjay Beniwal, and Ravi Verma, 2X founders with 15+ years together, having built and scaled consumer startups including Tipi Homes, OYO, and Flipkart. With over 300+ buses, Zingbus connects 500 cities and has completed 6 million+ journeys, powered by its proprietary tech stack, Zupiter. Backed by global marquee investors including BP Ventures, Info Edge, and Y Combinator, Zingbus is leading India’s ICE-to-electric bus transition, with EV buses already 10-22% cheaper to run and outperforming on occupancy.',
+    logo: '/logos/biddano.png',
+    website: 'https://biddano.com/',
+    tagline: 'The AI operating system for India’s pharma supply chain.',
+    description: 'Biddano is building the AI operating system for India’s pharma supply chain, a full-stack platform combining licensed distribution infrastructure with a proprietary AI intelligence layer (7 engines: demand forecasting, image-to-order, voice ordering, expiry reduction, warehouse orchestration) connecting manufacturers to pharmacies. With 1,800+ manufacturers, 200K+ pharmacies, and 300K+ SKUs under signal, Biddano delivers 96.4% fill rate and 4-hour fulfilment TAT, already EBITDA-positive at ₹220 Cr ARR ($24.4 Mn) with 130% YoY growth.',
     founders: [
-      { name: 'Prashant Kumar', role: 'CEO & Co-founder', linkedin: 'https://www.linkedin.com/in/prashant-kumar-80801931/' },
-      { name: 'Mratunjay Beniwal', role: 'Co-founder', linkedin: 'https://www.linkedin.com/in/mratunjay-beniwal-60870626/' },
-      { name: 'Ravi Kumar Verma', role: 'Co-founder & CTO', linkedin: 'https://www.linkedin.com/in/ravi-kumar-verma-b2946797/' },
+      { name: 'Talha Shaikh', role: 'Co-Founder, Business & Operations' },
+      { name: 'Murali Ramanath', role: 'Co-Founder, Tech & Product' },
     ],
-    metrics: { stage: 'Series A', ask: '$9M', traction: '2M+ users across 300 cities · 70 operator partners · backed by bp Ventures, Info Edge Ventures, Y Combinator' },
-    seed: seed([6, 7, 5, 8, 6, 7, 6, 5, 7, 6, 8, 7]),
+    metrics: { stage: 'TBD', ask: 'TBD', traction: '₹220 Cr ARR (3.5% EBITDA, positive today) · 200K+ pharmacies and 1,800+ manufacturers on platform · 92 stockist ERPs connected (79% secondary-sales consent) · 105 live metrics captured across the transaction ledger · 130% average YoY growth (Apr–Aug FY27)' },
+    seed: seed([6, 7, 5, 7, 8, 6, 7, 6, 8, 7, 6, 7]),
   },
   {
     id: 'zypp-electric', name: 'Zypp Electric', sector: 'EV Logistics & Mobility', monogram: 'ZE',
@@ -34,13 +33,12 @@ export const STARTUPS = [
     logo: '/logos/zypp-electric.jpg',
     website: 'https://zypp.app/',
     tagline: 'Electric two-wheelers, as-a-service, for India’s gig economy.',
-    description: 'Zypp Electric is India’s leading tech-enabled EV rental platform, building the operating system for India’s gig economy, starting with mobility and expanding into financial identity, credit, and AI-powered earnings optimization for 100M gig entrepreneurs. Founded in 2017 by Akash Gupta, Rashi Agarwal, and Mukesh Singla, with a mission to make India carbon-free through a fully electric, IoT- and AI-enabled last-mile delivery ecosystem. Its proprietary FleetOS powers 28,000+ EVs across 8+ cities, delivering groceries, food, medicines, and e-commerce packages at 96% uptime and 12+ deliveries per EV daily. Beyond mobility, Zypp is driving real social impact, enabling 2.5 Lakh+ gig entrepreneurs with 27% higher take-home income, formal credit access via Zypp CIBIL, and 60M+ kg of CO₂ emissions saved.',
+    description: 'Zypp Electric is India’s leading tech-enabled EV rental platform, building the operating system for India’s gig economy, starting with mobility and expanding into financial identity, credit, and AI-powered earnings optimization for 100M gig entrepreneurs. Founded in 2017 by Akash Gupta and Rashi Agarwal, with a mission to make India carbon-free through a fully electric, IoT- and AI-enabled last-mile delivery ecosystem. Its proprietary FleetOS powers 28,000+ EVs across 8+ cities, delivering groceries, food, medicines, and e-commerce packages at 96% uptime and 12+ deliveries per EV daily. Beyond mobility, Zypp is driving real social impact, enabling 2.5 Lakh+ gig entrepreneurs with 27% higher take-home income, formal credit access via Zypp CIBIL, and 60M+ kg of CO₂ emissions saved.',
     founders: [
       { name: 'Akash Gupta', role: 'CEO & Co-founder', linkedin: 'https://www.linkedin.com/in/akashg/' },
       { name: 'Rashi Agarwal', role: 'Co-founder & COO', linkedin: 'https://www.linkedin.com/in/rashiagarwalzypp/' },
-      { name: 'Mukesh Singla', role: 'Co-founder' },
     ],
-    metrics: { stage: 'Series C', ask: '$15M', traction: '20,000+ e-scooters deployed · Rs 438 Cr FY25 revenue (+50% YoY) · backed by ENEOS, Goodyear Ventures' },
+    metrics: { stage: 'Series C', ask: '$15M', traction: '28,000+ EVs across 8+ cities · ₹275 Cr ARR · ₹582 Cr rider earnings in 12 months · backed by global investors' },
     seed: seed([7, 6, 8, 7, 6, 8, 7, 5, 7, 8, 6, 7]),
   },
   {
@@ -53,6 +51,7 @@ export const STARTUPS = [
     founders: [
       { name: 'Piyush Jain', role: 'CEO & Co-founder', linkedin: 'https://www.linkedin.com/in/piyushcrjain/' },
       { name: 'Khushboo Jain', role: 'Co-founder', linkedin: 'https://www.linkedin.com/in/khushboopjain/' },
+      { name: 'Vikas Kaul', role: 'Co-founder & Chief Product / Tech Officer', linkedin: 'https://www.linkedin.com/in/vikasvirkaul/' },
     ],
     metrics: { stage: 'Series B', ask: '$5M', traction: '$18.5M+ raised to date · 1,000+ hospital partners incl. Apollo · backed by Merck GHI Fund, Sony, Apis Partners, HealthQuad' },
     seed: seed([7, 8, 6, 7, 9, 6, 8, 7, 6, 8, 7, 6]),
@@ -60,7 +59,7 @@ export const STARTUPS = [
   {
     id: 'navadhan-capital', name: 'Navadhan Capital', sector: 'Fintech | Alternative Lending (Rural)', monogram: 'NC',
     monoBg: '#0891B2', monoFg: '#FFFFFF',
-    logo: null, // TODO: add public/logos/navadhan-capital.jpg and set this path — falls back to the Logo.jsx mark until then
+    logo: '/logos/navadhan-capital.png',
     website: 'https://www.navadhan.com/',
     tagline: 'Tech-led financing for India’s rural nano-enterprises.',
     description: 'Navadhan Capital is an RBI-registered NBFC building tech-led financing for India’s rural nano-enterprises, having disbursed ₹807 Cr to 46,000+ active loans across 5 states and 700+ PIN codes via its proprietary underwriting platform, AceN. Founded in 2019 by Nitin Agrawal, a 25-year BFSI veteran and former CEO of a listed NBFC, alongside a founding team with 80+ years of combined experience across ICICI, HDFC Bank, Amazon, and SAP. Operating a phygital model with 99%+ collection efficiency and sub-1% NNPA, Navadhan serves the "missing middle" households earning ₹4-40 lakh, above microfinance yet underserved by MSME lenders, addressing a $500 billion credit gap across India’s 70 million nano-enterprises, backed by marquee investors like Prime Venture Partners, NABVentures, and Gemba Capital.',
@@ -73,13 +72,13 @@ export const STARTUPS = [
   {
     id: 'kisankonnect', name: 'KisanKonnect', sector: 'AgriTech | D2C Fresh Food | Supply Chain', monogram: 'KK',
     monoBg: '#4D7C0F', monoFg: '#FFFFFF',
-    logo: null, // TODO: add public/logos/kisankonnect.jpg and set this path — falls back to the Logo.jsx mark until then
-    website: 'https://www.kisankonnect.com/',
+    logo: '/logos/kisankonnect.png',
+    website: 'https://www.kisankonnect.in/',
     tagline: 'Farm-to-fork fresh essentials, delivered in hours.',
     description: 'KisanKonnect is building India’s leading habit-driven D2C fresh essentials platform, combining deep control over the fresh supply chain with a proprietary tech stack (KNET) and rapid delivery. With 8,000+ farmer partners, 45 delivery depots, and an omni-channel network of farm stores and app-based delivery, KisanKonnect delivers farm-to-fork in 8-36 hours at ~7% wastage versus the 10-15% industry average — backed by an industry-leading AOV of ₹475 and 3.0x monthly order frequency. Founded by Vivek Nirmal (Founder & CEO), with over two decades in dairy and fresh food supply chains and a former leadership role at Prabhat Dairy, and Nidhi Nirmal (Co-Founder), who leads brand, consumer experience, and growth.',
     founders: [
-      { name: 'Vivek Nirmal', role: 'Founder & CEO' },
-      { name: 'Nidhi Nirmal', role: 'Co-Founder' },
+      { name: 'Vivek Nirmal', role: 'Founder & CEO', linkedin: 'https://www.linkedin.com/in/vivek-nirmal-52656424a/' },
+      { name: 'Nidhi Nirmal', role: 'Co-Founder', linkedin: 'https://www.linkedin.com/in/nidhi-nirmal-a55680248/' },
     ],
     metrics: { stage: 'TBD', ask: 'TBD', traction: '1 Mn+ app downloads · 170K active users · 1.0 Mn total customers · 8,000+ Kisan Partners · 45 delivery depots · 15 farm stores' },
     seed: seed([6, 6, 7, 7, 5, 6, 7, 6, 8, 6, 7, 6]),
@@ -88,8 +87,7 @@ export const STARTUPS = [
 
 // The 6 Innovators-section startups (route /gala) — browsed, not rated, so no
 // `seed` field. Data from the "Startup Presentations" deck. Funding stage/ask
-// weren't provided (marked TBD). Logos pulled from each company's site; SunFox
-// has `logo: null` and falls back to the Logo.jsx mark keyed on `id`.
+// weren't provided (marked TBD). Logos pulled from each company's site.
 export const INNOVATOR_STARTUPS = [
   {
     id: 'cautio', name: 'Cautio', sector: 'Mobility | IoT Fleet Safety', monogram: 'CA',
@@ -133,7 +131,9 @@ export const INNOVATOR_STARTUPS = [
     website: 'https://zerocircle.in/',
     tagline: 'Ocean-safe, plastic-free materials engineered from seaweed.',
     description: 'Zerocircle is building ocean-safe, plastic-free materials engineered from seaweed and other rapidly renewing biomass. It targets the everyday convenience-versus-planet trade-off: packaging and daily-use products built on synthetic plastics that never truly disappear, leaving behind waste with no clean end-of-life. Its natural polymer materials replace plastic entirely rather than merely reducing it — bio-alternatives designed to be perfectly circular and leave nothing behind. The technology avoids synthetic additives, working instead with the native structure of natural polymers to deliver stable performance, in effect turning seaweed into infrastructure for a circular economy.',
-    founders: [],
+    founders: [
+      { name: 'Neha Jain', role: 'Founder & CEO', linkedin: 'https://www.linkedin.com/in/nehajn/' },
+    ],
     metrics: { stage: 'TBD', ask: 'TBD', traction: '3 IPs + 1 filed patent · brands incl. Blue Tokai, Zomato, Budweiser and Swiggy · global partnerships across EU, LATAM, UK and MENA (Huhtamaki, Analytico, EcoDispo) · Yes Bengaluru Urban Innovation Challenge winner · 1.5M+ units of conventional plastic replaced' },
   },
   {
@@ -151,7 +151,7 @@ export const INNOVATOR_STARTUPS = [
   },
   {
     id: 'sunfox', name: 'SunFox', sector: 'HealthTech | Diagnostic Cardiology | Medical Devices', monogram: 'SF',
-    monoBg: '#E11D48', monoFg: '#FFFFFF', logo: null,
+    monoBg: '#E11D48', monoFg: '#FFFFFF', logo: '/logos/sunfox.svg',
     website: 'https://www.sunfox.in/',
     tagline: 'Portable, AI-powered ECG and cardiac diagnostics at population scale.',
     description: 'Sunfox builds portable, AI-powered cardiac diagnostic solutions serving consumers, enterprises, insurers, hospitals, clinics, public health systems and the defence sector’s cardiac analysis needs. Its devices are engineered to capture super-high-quality data for cardiac diagnostics, including the Spandan portable 12-lead ECG, paired with an AI-powered platform that analyzes, connects and processes cardiac data — backed by on-demand cardiologist review and a population-scale heart-attack management system for public health.',

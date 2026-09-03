@@ -173,7 +173,7 @@ export default function Meetings() {
                             className="flex items-center gap-2.5 w-full text-left bg-transparent border-none cursor-pointer p-0">
                       <div className="w-7 h-7 rounded-[6px] flex items-center justify-center shrink-0 overflow-hidden" style={{ background: startup.monoBg }}>
                         {startup.logo ? (
-                          <img src={startup.logo} alt={startup.name} className="w-full h-full object-cover" />
+                          <img src={startup.logo} alt={startup.name} className="w-full h-full object-contain p-0.5 bg-white" />
                         ) : (
                           <span style={{ color: startup.monoFg }}><Logo id={startup.id} size={16} /></span>
                         )}
@@ -196,7 +196,7 @@ export default function Meetings() {
                     <div className="h-16 flex items-center justify-center relative overflow-hidden" style={{ background: s.monoBg }}>
                       <div className="absolute inset-0 opacity-10" style={{ background: 'var(--stripe-gradient)' }} />
                       {s.logo ? (
-                        <img src={s.logo} alt={s.name} className="absolute inset-0 w-full h-full object-cover" />
+                        <img src={s.logo} alt={s.name} className="absolute inset-0 w-full h-full object-contain p-2.5 bg-white" />
                       ) : (
                         <span className="relative" style={{ color: s.monoFg }}><Logo id={s.id} size={28} /></span>
                       )}
