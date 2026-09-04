@@ -5,7 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
 } from 'firebase/auth'
-import { doc, setDoc, getDoc, collection, onSnapshot } from 'firebase/firestore'
+import { doc, setDoc, getDoc, getDocs, collection, onSnapshot } from 'firebase/firestore'
 
 const USER_KEY = 'gif_user'
 const RATINGS_KEY = 'gif_ratings'
@@ -195,6 +195,72 @@ export function getAggregates() {
     const mine = ratings[id]
     return { id, name, ...blendSeed(seed, mine ? [mine.score] : []) }
   })
+}
+
+const startupName = (startupId) =>
+  INNOVATOR_STARTUPS.find((s) => s.id === startupId)?.name || startupId
+
+/**
+ * Returns every individual rating as a flat row:
+ * { startupId, startupName, userName, userCompany, userId, score, lockedAt }
+ * Pulls from Firestore when configured; otherwise falls back to this device's
+ * localStorage ratings (which carry no rater identity).
+ */
+export async function fetchAllRatings() {
+  if (isFirebaseConfigured && db) {
+    try {
+      const snapshot = await getDocs(collection(db, 'ratings'))
+      const rows = []
+      snapshot.forEach((docSnap) => {
+        const d = docSnap.data()
+        if (!d.startupId || typeof d.score !== 'number') return
+        rows.push({
+          startupId: d.startupId,
+          startupName: startupName(d.startupId),
+          userName: d.userName || '',
+          userCompany: d.userCompany || '',
+          userId: d.userId || '',
+          score: d.score,
+          lockedAt: d.lockedAt || '',
+        })
+      })
+      rows.sort(
+        (a, b) =>
+          a.startupName.localeCompare(b.startupName) ||
+          a.userName.localeCompare(b.userName)
+      )
+      return rows
+    } catch (err) {
+      console.warn('Failed to fetch ratings from Firestore, using local copy:', err)
+    }
+  }
+
+  const local = getRatings()
+  const user = getUser()
+  return Object.entries(local).map(([startupId, r]) => ({
+    startupId,
+    startupName: startupName(startupId),
+    userName: user?.name || '',
+    userCompany: user?.company || '',
+    userId: user?.uid || user?.email || '',
+    score: r.score,
+    lockedAt: r.lockedAt || '',
+  }))
+}
+
+const csvCell = (value) => {
+  const str = String(value ?? '')
+  return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str
+}
+
+export function ratingsToCsv(rows) {
+  const header = ['Innovator', 'Rater', 'Company', 'Rater ID', 'Score', 'Locked at']
+  const lines = rows.map((r) =>
+    [r.startupName, r.userName, r.userCompany, r.userId, r.score, r.lockedAt]
+      .map(csvCell)
+      .join(',')
+  )
+  return [header.join(','), ...lines].join('\r\n')
 }
 
 export function subscribeLeaderboard(onUpdate) {

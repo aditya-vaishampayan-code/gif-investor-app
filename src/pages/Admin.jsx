@@ -2,10 +2,40 @@ import { useState, useEffect } from 'react'
 import Frame from '../components/Frame'
 import Logo from '../components/Logo'
 import { INNOVATOR_STARTUPS } from '../data/startups'
-import { getAggregates, subscribeLeaderboard } from '../services/dataService'
+import { getAggregates, subscribeLeaderboard, fetchAllRatings, ratingsToCsv } from '../services/dataService'
 
 export default function Admin() {
   const [aggregates, setAggregates] = useState(() => getAggregates())
+  const [exporting, setExporting] = useState(false)
+  const [exportNote, setExportNote] = useState('')
+
+  const handleExport = async () => {
+    setExporting(true)
+    setExportNote('')
+    try {
+      const rows = await fetchAllRatings()
+      if (rows.length === 0) {
+        setExportNote('No ratings to export yet.')
+        return
+      }
+      const csv = ratingsToCsv(rows)
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `gif-ratings-${new Date().toISOString().slice(0, 10)}.csv`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+      setExportNote(`Exported ${rows.length} rating${rows.length === 1 ? '' : 's'}.`)
+    } catch (err) {
+      console.warn('Ratings export failed:', err)
+      setExportNote('Export failed. Check the console.')
+    } finally {
+      setExporting(false)
+    }
+  }
 
   useEffect(() => {
     const unsubscribe = subscribeLeaderboard((data) => {
@@ -36,6 +66,18 @@ export default function Admin() {
             <p className="font-display text-[28px] font-bold text-orange">{totalRaters}</p>
             <p className="text-xs text-ink/35" style={{ letterSpacing: '0.06em' }}>RATERS</p>
           </div>
+        </div>
+        <div className="flex items-center gap-3 mt-5">
+          <button
+            type="button"
+            onClick={handleExport}
+            disabled={exporting}
+            className="text-[11px] font-semibold uppercase text-white bg-ink px-4 py-2 disabled:opacity-40"
+            style={{ letterSpacing: '0.1em' }}
+          >
+            {exporting ? 'Exporting…' : 'Export ratings CSV'}
+          </button>
+          {exportNote && <p className="text-xs text-ink/45">{exportNote}</p>}
         </div>
       </div>
       <div className="px-10 pt-3 pb-14">
