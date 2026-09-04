@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Frame from '../components/Frame'
 import Logo from '../components/Logo'
-import { STARTUPS } from '../data/startups'
+import { INNOVATOR_STARTUPS } from '../data/startups'
 import { getAggregates, subscribeLeaderboard } from '../services/dataService'
 
 export default function Admin() {
@@ -40,7 +40,7 @@ export default function Admin() {
       </div>
       <div className="px-10 pt-3 pb-14">
         {rows.map((r, i) => {
-          const s = STARTUPS.find((x) => x.id === r.id)
+          const s = INNOVATOR_STARTUPS.find((x) => x.id === r.id)
           return (
             <div key={r.id} className="flex items-center gap-[18px] py-4 border-b border-ink/7">
               <span className="font-display text-[13px] font-bold text-ink/20 w-[22px] text-right shrink-0">{i + 1}</span>

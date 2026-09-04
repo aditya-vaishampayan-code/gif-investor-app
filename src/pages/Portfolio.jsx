@@ -1,13 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom'
 import Frame from '../components/Frame'
 import Logo from '../components/Logo'
-import { MONEY_BY_SCORE, STARTUPS, formatMoney } from '../data/startups'
+import { MONEY_BY_SCORE, INNOVATOR_STARTUPS, formatMoney } from '../data/startups'
 import { getRatings } from '../services/dataService'
 
 export default function Portfolio() {
   const nav = useNavigate()
   const ratings = getRatings()
-  const rated = STARTUPS.filter((s) => ratings[s.id])
+  const rated = INNOVATOR_STARTUPS.filter((s) => ratings[s.id])
     .map((s) => ({ ...s, score: ratings[s.id].score }))
     .sort((a, b) => b.score - a.score)
   const totalK = rated.reduce((sum, s) => sum + MONEY_BY_SCORE[s.score], 0)
@@ -33,7 +33,7 @@ export default function Portfolio() {
         <div className="px-5 py-16 text-center">
           <p className="font-display text-[22px] font-bold text-ink mb-2.5">No investments yet.</p>
           <p className="text-sm text-muted mb-8" style={{ lineHeight: 1.6 }}>Rate at least one startup to build your portfolio.</p>
-          <Link to="/meetings" className="inline-block bg-orange text-white px-7 py-3.5 font-display font-bold text-sm" style={{ letterSpacing: '0.02em' }}>
+          <Link to="/gala" className="inline-block bg-orange text-white px-7 py-3.5 font-display font-bold text-sm" style={{ letterSpacing: '0.02em' }}>
             View startups →
           </Link>
         </div>

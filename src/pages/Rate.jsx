@@ -3,7 +3,7 @@ import { useNavigate, useParams, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Frame from '../components/Frame'
 import MoneyStack from '../components/MoneyStack'
-import { MONEY_BY_SCORE, STARTUPS, formatMoneyFull } from '../data/startups'
+import { MONEY_BY_SCORE, INNOVATOR_STARTUPS, formatMoneyFull } from '../data/startups'
 import { getRating, saveRating } from '../services/dataService'
 
 const cta = 'w-full bg-orange text-white py-[18px] font-display font-bold text-base border-none cursor-pointer'
@@ -12,7 +12,7 @@ const ctaStyle = { borderRadius: 10, letterSpacing: '0.02em' }
 export default function Rate() {
   const { id } = useParams()
   const nav = useNavigate()
-  const s = STARTUPS.find((x) => x.id === id)
+  const s = INNOVATOR_STARTUPS.find((x) => x.id === id)
   const [score, setScore] = useState(5)
   const [phase, setPhase] = useState('sliding') // sliding | confirm | locked
 

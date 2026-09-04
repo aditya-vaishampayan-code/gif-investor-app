@@ -8,9 +8,10 @@ const label = 'text-[10px] font-semibold text-muted uppercase mb-3.5'
 export default function Detail() {
   const { id } = useParams()
   const nav = useNavigate()
-  const rateable = STARTUPS.find((x) => x.id === id)
-  const s = rateable ?? INNOVATOR_STARTUPS.find((x) => x.id === id)
+  const innovator = INNOVATOR_STARTUPS.find((x) => x.id === id)
+  const s = innovator ?? STARTUPS.find((x) => x.id === id)
   if (!s) return <Navigate to="/" replace />
+  const rateable = Boolean(innovator)
   const r = rateable ? getRating(id) : null
 
   return (
@@ -34,10 +35,12 @@ export default function Detail() {
                   style={{ background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 12, letterSpacing: '0.06em' }}>
               {s.sector}
             </span>
-            <span className="text-[10px] font-semibold text-white uppercase px-2 py-[3px]"
-                  style={{ background: 'rgba(239,78,61,0.8)', borderRadius: 12, letterSpacing: '0.06em' }}>
-              {s.metrics.stage}
-            </span>
+            {s.metrics.stage && s.metrics.stage !== 'TBD' && (
+              <span className="text-[10px] font-semibold text-white uppercase px-2 py-[3px]"
+                    style={{ background: 'rgba(239,78,61,0.8)', borderRadius: 12, letterSpacing: '0.06em' }}>
+                {s.metrics.stage}
+              </span>
+            )}
           </div>
           <h1 className="font-display text-[28px] font-bold text-white mb-1" style={{ lineHeight: 1, letterSpacing: '-0.03em' }}>{s.name}</h1>
           <p className="text-[12px] text-white/65 italic">{s.tagline}</p>

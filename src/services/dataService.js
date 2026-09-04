@@ -1,4 +1,4 @@
-import { STARTUPS } from '../data/startups'
+import { INNOVATOR_STARTUPS } from '../data/startups'
 import { auth, db, isFirebaseConfigured } from './firebase'
 import {
   signInWithEmailAndPassword,
@@ -191,7 +191,7 @@ export const getRating = (startupId) => getRatings()[startupId] ?? null
 
 export function getAggregates() {
   const ratings = getRatings()
-  return STARTUPS.map(({ id, name, seed }) => {
+  return INNOVATOR_STARTUPS.map(({ id, name, seed }) => {
     const mine = ratings[id]
     return { id, name, ...blendSeed(seed, mine ? [mine.score] : []) }
   })
@@ -219,7 +219,7 @@ export function subscribeLeaderboard(onUpdate) {
         })
 
         onUpdate(
-          STARTUPS.map(({ id, name, seed }) => {
+          INNOVATOR_STARTUPS.map(({ id, name, seed }) => {
             const liveScores = remoteRatingsByStartup[id] || []
             const mine = getRating(id)
             const scores = liveScores.length > 0 ? liveScores : mine ? [mine.score] : []

@@ -10,8 +10,8 @@ const avg = (scores) => scores.reduce((a, b) => a + b, 0) / scores.length
 
 const seed = (scores) => ({ avgScore: Math.round(avg(scores) * 10) / 10, raterCount: scores.length })
 
-// The 5 rateable startups shown in the Meetings section. Keep this export name —
-// Rate.jsx, Detail.jsx, Portfolio.jsx, Admin.jsx and dataService.js all import it.
+// The 5 startups shown in the Meetings section — browsed only, NOT rated.
+// Detail.jsx still renders their profile pages; rating lives with INNOVATOR_STARTUPS.
 export const STARTUPS = [
   {
     id: 'biddano', name: 'Biddano', sector: 'PharmaTech | B2B Supply Chain | AI Infrastructure', monogram: 'BD',
@@ -25,7 +25,6 @@ export const STARTUPS = [
       { name: 'Murali Ramanath', role: 'Co-Founder, Tech & Product' },
     ],
     metrics: { stage: 'TBD', ask: 'TBD', traction: '₹220 Cr ARR (3.5% EBITDA, positive today) · 200K+ pharmacies and 1,800+ manufacturers on platform · 92 stockist ERPs connected (79% secondary-sales consent) · 105 live metrics captured across the transaction ledger · 130% average YoY growth (Apr–Aug FY27)' },
-    seed: seed([6, 7, 5, 7, 8, 6, 7, 6, 8, 7, 6, 7]),
   },
   {
     id: 'zypp-electric', name: 'Zypp Electric', sector: 'EV Logistics & Mobility', monogram: 'ZE',
@@ -39,7 +38,6 @@ export const STARTUPS = [
       { name: 'Rashi Agarwal', role: 'Co-founder & COO', linkedin: 'https://www.linkedin.com/in/rashiagarwalzypp/' },
     ],
     metrics: { stage: 'Series C', ask: '$15M', traction: '28,000+ EVs across 8+ cities · ₹275 Cr ARR · ₹582 Cr rider earnings in 12 months · backed by global investors' },
-    seed: seed([7, 6, 8, 7, 6, 8, 7, 5, 7, 8, 6, 7]),
   },
   {
     id: 'impactguru', name: 'ImpactGuru', sector: 'Healthcare | Financing', monogram: 'IG',
@@ -54,7 +52,6 @@ export const STARTUPS = [
       { name: 'Vikas Kaul', role: 'Co-founder & Chief Product / Tech Officer', linkedin: 'https://www.linkedin.com/in/vikasvirkaul/' },
     ],
     metrics: { stage: 'Series B', ask: '$5M', traction: '$18.5M+ raised to date · 1,000+ hospital partners incl. Apollo · backed by Merck GHI Fund, Sony, Apis Partners, HealthQuad' },
-    seed: seed([7, 8, 6, 7, 9, 6, 8, 7, 6, 8, 7, 6]),
   },
   {
     id: 'navadhan-capital', name: 'Navadhan Capital', sector: 'Fintech | Alternative Lending (Rural)', monogram: 'NC',
@@ -67,7 +64,6 @@ export const STARTUPS = [
       { name: 'Nitin Agrawal', role: 'Founder & CEO' },
     ],
     metrics: { stage: 'TBD', ask: 'TBD', traction: '₹807 Cr disbursed · 46,000+ active loans · 5 states, 700+ PIN codes · backed by Prime Venture Partners, NABVentures, Gemba Capital' },
-    seed: seed([6, 7, 6, 8, 5, 7, 6, 7, 8, 6, 7, 6]),
   },
   {
     id: 'kisankonnect', name: 'KisanKonnect', sector: 'AgriTech | D2C Fresh Food | Supply Chain', monogram: 'KK',
@@ -81,13 +77,13 @@ export const STARTUPS = [
       { name: 'Nidhi Nirmal', role: 'Co-Founder', linkedin: 'https://www.linkedin.com/in/nidhi-nirmal-a55680248/' },
     ],
     metrics: { stage: 'TBD', ask: 'TBD', traction: '1 Mn+ app downloads · 170K active users · 1.0 Mn total customers · 8,000+ Kisan Partners · 45 delivery depots · 15 farm stores' },
-    seed: seed([6, 6, 7, 7, 5, 6, 7, 6, 8, 6, 7, 6]),
   },
 ]
 
-// The 6 Innovators-section startups (route /gala) — browsed, not rated, so no
-// `seed` field. Data from the "Startup Presentations" deck. Funding stage/ask
-// weren't provided (marked TBD). Logos pulled from each company's site.
+// The 6 Innovators-section startups (route /gala) — these are the RATEABLE cohort.
+// Rate.jsx, Detail.jsx, Portfolio.jsx, Admin.jsx and dataService.js all read this
+// list and its `seed` (baseline avg/rater count for the leaderboard). Data from the
+// "Startup Presentations" deck; funding stage/ask weren't provided (marked TBD).
 export const INNOVATOR_STARTUPS = [
   {
     id: 'cautio', name: 'Cautio', sector: 'Mobility | IoT Fleet Safety', monogram: 'CA',
@@ -100,6 +96,7 @@ export const INNOVATOR_STARTUPS = [
       { name: 'Pranjal Nadhani', role: 'Co-founder & CTO', linkedin: 'https://www.linkedin.com/in/pranjalnadhani/' },
     ],
     metrics: { stage: 'TBD', ask: 'TBD', traction: '9,500+ devices across 55+ cities · 80+ B2B clients on 3-year avg contracts · 100M+ km of video data, 32M+ AI alerts · ₹25.6 Cr saved across 1,270 incidents, claims settled 3–5 days faster' },
+    seed: seed([7, 8, 6, 8, 7, 9, 7, 6, 8, 7, 8, 7]),
   },
   {
     id: 'flawsome', name: 'Flawsome', sector: 'FemTech | D2C Menstrual Hygiene | Cleantech', monogram: 'FL',
@@ -112,6 +109,7 @@ export const INNOVATOR_STARTUPS = [
       { name: 'Hitesh Narula', role: 'Chief Business Officer', linkedin: 'https://www.linkedin.com/in/hitesh-narula-25350891/' },
     ],
     metrics: { stage: 'TBD', ask: 'TBD', traction: 'Live across 11+ e-commerce/quick-commerce platforms plus offline retail and an early UAE channel · 1,300+ users · granted Indian patent (US PCT filed), 3 trademarks · ₹50 lakh non-dilutive government grant · 10,200 kg plastic saved, 60–70 t CO₂ prevented' },
+    seed: seed([8, 7, 9, 7, 8, 6, 8, 9, 7, 8, 7, 8]),
   },
   {
     id: 'just-deliveries', name: 'Just Deliveries', sector: 'Logistics | Cold-Chain | F&B Infrastructure', monogram: 'JD',
@@ -124,6 +122,7 @@ export const INNOVATOR_STARTUPS = [
       { name: 'Pradeep Murugesan', role: 'Co-Founder & COO', linkedin: 'https://www.linkedin.com/in/pradeep1304/' },
     ],
     metrics: { stage: 'TBD', ask: 'TBD', traction: 'INR 75+ Cr ARR · 350+ vehicles running 36,000+ monthly trips across 7 cities · 850+ pallets of storage footprint · 150 clients' },
+    seed: seed([6, 7, 7, 8, 6, 7, 8, 7, 6, 8, 7, 7]),
   },
   {
     id: 'zerocircle', name: 'ZeroCircle', sector: 'Sustainable Materials | Biomaterials | Cleantech', monogram: 'ZC',
@@ -135,6 +134,7 @@ export const INNOVATOR_STARTUPS = [
       { name: 'Neha Jain', role: 'Founder & CEO', linkedin: 'https://www.linkedin.com/in/nehajn/' },
     ],
     metrics: { stage: 'TBD', ask: 'TBD', traction: '3 IPs + 1 filed patent · brands incl. Blue Tokai, Zomato, Budweiser and Swiggy · global partnerships across EU, LATAM, UK and MENA (Huhtamaki, Analytico, EcoDispo) · Yes Bengaluru Urban Innovation Challenge winner · 1.5M+ units of conventional plastic replaced' },
+    seed: seed([7, 8, 8, 7, 9, 7, 8, 7, 8, 9, 7, 8]),
   },
   {
     id: 'nautical-wings', name: 'Nautical Wings Aerospace', sector: 'Aerospace & Defence | Electric Aviation | eVTOL', monogram: 'NW',
@@ -148,6 +148,7 @@ export const INNOVATOR_STARTUPS = [
       { name: 'Vikas Kamath', role: 'COO', linkedin: 'https://www.linkedin.com/in/vikas-kamath-nw/' },
     ],
     metrics: { stage: 'TBD', ask: 'TBD', traction: '25+ drone companies and 3 prominent air-taxi companies as partners · portfolio 500W–2.1MW, composite propellers 14–120 in, axial-flux motors 1kW–1MW · field-tested to 17,000 ft (Bharat Altitude Trials) · EASA CS-P 350 & FAA 14 CFR Part 35 capability, custom turnaround as fast as 4 weeks' },
+    seed: seed([7, 6, 8, 7, 8, 7, 6, 8, 7, 7, 8, 7]),
   },
   {
     id: 'sunfox', name: 'SunFox', sector: 'HealthTech | Diagnostic Cardiology | Medical Devices', monogram: 'SF',
@@ -161,6 +162,7 @@ export const INNOVATOR_STARTUPS = [
       { name: 'Sabit Rawat', role: 'Co-Founder & Business Lead', linkedin: 'https://www.linkedin.com/in/sabitrawat/' },
     ],
     metrics: { stage: 'TBD', ask: 'TBD', traction: 'Cardiac diagnostics across ~600 public healthcare facilities in a northern Indian state · one of the largest cardiac-diagnostics suppliers to the Indian Army · 60,000+ active centers · 5M+ tests, 100,000+ lives saved · 4+ patents, 35+ published papers' },
+    seed: seed([8, 8, 7, 9, 8, 7, 8, 8, 9, 7, 8, 8]),
   },
 ]
 

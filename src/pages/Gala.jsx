@@ -4,10 +4,14 @@ import Frame from '../components/Frame'
 import BottomNav from '../components/BottomNav'
 import Logo from '../components/Logo'
 import { INNOVATOR_STARTUPS } from '../data/startups'
+import { getRatings } from '../services/dataService'
 
 export default function Gala() {
   const [thumbFailed, setThumbFailed] = useState(false)
   const nav = useNavigate()
+
+  const ratings = getRatings()
+  const ratedCount = INNOVATOR_STARTUPS.filter((s) => ratings[s.id]).length
 
   return (
     <Frame>
@@ -35,33 +39,49 @@ export default function Gala() {
         </div>
 
         {/* Count bar */}
-        <div className="text-center py-3.5 border-b border-ink/8" style={{ background: 'rgba(255,255,255,0.9)' }}>
-          <div className="text-[10px] font-semibold text-ink/40 uppercase mb-1" style={{ letterSpacing: '0.1em' }}>Showcasing Tonight</div>
-          <div className="font-display text-[18px] font-bold text-ink" style={{ letterSpacing: '-0.02em' }}>{INNOVATOR_STARTUPS.length} Startups</div>
+        <div className="flex items-center justify-between px-5 py-3 border-b border-ink/8" style={{ background: 'rgba(255,255,255,0.9)' }}>
+          <div>
+            <div className="text-[10px] font-semibold text-ink/40 uppercase mb-0.5" style={{ letterSpacing: '0.1em' }}>Showcasing Tonight</div>
+            <div className="font-display text-[18px] font-bold text-ink" style={{ letterSpacing: '-0.02em' }}>{INNOVATOR_STARTUPS.length} Startups</div>
+          </div>
+          <button onClick={() => nav('/portfolio')}
+                  className="text-right bg-transparent border-none cursor-pointer p-0">
+            <div className="text-[10px] font-semibold text-ink/40 uppercase mb-0.5" style={{ letterSpacing: '0.1em' }}>Your Ratings</div>
+            <div className="font-display text-[15px] font-bold text-orange">{ratedCount}/{INNOVATOR_STARTUPS.length} rated →</div>
+          </button>
         </div>
 
         {/* Startup grid */}
         <div className="px-3.5 pt-4 pb-4">
-          <div className="text-[10px] font-semibold text-ink/40 uppercase mb-3" style={{ letterSpacing: '0.14em' }}>Tonight's Innovators</div>
+          <div className="text-[10px] font-semibold text-ink/40 uppercase mb-3" style={{ letterSpacing: '0.14em' }}>Tonight's Innovators · tap to rate</div>
           <div className="grid grid-cols-2 gap-2.5">
-            {INNOVATOR_STARTUPS.map((s) => (
-              <button key={s.id} onClick={() => nav(`/startup/${s.id}`)}
-                      className="text-left border border-ink/9 rounded-[10px] overflow-hidden relative active:scale-[0.98] transition-transform p-0 cursor-pointer"
-                      style={{ background: 'rgba(255,255,255,0.8)' }}>
-                <div className="h-16 flex items-center justify-center relative overflow-hidden" style={{ background: s.monoBg }}>
-                  <div className="absolute inset-0 opacity-10" style={{ background: 'var(--stripe-gradient)' }} />
-                  {s.logo ? (
-                    <img src={s.logo} alt={s.name} className="absolute inset-0 w-full h-full object-contain p-2.5 bg-white" />
-                  ) : (
-                    <span className="relative" style={{ color: s.monoFg }}><Logo id={s.id} size={28} /></span>
+            {INNOVATOR_STARTUPS.map((s) => {
+              const r = ratings[s.id]
+              return (
+                <button key={s.id} onClick={() => nav(`/startup/${s.id}`)}
+                        className="text-left border border-ink/9 rounded-[10px] overflow-hidden relative active:scale-[0.98] transition-transform p-0 cursor-pointer"
+                        style={{ background: 'rgba(255,255,255,0.8)' }}>
+                  <div className="h-16 flex items-center justify-center relative overflow-hidden" style={{ background: s.monoBg }}>
+                    <div className="absolute inset-0 opacity-10" style={{ background: 'var(--stripe-gradient)' }} />
+                    {s.logo ? (
+                      <img src={s.logo} alt={s.name} className="absolute inset-0 w-full h-full object-contain p-2.5 bg-white" />
+                    ) : (
+                      <span className="relative" style={{ color: s.monoFg }}><Logo id={s.id} size={28} /></span>
+                    )}
+                  </div>
+                  <div className="px-2.5 pt-2 pb-3">
+                    <p className="text-[12px] font-semibold text-ink mb-0.5" style={{ lineHeight: 1.2 }}>{s.name}</p>
+                    <p className="text-[10px] text-orange font-medium">{s.sector}</p>
+                  </div>
+                  {r && (
+                    <span className="absolute top-1.5 right-1.5 bg-ink/80 text-white text-[9px] font-semibold px-1.5 py-[2px]"
+                          style={{ borderRadius: 10, letterSpacing: '0.06em' }}>
+                      🔒 {r.score}/10
+                    </span>
                   )}
-                </div>
-                <div className="px-2.5 pt-2 pb-3">
-                  <p className="text-[12px] font-semibold text-ink mb-0.5" style={{ lineHeight: 1.2 }}>{s.name}</p>
-                  <p className="text-[10px] text-orange font-medium">{s.sector}</p>
-                </div>
-              </button>
-            ))}
+                </button>
+              )
+            })}
           </div>
         </div>
       </div>

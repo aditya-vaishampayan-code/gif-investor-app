@@ -7,7 +7,7 @@ vi.mock('./firebase', () => ({
 }))
 
 import { login, register, getUser, logout, saveRating, getRatings, getRating, getAggregates } from './dataService'
-import { STARTUPS } from '../data/startups'
+import { INNOVATOR_STARTUPS } from '../data/startups'
 
 beforeEach(() => localStorage.clear())
 
@@ -33,33 +33,33 @@ describe('auth (mock capture)', () => {
 
 describe('ratings', () => {
   it('saves and reads a rating', async () => {
-    await saveRating('biddano', 8)
-    expect(getRating('biddano').score).toBe(8)
-    expect(getRatings().biddano.score).toBe(8)
+    await saveRating('cautio', 8)
+    expect(getRating('cautio').score).toBe(8)
+    expect(getRatings().cautio.score).toBe(8)
   })
   it('locks ratings permanently', async () => {
-    await saveRating('biddano', 8)
-    await expect(saveRating('biddano', 3)).rejects.toThrow('rating already locked')
-    expect(getRating('biddano').score).toBe(8)
+    await saveRating('cautio', 8)
+    await expect(saveRating('cautio', 3)).rejects.toThrow('rating already locked')
+    expect(getRating('cautio').score).toBe(8)
   })
   it('validates score range', async () => {
-    await expect(saveRating('biddano', 0)).rejects.toThrow('score must be 1-10')
-    await expect(saveRating('biddano', 11)).rejects.toThrow('score must be 1-10')
-    await expect(saveRating('biddano', 5.5)).rejects.toThrow('score must be 1-10')
+    await expect(saveRating('cautio', 0)).rejects.toThrow('score must be 1-10')
+    await expect(saveRating('cautio', 11)).rejects.toThrow('score must be 1-10')
+    await expect(saveRating('cautio', 5.5)).rejects.toThrow('score must be 1-10')
   })
 })
 
 describe('aggregates', () => {
   it('returns seed values when user has not rated', () => {
-    const zing = getAggregates().find((a) => a.id === 'biddano')
-    const seed = STARTUPS.find((s) => s.id === 'biddano').seed
+    const zing = getAggregates().find((a) => a.id === 'cautio')
+    const seed = INNOVATOR_STARTUPS.find((s) => s.id === 'cautio').seed
     expect(zing.avgScore).toBe(seed.avgScore)
     expect(zing.raterCount).toBe(seed.raterCount)
   })
   it('blends the local rating into the aggregate', async () => {
-    const seed = STARTUPS.find((s) => s.id === 'biddano').seed
-    await saveRating('biddano', 10)
-    const zing = getAggregates().find((a) => a.id === 'biddano')
+    const seed = INNOVATOR_STARTUPS.find((s) => s.id === 'cautio').seed
+    await saveRating('cautio', 10)
+    const zing = getAggregates().find((a) => a.id === 'cautio')
     expect(zing.raterCount).toBe(seed.raterCount + 1)
     const expected = Math.round(((seed.avgScore * seed.raterCount + 10) / (seed.raterCount + 1)) * 10) / 10
     expect(zing.avgScore).toBe(expected)
