@@ -6,6 +6,7 @@ import Detail from './pages/Detail'
 import Rate from './pages/Rate'
 import Portfolio from './pages/Portfolio'
 import Admin from './pages/Admin'
+import Approvals from './pages/Approvals'
 import Agenda from './pages/Agenda'
 import Gala from './pages/Gala'
 import Meetings from './pages/Meetings'
@@ -26,6 +27,7 @@ export default function App() {
       <Route path="/agenda" element={<RequireUser><Agenda /></RequireUser>} />
       <Route path="/meetings" element={<RequireUser><Meetings /></RequireUser>} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/approvals" element={<Approvals />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

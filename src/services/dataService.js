@@ -1,4 +1,6 @@
 import { INNOVATOR_STARTUPS } from '../data/startups'
+import { MEETINGS_DATA } from '../data/meetings'
+import { overlaps } from '../data/availability'
 import { auth, db, isFirebaseConfigured } from './firebase'
 import {
   signInWithEmailAndPassword,
@@ -9,6 +11,7 @@ import { doc, setDoc, getDoc, collection, onSnapshot } from 'firebase/firestore'
 
 const USER_KEY = 'gif_user'
 const RATINGS_KEY = 'gif_ratings'
+const REQUESTS_KEY = 'gif_meeting_requests'
 
 const read = (key, fallback) => {
   try {
@@ -234,6 +237,199 @@ export function subscribeLeaderboard(onUpdate) {
     )
   } catch (err) {
     console.warn('Failed to setup leaderboard listener:', err)
+    fallback()
+    return () => {}
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Meeting requests — attendees request a 1-on-1 with one of the five
+ * Meetings-page startups' founders; the VC team approves at /approvals.
+ * ------------------------------------------------------------------ */
+
+const makeId = () =>
+  globalThis.crypto?.randomUUID?.() ?? `req-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+
+export const getMeetingRequests = () =>
+  read(REQUESTS_KEY, []).filter((r) => r.status !== 'withdrawn')
+
+export function getMyMeetingRequests(user = getUser()) {
+  if (!user) return []
+  const email = user.email?.toLowerCase()
+  const name = user.name?.toLowerCase()
+  return getMeetingRequests().filter((r) => {
+    const rEmail = r.attendeeEmail?.toLowerCase()
+    const rName = r.attendeeName?.toLowerCase()
+    return (email && rEmail === email) || (name && rName === name)
+  })
+}
+
+// Intervals that consume a founder's time: the fixed schedule + approved requests.
+function bookingsForFounder(founderName) {
+  const scheduled = MEETINGS_DATA
+    .filter((m) => m.partnerName === founderName)
+    .map((m) => ({ startsAt: m.startsAt, endsAt: m.endsAt }))
+  const approved = getMeetingRequests()
+    .filter((r) => r.founderName === founderName && r.status === 'approved')
+    .map((r) => ({ startsAt: r.startsAt, endsAt: r.endsAt }))
+  return [...scheduled, ...approved]
+}
+
+export function isSlotFree(founderName, startsAt, endsAt) {
+  return !bookingsForFounder(founderName).some((b) =>
+    overlaps(startsAt, endsAt, b.startsAt, b.endsAt)
+  )
+}
+
+function persistRequests(requests) {
+  localStorage.setItem(REQUESTS_KEY, JSON.stringify(requests))
+}
+
+async function mirrorRequest(request) {
+  if (!isFirebaseConfigured || !db) return
+  try {
+    await setDoc(
+      doc(db, 'meetingRequests', request.id),
+      { ...request, updatedAt: new Date().toISOString() },
+      { merge: true }
+    )
+  } catch (err) {
+    console.warn('Firestore meeting-request save failed, local copy retained:', err)
+  }
+}
+
+export async function createMeetingRequest(input) {
+  const user = getUser()
+  if (!user) throw new Error('You must be logged in to request a meeting.')
+
+  const {
+    startupId, startupName, founderName, founderRole,
+    dayId, dayLabel, startsAt, endsAt, timeLabel, note = '',
+  } = input
+
+  if (!startupId || !founderName || !startsAt || !endsAt) {
+    throw new Error('Pick a startup, a founder and a time slot.')
+  }
+  if (!isSlotFree(founderName, startsAt, endsAt)) {
+    throw new Error('That slot was just booked — pick another.')
+  }
+
+  const requests = read(REQUESTS_KEY, [])
+  const dupe = requests.some(
+    (r) =>
+      r.founderName === founderName &&
+      r.startsAt === startsAt &&
+      r.attendeeEmail === (user.email || '') &&
+      (r.status === 'pending' || r.status === 'approved')
+  )
+  if (dupe) throw new Error('You already have a request for that slot.')
+
+  const request = {
+    id: makeId(),
+    startupId,
+    startupName,
+    founderName,
+    founderRole: founderRole || 'Founder',
+    dayId,
+    dayLabel,
+    startsAt,
+    endsAt,
+    timeLabel,
+    attendeeName: user.name,
+    attendeeEmail: user.email || '',
+    attendeeCompany: user.company || '',
+    note: note.trim(),
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    decidedAt: null,
+    decidedBy: null,
+  }
+
+  requests.push(request)
+  persistRequests(requests)
+  await mirrorRequest(request)
+  return request
+}
+
+export async function decideMeetingRequest(id, decision) {
+  if (decision !== 'approved' && decision !== 'declined') {
+    throw new Error('Decision must be "approved" or "declined".')
+  }
+  const requests = read(REQUESTS_KEY, [])
+  const req = requests.find((r) => r.id === id)
+  if (!req) throw new Error('Request not found.')
+  if (req.status !== 'pending') throw new Error('This request has already been decided.')
+  if (decision === 'approved' && !isSlotFree(req.founderName, req.startsAt, req.endsAt)) {
+    throw new Error(`${req.founderName} is no longer free at that time.`)
+  }
+
+  req.status = decision
+  req.decidedAt = new Date().toISOString()
+  req.decidedBy = 'VC Team'
+  persistRequests(requests)
+  await mirrorRequest(req)
+  return req
+}
+
+export async function withdrawMeetingRequest(id) {
+  const requests = read(REQUESTS_KEY, [])
+  const req = requests.find((r) => r.id === id)
+  if (!req) throw new Error('Request not found.')
+  if (req.status !== 'pending') throw new Error('Only pending requests can be withdrawn.')
+  req.status = 'withdrawn'
+  req.decidedAt = new Date().toISOString()
+  persistRequests(requests)
+  await mirrorRequest(req)
+  return req
+}
+
+// Approved requests, shaped like MEETINGS_DATA rows so they drop straight into
+// the attendee's confirmed schedule and the notification bell.
+export function approvedRequestsAsMeetings(user = getUser()) {
+  return getMyMeetingRequests(user)
+    .filter((r) => r.status === 'approved')
+    .map((r) => ({
+      id: r.id,
+      userEmail: r.attendeeEmail,
+      userName: r.attendeeName,
+      title: `1-on-1 with ${r.startupName}`,
+      partnerName: r.founderName,
+      partnerRole: `${r.founderRole}, ${r.startupName}`,
+      partnerCompany: r.startupName,
+      time: r.timeLabel,
+      dayLabel: r.dayLabel,
+      startsAt: r.startsAt,
+      endsAt: r.endsAt,
+      location: 'VIP Deal Making — Gateway Room',
+      status: 'Confirmed',
+      notes: r.note,
+    }))
+}
+
+export function subscribeMeetingRequests(onUpdate) {
+  const fallback = () => onUpdate(getMeetingRequests())
+
+  if (!isFirebaseConfigured || !db) {
+    fallback()
+    return () => {}
+  }
+
+  try {
+    return onSnapshot(
+      collection(db, 'meetingRequests'),
+      (snapshot) => {
+        const remote = []
+        snapshot.forEach((docSnap) => remote.push(docSnap.data()))
+        localStorage.setItem(REQUESTS_KEY, JSON.stringify(remote))
+        onUpdate(remote.filter((r) => r.status !== 'withdrawn'))
+      },
+      (error) => {
+        console.warn('Meeting-request subscription error, falling back to local:', error)
+        fallback()
+      }
+    )
+  } catch (err) {
+    console.warn('Failed to setup meeting-request listener:', err)
     fallback()
     return () => {}
   }

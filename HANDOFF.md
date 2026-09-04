@@ -17,22 +17,32 @@ A mobile-first investor app for the Global Impact Forum II event. Attendees log 
 - No backend — all data lives in the browser's `localStorage` via `src/services/dataService.js`
 - Deployed on Vercel (`npx vercel --yes --prod`)
 
-## Data model (localStorage only)
-- `gif_user` — `{ name, email }`, set at login
-- `gif_ratings` — `{ [startupId]: { score: 1-10, timestamp } }`
+## Data model (localStorage, mirrored to Firestore when configured)
+- `gif_user` — `{ name, email, company }`, set at login
+- `gif_ratings` — `{ [startupId]: { score: 1-10, lockedAt } }` (Innovators cohort only)
+- `gif_meeting_requests` — array of attendee meeting requests with founders of the 5
+  Meetings-page startups: `{ id, startupId, founderName, dayId, startsAt, endsAt,
+  attendeeName/Email/Company, note, status: pending|approved|declined|withdrawn, … }`.
+  Availability slots are synthesized in `src/data/availability.js` (Sep 4–5,
+  10:00 AM–5:00 PM, 1:00–2:00 PM lunch blocked, fixed 30-min slots) minus anything
+  already booked. The VC team approves/declines at **`/approvals`** (no login, like `/admin`).
 - Startup data is static, defined in `src/data/startups.js` (not user-editable)
-- **Nothing is sent to a server.** Clearing browser storage / using a different device resets state. This is fine for a single-event demo but not for multi-device sync.
+- When Firebase env vars are set, ratings and meeting requests mirror to Firestore
+  (`ratings`, `meetingRequests` collections) with live subscriptions, so the
+  attendee and VC-team devices stay in sync. Without Firebase it's localStorage-only
+  (single browser).
 
 ## Structure
 ```
 src/
   pages/          One file per screen (Login, Grid/Tonight, Gala, Detail, Rate,
-                   Tickets, Agenda, Portfolio, AncientMedicine, XYZ, Admin)
-  components/     Frame (page shell), BottomNav, ProfileSheet, Logo, MoneyStack
-  data/           startups.js, agenda.js — static content
-  services/       dataService.js — localStorage read/write helpers
+                   Agenda, Meetings, Portfolio, Admin, Approvals)
+  components/     Frame (page shell), BottomNav, ProfileSheet, Logo, MoneyStack,
+                   RequestMeetingSheet, NotificationBell
+  data/           startups.js, agenda.js, meetings.js, availability.js — static content
+  services/       dataService.js — localStorage + Firestore read/write helpers
 ```
-Routing is in `src/App.jsx`. All routes except `/login` and `/admin` require a logged-in user (`RequireUser` wrapper).
+Routing is in `src/App.jsx`. All routes except `/login`, `/admin` and `/approvals` require a logged-in user (`RequireUser` wrapper).
 
 ## Known quirks / recent fixes
 - Bottom nav is `position: fixed` — Frame.jsx uses `100dvh` (not `100vh`) and the nav has `env(safe-area-inset-bottom)` padding to stay visible and clear of the iOS home indicator.
