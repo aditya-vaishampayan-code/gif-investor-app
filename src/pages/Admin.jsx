@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import Frame from '../components/Frame'
 import Logo from '../components/Logo'
 import { INNOVATOR_STARTUPS } from '../data/startups'
-import { getAggregates, subscribeLeaderboard, subscribeMeetingRequests } from '../services/dataService'
+import { getAggregates, subscribeLeaderboard } from '../services/dataService'
 
 export default function Admin() {
   const [aggregates, setAggregates] = useState(() => getAggregates())
-  const [pendingRequests, setPendingRequests] = useState(0)
 
   useEffect(() => {
     const unsubscribe = subscribeLeaderboard((data) => {
@@ -15,13 +13,7 @@ export default function Admin() {
         setAggregates(data)
       }
     })
-    const unsubscribeRequests = subscribeMeetingRequests((data) => {
-      if (Array.isArray(data)) setPendingRequests(data.filter((r) => r.status === 'pending').length)
-    })
-    return () => {
-      unsubscribe()
-      unsubscribeRequests()
-    }
+    return () => unsubscribe()
   }, [])
 
   const rows = [...aggregates].sort((a, b) => b.avgScore - a.avgScore)
@@ -43,9 +35,6 @@ export default function Admin() {
           <div className="flex flex-col items-end gap-1">
             <p className="font-display text-[28px] font-bold text-orange">{totalRaters}</p>
             <p className="text-xs text-ink/35" style={{ letterSpacing: '0.06em' }}>RATERS</p>
-            <Link to="/approvals" className="text-[11px] font-semibold text-orange mt-1">
-              Meeting requests{pendingRequests > 0 ? ` (${pendingRequests})` : ''} →
-            </Link>
           </div>
         </div>
       </div>

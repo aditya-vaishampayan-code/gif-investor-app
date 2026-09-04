@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Frame from '../components/Frame'
 import BottomNav from '../components/BottomNav'
@@ -6,62 +6,19 @@ import ProfileSheet from '../components/ProfileSheet'
 import VenueMapModal from '../components/VenueMapModal'
 import NotificationBell from '../components/NotificationBell'
 import Logo from '../components/Logo'
-import RequestMeetingSheet from '../components/RequestMeetingSheet'
-import {
-  getUser,
-  getMyMeetingRequests,
-  approvedRequestsAsMeetings,
-  withdrawMeetingRequest,
-  subscribeMeetingRequests,
-} from '../services/dataService'
+import { getUser } from '../services/dataService'
 import { getMeetingsForUser } from '../data/meetings'
 import { STARTUPS } from '../data/startups'
-
-const REQUEST_BADGE = {
-  pending: 'bg-amber-50 text-amber-700 border-amber-200',
-  declined: 'bg-red-50 text-red-600 border-red-200',
-}
 
 export default function Meetings() {
   const [profileOpen, setProfileOpen] = useState(false)
   const [, setTick] = useState(0)
   const [mapLocation, setMapLocation] = useState(null)
-  const [requestOpen, setRequestOpen] = useState(false)
-  const [toast, setToast] = useState('')
   const nav = useNavigate()
 
   const user = getUser()
   const initial = user?.name ? user.name[0].toUpperCase() : '?'
-  const refresh = () => setTick((t) => t + 1)
-
-  // Keep in sync when the VC team approves/declines from another device.
-  useEffect(() => {
-    const unsubscribe = subscribeMeetingRequests(() => setTick((t) => t + 1))
-    return () => unsubscribe()
-  }, [])
-
-  const meetings = [...getMeetingsForUser(user), ...approvedRequestsAsMeetings(user)]
-    .sort((a, b) => String(a.startsAt).localeCompare(String(b.startsAt)))
-  const openRequests = getMyMeetingRequests(user).filter(
-    (r) => r.status === 'pending' || r.status === 'declined'
-  )
-
-  const onRequested = () => {
-    setRequestOpen(false)
-    setToast('Request sent — the VC team will review it.')
-    refresh()
-    setTimeout(() => setToast(''), 4000)
-  }
-
-  const withdraw = async (id) => {
-    try {
-      await withdrawMeetingRequest(id)
-      refresh()
-    } catch {
-      /* stale request; refresh will drop it */
-      refresh()
-    }
-  }
+  const meetings = getMeetingsForUser(user)
 
   return (
     <Frame className="relative overflow-hidden">
@@ -169,54 +126,7 @@ export default function Meetings() {
                 </p>
               </div>
             )}
-
-            <button
-              onClick={() => setRequestOpen(true)}
-              className="w-full mt-4 bg-orange text-white py-3 font-display font-bold text-[13px] rounded-xl border-none cursor-pointer"
-              style={{ letterSpacing: '0.02em' }}
-            >
-              + Request a meeting
-            </button>
           </div>
-
-          {/* Your meeting requests (pending / declined) */}
-          {openRequests.length > 0 && (
-            <div className="rounded-[20px] p-5 mt-5" style={{ background: '#EAF9FF' }}>
-              <div className="flex items-center justify-between mb-4 pb-3 border-b border-ink/10">
-                <span className="text-[11px] font-bold text-ink/60 uppercase tracking-wider">
-                  Your Requests ({openRequests.length})
-                </span>
-                <span className="text-[11px] font-semibold text-ink/40">Awaiting VC approval</span>
-              </div>
-              <div className="flex flex-col gap-3">
-                {openRequests.map((r) => (
-                  <div key={r.id} className="bg-white rounded-2xl p-4 shadow-sm border border-ink/5">
-                    <div className="flex justify-between items-start gap-2 mb-1.5">
-                      <span className="text-[11px] font-bold text-orange uppercase tracking-wide">
-                        {r.dayLabel} · {r.timeLabel}
-                      </span>
-                      <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ${REQUEST_BADGE[r.status]}`} style={{ letterSpacing: '0.04em' }}>
-                        {r.status}
-                      </span>
-                    </div>
-                    <h3 className="font-display text-[15px] font-bold text-ink mb-0.5">{r.founderName}</h3>
-                    <p className="text-[12px] text-ink/55">{r.founderRole}, {r.startupName}</p>
-                    {r.note && (
-                      <p className="mt-2 pt-2 border-t border-ink/8 text-[11px] text-ink/50 italic">"{r.note}"</p>
-                    )}
-                    {r.status === 'pending' && (
-                      <button
-                        onClick={() => withdraw(r.id)}
-                        className="mt-3 text-[11px] font-bold text-ink/50 bg-ink/5 px-3 py-1 rounded-full border-none cursor-pointer"
-                      >
-                        Withdraw
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Startups you're meeting */}
           <div className="rounded-[20px] p-5 mt-5" style={{ background: '#EAF9FF' }}>
@@ -251,16 +161,6 @@ export default function Meetings() {
       </div>
 
       <BottomNav active="meetings" />
-
-      {toast && (
-        <div className="fixed left-1/2 -translate-x-1/2 bottom-[104px] z-50 max-w-[340px] w-[calc(100%-32px)] bg-ink text-white text-[12px] font-semibold px-4 py-3 rounded-xl shadow-lg text-center">
-          {toast}
-        </div>
-      )}
-
-      {requestOpen && (
-        <RequestMeetingSheet onClose={() => setRequestOpen(false)} onSubmitted={onRequested} />
-      )}
 
       {profileOpen && (
         <ProfileSheet user={user} onClose={() => setProfileOpen(false)} onSaved={() => setTick((t) => t + 1)} />
