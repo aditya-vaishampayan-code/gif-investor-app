@@ -8,7 +8,6 @@ import Portfolio from './pages/Portfolio'
 import Admin from './pages/Admin'
 import Agenda from './pages/Agenda'
 import Gala from './pages/Gala'
-import Meetings from './pages/Meetings'
 
 function RequireUser({ children }) {
   return getUser() ? children : <Navigate to="/login" replace />
@@ -24,7 +23,6 @@ export default function App() {
       <Route path="/portfolio" element={<RequireUser><Portfolio /></RequireUser>} />
       <Route path="/gala" element={<RequireUser><Gala /></RequireUser>} />
       <Route path="/agenda" element={<RequireUser><Agenda /></RequireUser>} />
-      <Route path="/meetings" element={<RequireUser><Meetings /></RequireUser>} />
       <Route path="/admin" element={<Admin />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

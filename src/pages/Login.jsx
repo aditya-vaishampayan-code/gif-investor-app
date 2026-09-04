@@ -69,7 +69,7 @@ export default function Login() {
         <p className="font-body font-normal text-[12px] text-white/85 mb-7" style={{ lineHeight: 1.5 }}>
           {mode === 'register'
             ? 'Create your account to review the shortlist and allocate your investment interest.'
-            : 'Log in to see your meetings and investment ratings.'}
+            : 'Log in to see the shortlist and your investment ratings.'}
         </p>
 
         <form onSubmit={submit} className="bg-white rounded-[16px] p-5 shadow-xl">
