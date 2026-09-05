@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { initials } from '../data/startups'
 import VenueMapModal from './VenueMapModal'
 
@@ -44,6 +45,7 @@ function SpeakerRow({ speaker }) {
 // omits it and always renders fully expanded, non-interactive.
 export default function SessionCard({ session, collapsible = false, expanded = true, onToggle }) {
   const [mapOpen, setMapOpen] = useState(false)
+  const nav = useNavigate()
   const open = !collapsible || expanded
 
   return (
@@ -136,6 +138,22 @@ export default function SessionCard({ session, collapsible = false, expanded = t
               </div>
             ))}
           </>
+        )}
+
+        {/* Sits outside the `open` gate so the shortcut is reachable even while
+            the card is collapsed in Next Up. */}
+        {session.link && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              nav(session.link.to)
+            }}
+            className="w-full mt-3 py-2.5 rounded-xl bg-orange text-white font-display text-[12px] font-bold border-none cursor-pointer active:scale-[0.98] transition-transform"
+            style={{ letterSpacing: '0.04em' }}
+          >
+            {session.link.label} →
+          </button>
         )}
       </div>
 

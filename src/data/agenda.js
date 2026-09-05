@@ -4,6 +4,8 @@
 // Sessions with no `tracks` (or `type: 'break'`) render as simple time/title/location cards.
 // `showDot` controls whether this session gets its own marker on the timeline —
 // set to false for items that run concurrently with the session above them.
+// `link` ({ to, label }) adds a call-to-action on the card for sessions that
+// have a dedicated page elsewhere in the app (e.g. the Innovators Gala).
 
 export const AGENDA_DAYS = [
   {
@@ -117,6 +119,9 @@ export const AGENDA_DAYS = [
         location: 'Crystal Ballroom – The Taj Mahal Palace, Mumbai',
         description: 'Startup showcases from this edition’s Innovators cohort',
         showDot: true,
+        // The showcase itself lives on the Innovators tab — this card links
+        // straight through to the cohort instead of dead-ending on the agenda.
+        link: { to: '/gala', label: 'View the Innovators' },
       },
     ],
   },
