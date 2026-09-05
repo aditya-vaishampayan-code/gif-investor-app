@@ -9,7 +9,7 @@ export const AGENDA_DAYS = [
   {
     id: 'day1',
     label: 'Day 1',
-    date: '2026-08-20', // TEMP: for local testing — revert to 2026-09-04
+    date: '2026-09-05',
     sessions: [
       {
         id: 'opening-ceremony',
@@ -119,7 +119,7 @@ export const AGENDA_DAYS = [
   {
     id: 'day2',
     label: 'Day 2',
-    date: '2026-09-05',
+    date: '2026-09-06',
     sessions: [
       {
         id: 'vip-deal-making',
