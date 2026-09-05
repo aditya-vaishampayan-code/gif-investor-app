@@ -86,7 +86,11 @@ export const AGENDA_DAYS = [
           {
             name: 'Ancient Systems of Healing',
             description: 'Ayurveda and Traditional Chinese Medicine in dialogue.',
-            speakers: [],
+            speakers: [
+              { name: 'Priya Samwani', role: 'Founder of Balance Point Chinese Med Clinic' },
+              { name: 'Prateek Samwani', role: 'Chinese Medicine Practitioner and India’s youngest licensed acupuncturist' },
+              { name: 'Prof. Dr. Brijesh Mishra', role: 'Dean, Shri Ayurved Mahavidyalaya, Nagpur' },
+            ],
           },
           {
             name: 'The Disciplined Body',
