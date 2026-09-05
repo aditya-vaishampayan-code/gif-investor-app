@@ -33,9 +33,12 @@ export default function Grid() {
   const currentSession = getCurrentSession(now)
   const isGala = currentSession?.id === GALA_SESSION_ID
 
-  // Sessions that haven't started yet — genuinely "next up", soonest first.
+  // Sessions later today that haven't started yet — soonest first. Tomorrow's
+  // agenda belongs on the Agenda tab, not "Next Up".
+  const endOfToday = new Date(now)
+  endOfToday.setHours(24, 0, 0, 0)
   const nextUpEvents = getStandaloneSessions()
-    .filter((session) => session.start.getTime() > now)
+    .filter((session) => session.start.getTime() > now && session.start.getTime() < endOfToday.getTime())
     .sort((a, b) => a.start - b.start)
 
   const toggleExpanded = (id) => {
