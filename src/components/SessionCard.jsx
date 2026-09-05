@@ -73,15 +73,15 @@ export default function SessionCard({ session, collapsible = false, expanded = t
               {session.title}
             </p>
             {session.location && (
-              <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                <span className="text-[12px] text-ink/45">{session.location}</span>
+              <div className="mt-0.5">
+                <p className="text-[12px] text-ink/45">{session.location}</p>
                 <button
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation()
                     setMapOpen(true)
                   }}
-                  className="inline-flex items-center gap-1 text-[10px] font-bold text-orange bg-orange/10 hover:bg-orange/20 px-2 py-0.5 rounded-full border-none cursor-pointer transition-colors"
+                  className="inline-flex items-center gap-1 mt-1 text-[10px] font-bold text-orange bg-orange/10 hover:bg-orange/20 px-2 py-0.5 rounded-full border-none cursor-pointer transition-colors"
                 >
                   <span>📍 Map</span>
                 </button>
