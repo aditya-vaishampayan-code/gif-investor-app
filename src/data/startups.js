@@ -18,6 +18,10 @@ export const INNOVATOR_STARTUPS = [
   {
     id: 'cautio', name: 'Cautio', sector: 'Mobility | IoT Fleet Safety', monogram: 'CA',
     monoBg: '#1D4ED8', monoFg: '#FFFFFF', logo: '/logos/cautio.png',
+    // Square mark drawn edge-to-edge with no margin of its own, so `object-contain`
+    // scales it to full plate height and it reads far heavier than the wordmarks it
+    // sits beside. Extra inset brings it back to their optical size.
+    logoInset: 11,
     website: 'https://www.cautio.com/',
     tagline: 'AI dashcams turning fleet video into risk alerts and incident evidence.',
     description: 'Cautio is building AI-powered dashcams integrated into India’s first unified mobility intelligence platform, reimagining road safety from the ground up for Indian conditions. Its dual-camera AI dashcams monitor road and cabin activity, turning video into risk alerts, driver scorecards, incident evidence, and operational workflows — a Detect, Verify and Act model with human-verified intervention for critical events. It serves buses, cabs, logistics and freight operators, three-wheelers and other commercial fleets, with future expansion into insurance, lending, autonomous mobility and data licensing. The integrated hardware-software-human model lets fleet operators proactively identify unsafe behaviour, prevent incidents, resolve disputes and accelerate insurance claims.',
