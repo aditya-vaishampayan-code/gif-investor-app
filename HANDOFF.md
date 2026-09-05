@@ -1,7 +1,7 @@
 # GIF Investor App — Handoff
 
 ## What this is
-A mobile-first investor app for the Global Impact Forum II event. Attendees log in, browse the 6 Innovators startups (Innovators Gala), rate their investment interest in the 5 Meetings startups (1–10, converted to a mock dollar amount), and track their picks. Includes a live event hub (Gala, tickets w/ QR code, agenda timeline) and an admin leaderboard.
+A mobile-first investor app for the Global Impact Forum II event. Attendees log in, browse the 6 Innovators startups (Innovators Gala), rate their investment interest 1–10 (converted to a mock dollar amount), and track their picks in a portfolio. Includes a live event hub (Gala, agenda timeline) and an admin leaderboard at `/admin`.
 
 ## Live links
 - **Public app (attendees):** https://gif-investor-kyighyhoy-siddhantdey17-4431s-projects.vercel.app
@@ -27,17 +27,16 @@ A mobile-first investor app for the Global Impact Forum II event. Attendees log 
 ```
 src/
   pages/          One file per screen (Login, Grid/Tonight, Gala, Detail, Rate,
-                   Tickets, Agenda, Portfolio, AncientMedicine, XYZ, Admin)
-  components/     Frame (page shell), BottomNav, ProfileSheet, Logo, MoneyStack
+                   Agenda, Portfolio, Admin)
+  components/     Frame (page shell), BottomNav, ProfileSheet, Logo, MoneyStack, SessionCard
   data/           startups.js, agenda.js — static content
-  services/       dataService.js — localStorage read/write helpers
+  services/       dataService.js — localStorage + Firestore read/write helpers
 ```
-Routing is in `src/App.jsx`. All routes except `/login` and `/admin` require a logged-in user (`RequireUser` wrapper).
+Routing is in `src/App.jsx`. All routes except `/login` and `/admin` require a logged-in user (`RequireUser` wrapper). Bottom nav: Tonight · Agenda · Innovators.
 
 ## Known quirks / recent fixes
 - Bottom nav is `position: fixed` — Frame.jsx uses `100dvh` (not `100vh`) and the nav has `env(safe-area-inset-bottom)` padding to stay visible and clear of the iOS home indicator.
 - Viewport meta has `maximum-scale=1` to stop iOS auto-zooming into input fields on the login screen.
-- The "Later Tonight" cards on the home screen (Ancient Medicine, XYZ) are mock/placeholder events — content is hardcoded, not real.
 
 ## How to run locally
 ```bash

@@ -1,6 +1,6 @@
-/* Dummy SVG logo marks, one distinct glyph per startup, drawn in the tile's foreground color. */
+/* Fallback SVG glyphs for the Innovators cohort, used when a startup has no logo
+   file. All six currently ship real logos, so these rarely render. */
 const MARKS = {
-  // --- Innovators cohort (placeholder marks until real logo files land) ---
   cautio: ( // dashcam lens over a road
     <>
       <rect x="3" y="7" width="18" height="12" rx="2" strokeWidth="1.6" />
@@ -37,19 +37,6 @@ const MARKS = {
     <>
       <circle cx="12" cy="12" r="8.5" strokeWidth="1.3" opacity="0.5" />
       <path d="M4 12h3.5l1.5-4 3 8 1.5-4H20" strokeWidth="1.7" />
-    </>
-  ),
-  'navadhan-capital': ( // coin with upward growth arrow — placeholder until a real logo lands
-    <>
-      <circle cx="12" cy="12" r="8.5" strokeWidth="1.6" />
-      <path d="M8.5 13.5 11 11l2 2 3.5-3.5M13.5 9.5H16.5V12.5" strokeWidth="1.6" />
-    </>
-  ),
-  kisankonnect: ( // sprout rising from a furrow — placeholder until a real logo lands
-    <>
-      <path d="M12 20v-7" strokeWidth="1.6" />
-      <path d="M12 13c0-3-2.5-5-5.5-5 0 3 2.5 5 5.5 5zM12 13c0-3 2.5-5 5.5-5 0 3-2.5 5-5.5 5z" strokeWidth="1.6" />
-      <path d="M4 20h16" strokeWidth="1.6" opacity="0.5" />
     </>
   ),
 }

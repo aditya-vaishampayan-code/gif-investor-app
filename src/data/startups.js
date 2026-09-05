@@ -10,80 +10,10 @@ const avg = (scores) => scores.reduce((a, b) => a + b, 0) / scores.length
 
 const seed = (scores) => ({ avgScore: Math.round(avg(scores) * 10) / 10, raterCount: scores.length })
 
-// The 5 startups shown in the Meetings section — browsed only, NOT rated.
-// Detail.jsx still renders their profile pages; rating lives with INNOVATOR_STARTUPS.
-export const STARTUPS = [
-  {
-    id: 'biddano', name: 'Biddano', sector: 'PharmaTech | B2B Supply Chain | AI Infrastructure', monogram: 'BD',
-    monoBg: '#1D4ED8', monoFg: '#FFFFFF',
-    logo: '/logos/biddano.png',
-    website: 'https://biddano.com/',
-    tagline: 'The AI operating system for India’s pharma supply chain.',
-    description: 'Biddano is building the AI operating system for India’s pharma supply chain, a full-stack platform combining licensed distribution infrastructure with a proprietary AI intelligence layer (7 engines: demand forecasting, image-to-order, voice ordering, expiry reduction, warehouse orchestration) connecting manufacturers to pharmacies. With 1,800+ manufacturers, 200K+ pharmacies, and 300K+ SKUs under signal, Biddano delivers 96.4% fill rate and 4-hour fulfilment TAT, already EBITDA-positive at ₹220 Cr ARR ($24.4 Mn) with 130% YoY growth.',
-    founders: [
-      { name: 'Talha Shaikh', role: 'Co-Founder, Business & Operations' },
-      { name: 'Murali Ramanath', role: 'Co-Founder, Tech & Product' },
-    ],
-    metrics: { stage: 'TBD', ask: 'TBD', traction: '₹220 Cr ARR (3.5% EBITDA, positive today) · 200K+ pharmacies and 1,800+ manufacturers on platform · 92 stockist ERPs connected (79% secondary-sales consent) · 105 live metrics captured across the transaction ledger · 130% average YoY growth (Apr–Aug FY27)' },
-  },
-  {
-    id: 'zypp-electric', name: 'Zypp Electric', sector: 'EV Logistics & Mobility', monogram: 'ZE',
-    monoBg: '#16A34A', monoFg: '#FFFFFF',
-    logo: '/logos/zypp-electric.jpg',
-    website: 'https://zypp.app/',
-    tagline: 'Electric two-wheelers, as-a-service, for India’s gig economy.',
-    description: 'Zypp Electric is India’s leading tech-enabled EV rental platform, building the operating system for India’s gig economy, starting with mobility and expanding into financial identity, credit, and AI-powered earnings optimization for 100M gig entrepreneurs. Founded in 2017 by Akash Gupta and Rashi Agarwal, with a mission to make India carbon-free through a fully electric, IoT- and AI-enabled last-mile delivery ecosystem. Its proprietary FleetOS powers 28,000+ EVs across 8+ cities, delivering groceries, food, medicines, and e-commerce packages at 96% uptime and 12+ deliveries per EV daily. Beyond mobility, Zypp is driving real social impact, enabling 2.5 Lakh+ gig entrepreneurs with 27% higher take-home income, formal credit access via Zypp CIBIL, and 60M+ kg of CO₂ emissions saved.',
-    founders: [
-      { name: 'Akash Gupta', role: 'CEO & Co-founder', linkedin: 'https://www.linkedin.com/in/akashg/' },
-      { name: 'Rashi Agarwal', role: 'Co-founder & COO', linkedin: 'https://www.linkedin.com/in/rashiagarwalzypp/' },
-    ],
-    metrics: { stage: 'Series C', ask: '$15M', traction: '28,000+ EVs across 8+ cities · ₹275 Cr ARR · ₹582 Cr rider earnings in 12 months · backed by global investors' },
-  },
-  {
-    id: 'impactguru', name: 'ImpactGuru', sector: 'Healthcare | Financing', monogram: 'IG',
-    monoBg: '#DC2626', monoFg: '#FFFFFF',
-    logo: '/logos/impact-guru.jpg',
-    website: 'https://www.impactguru.com/',
-    tagline: 'Crowdfunding and financing to make healthcare affordable.',
-    description: 'CarePal Group is India’s category-defining healthcare financing ecosystem, built around three integrated marketplaces: ImpactGuru (medical crowdfunding), CarePal Money (healthcare lending), and CarePal Secure (health insurance and benefits). Since inception, the platform has processed over USD 200 million (₹1,900 Cr+) in cumulative GMV, helped 60,000+ patients and families, and mobilized a community of 60 lakh+ unique donors across 90 lakh+ donations — at a median ticket of just ₹500 ($5) — making it the default financial lifeline for India’s "missing middle," the 600 million+ people with zero or inadequate health insurance. Founded by a team with backgrounds spanning investment banking (J.P. Morgan), strategy consulting (BCG), and design (Jimmy Choo, Michael Kors), and incubated at the Harvard Innovation Lab, CarePal Group has grown into a ~650-person organization with 1,000+ hospital partners nationwide. Backed by marquee global investors including Merck’s Global Health Innovation Fund, Sony Corporation, Apis Partners, HealthQuad, Apollo Hospitals, and Dream Incubator, CarePal Group has raised over $18.5 million in equity funding to date.',
-    founders: [
-      { name: 'Piyush Jain', role: 'CEO & Co-founder', linkedin: 'https://www.linkedin.com/in/piyushcrjain/' },
-      { name: 'Khushboo Jain', role: 'Co-founder', linkedin: 'https://www.linkedin.com/in/khushboopjain/' },
-      { name: 'Vikas Kaul', role: 'Co-founder & Chief Product / Tech Officer', linkedin: 'https://www.linkedin.com/in/vikasvirkaul/' },
-    ],
-    metrics: { stage: 'Series B', ask: '$5M', traction: '$18.5M+ raised to date · 1,000+ hospital partners incl. Apollo · backed by Merck GHI Fund, Sony, Apis Partners, HealthQuad' },
-  },
-  {
-    id: 'navadhan-capital', name: 'Navadhan Capital', sector: 'Fintech | Alternative Lending (Rural)', monogram: 'NC',
-    monoBg: '#0891B2', monoFg: '#FFFFFF',
-    logo: '/logos/navadhan-capital.png',
-    website: 'https://www.navadhan.com/',
-    tagline: 'Tech-led financing for India’s rural nano-enterprises.',
-    description: 'Navadhan Capital is an RBI-registered NBFC building tech-led financing for India’s rural nano-enterprises, having disbursed ₹807 Cr to 46,000+ active loans across 5 states and 700+ PIN codes via its proprietary underwriting platform, AceN. Founded in 2019 by Nitin Agrawal, a 25-year BFSI veteran and former CEO of a listed NBFC, alongside a founding team with 80+ years of combined experience across ICICI, HDFC Bank, Amazon, and SAP. Operating a phygital model with 99%+ collection efficiency and sub-1% NNPA, Navadhan serves the "missing middle" households earning ₹4-40 lakh, above microfinance yet underserved by MSME lenders, addressing a $500 billion credit gap across India’s 70 million nano-enterprises, backed by marquee investors like Prime Venture Partners, NABVentures, and Gemba Capital.',
-    founders: [
-      { name: 'Nitin Agrawal', role: 'Founder & CEO' },
-    ],
-    metrics: { stage: 'TBD', ask: 'TBD', traction: '₹807 Cr disbursed · 46,000+ active loans · 5 states, 700+ PIN codes · backed by Prime Venture Partners, NABVentures, Gemba Capital' },
-  },
-  {
-    id: 'kisankonnect', name: 'KisanKonnect', sector: 'AgriTech | D2C Fresh Food | Supply Chain', monogram: 'KK',
-    monoBg: '#4D7C0F', monoFg: '#FFFFFF',
-    logo: '/logos/kisankonnect.png',
-    website: 'https://www.kisankonnect.in/',
-    tagline: 'Farm-to-fork fresh essentials, delivered in hours.',
-    description: 'KisanKonnect is building India’s leading habit-driven D2C fresh essentials platform, combining deep control over the fresh supply chain with a proprietary tech stack (KNET) and rapid delivery. With 8,000+ farmer partners, 45 delivery depots, and an omni-channel network of farm stores and app-based delivery, KisanKonnect delivers farm-to-fork in 8-36 hours at ~7% wastage versus the 10-15% industry average — backed by an industry-leading AOV of ₹475 and 3.0x monthly order frequency. Founded by Vivek Nirmal (Founder & CEO), with over two decades in dairy and fresh food supply chains and a former leadership role at Prabhat Dairy, and Nidhi Nirmal (Co-Founder), who leads brand, consumer experience, and growth.',
-    founders: [
-      { name: 'Vivek Nirmal', role: 'Founder & CEO', linkedin: 'https://www.linkedin.com/in/vivek-nirmal-52656424a/' },
-      { name: 'Nidhi Nirmal', role: 'Co-Founder', linkedin: 'https://www.linkedin.com/in/nidhi-nirmal-a55680248/' },
-    ],
-    metrics: { stage: 'TBD', ask: 'TBD', traction: '1 Mn+ app downloads · 170K active users · 1.0 Mn total customers · 8,000+ Kisan Partners · 45 delivery depots · 15 farm stores' },
-  },
-]
-
-// The 6 Innovators-section startups (route /gala) — these are the RATEABLE cohort.
-// Rate.jsx, Detail.jsx, Portfolio.jsx, Admin.jsx and dataService.js all read this
-// list and its `seed` (baseline avg/rater count for the leaderboard). Data from the
-// "Startup Presentations" deck; funding stage/ask weren't provided (marked TBD).
+// The 6 Innovators-section startups (route /gala) — the only startup cohort in the
+// app. Rate.jsx, Detail.jsx, Portfolio.jsx, Admin.jsx and dataService.js all read
+// this list and its `seed` (baseline avg/rater count for the leaderboard). Data
+// from the "Startup Presentations" deck; funding stage/ask weren't provided (TBD).
 export const INNOVATOR_STARTUPS = [
   {
     id: 'cautio', name: 'Cautio', sector: 'Mobility | IoT Fleet Safety', monogram: 'CA',
