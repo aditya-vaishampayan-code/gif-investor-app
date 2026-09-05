@@ -5,7 +5,11 @@ import BottomNav from '../components/BottomNav'
 import ProfileSheet from '../components/ProfileSheet'
 import SessionCard from '../components/SessionCard'
 import { getUser } from '../services/dataService'
-import { getStandaloneSessions } from '../data/agenda'
+import { getStandaloneSessions, getCurrentSession } from '../data/agenda'
+
+// Session id whose "Happening Now" card gets the gala thumbnail + startup
+// count instead of its plain title/location.
+const GALA_SESSION_ID = 'pitch-night-gala-day1'
 
 // An agenda session moves into "Next Up" this long after its scheduled start.
 const NEXT_UP_TRIGGER_BUFFER_MS = 5 * 60 * 1000
@@ -27,7 +31,11 @@ export default function Grid() {
     return () => clearInterval(id)
   }, [])
 
+  const currentSession = getCurrentSession(now)
+  const isGala = currentSession?.id === GALA_SESSION_ID
+
   const nextUpEvents = getStandaloneSessions()
+    .filter((session) => session.id !== currentSession?.id)
     .filter((session) => now >= session.start.getTime() + NEXT_UP_TRIGGER_BUFFER_MS)
     .sort((a, b) => a.start - b.start)
 
@@ -68,40 +76,44 @@ export default function Grid() {
         </div>
 
         {/* HAPPENING NOW */}
-        <div className="px-5 pt-6 pb-3">
-          <div className="flex items-center justify-between mb-3.5">
-            <span className="font-display text-[13px] font-bold text-white uppercase" style={{ letterSpacing: '0.08em' }}>
-              Happening Now
-            </span>
-            <div className="flex items-center gap-[5px]">
-              <div className="w-[6px] h-[6px] bg-orange rounded-full" />
-              <span className="text-[11px] font-semibold text-white" style={{ letterSpacing: '0.08em' }}>LIVE</span>
-            </div>
-          </div>
-          <button
-            onClick={() => nav('/gala')}
-            className="w-full text-left rounded-2xl overflow-hidden border-none p-0 block bg-white active:scale-[0.98] transition-transform shadow-lg"
-          >
-            <div className="relative overflow-hidden" style={{ height: 160, background: 'linear-gradient(135deg,#EF4E3D 0%,#6591B0 60%,#4B546B 100%)' }}>
-              {!thumbFailed && (
-                <img
-                  src="/pitch-night-thumb.jpg"
-                  alt="Innovators Gala"
-                  className="absolute inset-0 w-full h-full object-cover z-0"
-                  onError={() => setThumbFailed(true)}
-                />
-              )}
-              <div className="absolute inset-0 opacity-25 pointer-events-none z-10" style={{ background: 'var(--stripe-gradient)' }} />
-              <div className="absolute inset-0 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 70%)' }} />
-            </div>
-            <div className="p-4">
-              <div className="font-display text-[22px] font-bold text-orange mb-0.5" style={{ letterSpacing: '-0.02em' }}>
-                Innovators Gala
+        {currentSession && (
+          <div className="px-5 pt-6 pb-3">
+            <div className="flex items-center justify-between mb-3.5">
+              <span className="font-display text-[13px] font-bold text-white uppercase" style={{ letterSpacing: '0.08em' }}>
+                Happening Now
+              </span>
+              <div className="flex items-center gap-[5px]">
+                <div className="w-[6px] h-[6px] bg-orange rounded-full" />
+                <span className="text-[11px] font-semibold text-white" style={{ letterSpacing: '0.08em' }}>LIVE</span>
               </div>
-              <div className="text-[13px] text-ink/55 font-semibold">6 Startups</div>
             </div>
-          </button>
-        </div>
+            <button
+              onClick={() => nav(isGala ? '/gala' : '/agenda')}
+              className="w-full text-left rounded-2xl overflow-hidden border-none p-0 block bg-white active:scale-[0.98] transition-transform shadow-lg"
+            >
+              <div className="relative overflow-hidden" style={{ height: 160, background: 'linear-gradient(135deg,#EF4E3D 0%,#6591B0 60%,#4B546B 100%)' }}>
+                {isGala && !thumbFailed && (
+                  <img
+                    src="/pitch-night-thumb.jpg"
+                    alt={currentSession.title}
+                    className="absolute inset-0 w-full h-full object-cover z-0"
+                    onError={() => setThumbFailed(true)}
+                  />
+                )}
+                <div className="absolute inset-0 opacity-25 pointer-events-none z-10" style={{ background: 'var(--stripe-gradient)' }} />
+                <div className="absolute inset-0 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 70%)' }} />
+              </div>
+              <div className="p-4">
+                <div className="font-display text-[22px] font-bold text-orange mb-0.5" style={{ letterSpacing: '-0.02em' }}>
+                  {currentSession.title}
+                </div>
+                <div className="text-[13px] text-ink/55 font-semibold">
+                  {isGala ? '6 Startups' : currentSession.location}
+                </div>
+              </div>
+            </button>
+          </div>
+        )}
 
         {/* NEXT UP */}
         <div className="px-5 pt-1 pb-6">

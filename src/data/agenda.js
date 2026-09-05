@@ -14,17 +14,25 @@ export const AGENDA_DAYS = [
       {
         id: 'opening-ceremony',
         time: '10:00 AM – 10:45 AM',
-        title: 'Opening Ceremony',
+        title: 'Welcome & Inaugural Ceremony',
         location: 'Crystal Ballroom – The Taj Mahal Palace, Mumbai',
-        description: 'National and state leadership open the summit',
         showDot: true,
         tracks: [
           {
-            speakers: [
-              { name: 'Janhavi Pawar', role: 'Director, Sakal Media Group' },
-              { name: 'Gajendra Singh Shekhawat', role: 'Minister of Tourism of India' },
-              { name: 'Shri Devendra Fadnavis', role: 'Chief Minister of Maharashtra' },
-            ],
+            name: 'Welcome Note · 10:00 AM',
+            speakers: [{ name: 'Janhavi Pawar', role: 'Director, Sakal Media Group' }],
+          },
+          {
+            name: 'Address · 10:30 AM',
+            speakers: [{ name: 'Piyush Goyal', role: 'Union Minister of Commerce and Industry, MP' }],
+          },
+          {
+            name: 'Inauguration',
+            speakers: [{ name: 'Shri Devendra Fadnavis', role: 'Chief Minister of Maharashtra' }],
+          },
+          {
+            name: 'Vote of Thanks',
+            speakers: [{ name: 'Dr Vinod Bidwaik', role: 'Group Director – HR, Sakal Media Group' }],
           },
         ],
       },
@@ -113,13 +121,6 @@ export const AGENDA_DAYS = [
     label: 'Day 2',
     date: '2026-09-05',
     sessions: [
-      {
-        id: 'welcome-note',
-        time: '10:00am – 10:25am',
-        title: 'Welcome Note (by Minister)',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
-        showDot: true,
-      },
       {
         id: 'vip-deal-making',
         time: '10:30am onwards (OPEN FULL DAY)',
@@ -257,25 +258,29 @@ export const AGENDA_DAYS = [
         ],
       },
       {
-        id: 'the-legacy-hour',
-        time: '05:20pm – 06:50pm',
-        title: 'The Legacy Hour',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
-        showDot: true,
-      },
-      {
+        // Moved earlier per the updated running order — now overlaps the Cultural
+        // Icon of the Year Award above (5:00–5:15pm) and the start of The Legacy
+        // Hour below (5:20pm onward), both in Crystal. Flagging for the organizers
+        // to confirm the real running order.
         id: 'ministerial-keynote',
-        time: '07:00pm – 07:25pm',
+        time: '05:00pm – 05:25pm',
         title: 'Ministerial Keynote',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
         showDot: true,
         tracks: [
           {
             speakers: [
-              { name: 'Piyush Goyal', role: 'Union Minister of Commerce and Industry, MP' },
+              { name: 'Gajendra Singh Shekhawat', role: 'Minister of Tourism of India' },
             ],
           },
         ],
+      },
+      {
+        id: 'the-legacy-hour',
+        time: '05:20pm – 06:50pm',
+        title: 'The Legacy Hour',
+        location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        showDot: true,
       },
       {
         id: 'capital-council-pitches',
@@ -310,12 +315,44 @@ function parseSessionStart(day, session) {
   return start
 }
 
+// Parses the trailing "H:MM AM/PM" out of a session's `time` range (e.g. the
+// "10:45 AM" in "10:00 AM – 10:45 AM"). Open-ended sessions like "10:30am
+// onwards" have no second time and resolve to null (treated as still running).
+function parseSessionEnd(day, session) {
+  const match = session.time.match(/[–-]\s*(\d{1,2}):(\d{2})\s*([AaPp][Mm])/)
+  if (!match || !day.date) return null
+  let hours = parseInt(match[1], 10)
+  const minutes = parseInt(match[2], 10)
+  const isPM = match[3].toLowerCase() === 'pm'
+  if (isPM && hours !== 12) hours += 12
+  if (!isPM && hours === 12) hours = 0
+  const end = new Date(`${day.date}T00:00:00`)
+  end.setHours(hours, minutes, 0, 0)
+  return end
+}
+
 // Standalone (non-break, showDot:true) sessions across both days, each with
-// a resolved `start` Date — used to drive the Tonight page's "Next Up" feed.
+// resolved `start`/`end` Dates — used to drive the Tonight page's "Happening
+// Now" card and "Next Up" feed.
 export function getStandaloneSessions() {
   return AGENDA_DAYS.flatMap((day) =>
     day.sessions
       .filter((session) => session.type !== 'break' && session.showDot === true)
-      .map((session) => ({ ...session, dayId: day.id, start: parseSessionStart(day, session) }))
+      .map((session) => ({
+        ...session,
+        dayId: day.id,
+        start: parseSessionStart(day, session),
+        end: parseSessionEnd(day, session),
+      }))
   ).filter((session) => session.start)
+}
+
+// The standalone session currently in progress (start <= now < end), or the
+// most recently started one if its end is open-ended ("...onwards"). Returns
+// null when nothing is live.
+export function getCurrentSession(now = Date.now()) {
+  const live = getStandaloneSessions()
+    .filter((session) => session.start.getTime() <= now && (!session.end || now < session.end.getTime()))
+    .sort((a, b) => b.start - a.start)
+  return live[0] ?? null
 }
