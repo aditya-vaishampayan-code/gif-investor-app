@@ -11,9 +11,8 @@ import { getStandaloneSessions, getCurrentSession } from '../data/agenda'
 // count instead of its plain title/location.
 const GALA_SESSION_ID = 'pitch-night-gala-day1'
 
-// An agenda session moves into "Next Up" this long after its scheduled start.
-const NEXT_UP_TRIGGER_BUFFER_MS = 5 * 60 * 1000
-// How often we re-check the clock to catch a session crossing its trigger time.
+// How often we re-check the clock to catch a session becoming current, or the
+// next one coming up.
 const NEXT_UP_POLL_MS = 30 * 1000
 
 export default function Grid() {
@@ -34,9 +33,9 @@ export default function Grid() {
   const currentSession = getCurrentSession(now)
   const isGala = currentSession?.id === GALA_SESSION_ID
 
+  // Sessions that haven't started yet — genuinely "next up", soonest first.
   const nextUpEvents = getStandaloneSessions()
-    .filter((session) => session.id !== currentSession?.id)
-    .filter((session) => now >= session.start.getTime() + NEXT_UP_TRIGGER_BUFFER_MS)
+    .filter((session) => session.start.getTime() > now)
     .sort((a, b) => a.start - b.start)
 
   const toggleExpanded = (id) => {
@@ -137,7 +136,7 @@ export default function Grid() {
         </div>
       </div>
 
-      <BottomNav active="tonight" />
+      <BottomNav active="today" />
 
       {profileOpen && (
         <ProfileSheet user={user} onClose={() => setProfileOpen(false)} onSaved={() => setTick((t) => t + 1)} />
