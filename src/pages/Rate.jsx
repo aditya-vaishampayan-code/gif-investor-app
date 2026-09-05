@@ -3,7 +3,7 @@ import { useNavigate, useParams, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Frame from '../components/Frame'
 import MoneyStack from '../components/MoneyStack'
-import { MONEY_BY_SCORE, INNOVATOR_STARTUPS, formatMoneyFull } from '../data/startups'
+import { INNOVATOR_STARTUPS } from '../data/startups'
 import { getRating, saveRating } from '../services/dataService'
 
 const cta = 'w-full bg-orange text-white py-[18px] font-display font-bold text-base border-none cursor-pointer'
@@ -18,8 +18,6 @@ export default function Rate() {
 
   if (!s) return <Navigate to="/" replace />
   if (getRating(id) && phase !== 'locked') return <Navigate to={`/startup/${id}`} replace />
-
-  const money = formatMoneyFull(MONEY_BY_SCORE[score])
 
   const onSlide = (e) => {
     const v = Number(e.target.value)
@@ -51,8 +49,7 @@ export default function Rate() {
               <span className="font-display text-[100px] font-bold text-orange" style={{ letterSpacing: '-0.04em', lineHeight: 0.9 }}>{score}</span>
               <span className="font-display text-[32px] font-bold text-ink/20 pb-3" style={{ letterSpacing: '-0.02em' }}>/10</span>
             </div>
-            <p className="text-[17px] font-semibold text-ink/55 mb-7 text-center">{money}</p>
-            <div className="w-full mb-9"><MoneyStack score={score} /></div>
+            <div className="w-full mt-7 mb-9"><MoneyStack score={score} /></div>
             <input type="range" min="1" max="10" step="1" value={score} onChange={onSlide}
                    aria-label="Investment interest from 1 to 10" className="mb-1.5" />
             <div className="w-full flex justify-between mb-9">
@@ -74,7 +71,7 @@ export default function Rate() {
           <p className="text-base text-ink/75 font-medium mb-1.5">Lock in {score}/10?</p>
           <p className="text-[13px] text-ink/40 mb-11" style={{ lineHeight: 1.6 }}>This is final. Ratings cannot be changed.</p>
           <button onClick={lockIn} className={`${cta} mb-3`} style={ctaStyle}>
-            Confirm — {money}
+            Confirm {score}/10
           </button>
           <button onClick={() => setPhase('sliding')}
                   className="w-full border border-ink/20 text-ink/55 py-4 text-sm font-medium cursor-pointer"
@@ -91,8 +88,7 @@ export default function Rate() {
           <div className="w-1 h-1 bg-orange rounded-full mb-7" />
           <p className="text-[11px] font-semibold text-ink/40 uppercase mb-4" style={{ letterSpacing: '0.2em' }}>Invested</p>
           <p className="font-display text-[88px] font-bold text-orange mb-3" style={{ lineHeight: 0.9, letterSpacing: '-0.04em' }}>{score}</p>
-          <p className="font-display text-[22px] font-bold text-ink/20 mb-4" style={{ letterSpacing: '-0.02em' }}>/10</p>
-          <p className="text-xl font-semibold text-ink/60">{money}</p>
+          <p className="font-display text-[22px] font-bold text-ink/20" style={{ letterSpacing: '-0.02em' }}>/10</p>
         </motion.div>
       )}
     </Frame>

@@ -1,17 +1,17 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { MONEY_BY_SCORE } from '../data/startups'
 
 const serialFor = (i) =>
   'GF' + String(Math.abs((Math.sin(i * 7.3) * 99999999) | 0)).slice(0, 8).toUpperCase()
 
+// One note per point, so the stack's height is the score. The notes carry no
+// denomination — the rating is expressed in points alone — so the engraving is
+// decorative: a portrait oval, a guilloche rosette and the serial row.
 export default function MoneyStack({ score }) {
   return (
     <div className="relative w-full" style={{ height: Math.max(120, 106 + score * 9) }} aria-hidden>
       <AnimatePresence>
         {Array.from({ length: score }, (_, i) => {
           const rot = (i % 2 === 0 ? 1 : -1) * (1.2 + i * 0.35)
-          const denom = MONEY_BY_SCORE[i + 1]
-          const denomCorner = denom >= 1000 ? '1000' : String(denom)
           return (
             <motion.div
               key={i}
@@ -38,20 +38,29 @@ export default function MoneyStack({ score }) {
               {/* inner border frame */}
               <div className="absolute pointer-events-none" style={{ inset: 5, border: '1px solid rgba(40,70,20,0.3)', borderRadius: 1 }} />
               {/* portrait oval */}
-              <div className="absolute flex items-center justify-center"
-                   style={{ left: 14, top: '50%', transform: 'translateY(-50%)', width: 46, height: 60, border: '1px solid rgba(40,70,20,0.35)', borderRadius: '50%', background: 'rgba(255,255,255,0.15)' }}>
-                <span style={{ fontFamily: 'var(--font-display)', fontSize: 18, color: 'rgba(40,70,20,0.4)', lineHeight: 1 }}>$</span>
-              </div>
-              {/* corner denominations */}
-              <div className="absolute" style={{ left: 9, top: 8, fontFamily: 'var(--font-display)', fontSize: 9, fontWeight: 700, color: 'rgba(20,50,10,0.55)', letterSpacing: '0.05em' }}>
-                {denomCorner}
-              </div>
-              {/* center denomination */}
-              <div className="absolute text-center" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)', lineHeight: 1 }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 700, color: 'rgba(20,55,10,0.65)', letterSpacing: '-0.02em', lineHeight: 1 }}>
-                  {denom >= 1000 ? '$1,000K' : `$${denom}K`}
-                </div>
-              </div>
+              <div className="absolute"
+                   style={{ left: 14, top: '50%', transform: 'translateY(-50%)', width: 46, height: 60, border: '1px solid rgba(40,70,20,0.35)', borderRadius: '50%', background: 'rgba(255,255,255,0.15)' }} />
+              {/* guilloche rosette, where the denomination used to sit */}
+              <svg className="absolute" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
+                   width="70" height="70" viewBox="0 0 70 70" fill="none">
+                {[26, 20, 14, 8].map((r) => (
+                  <circle key={r} cx="35" cy="35" r={r} stroke="rgba(20,55,10,0.28)" strokeWidth="0.7" />
+                ))}
+                {Array.from({ length: 24 }, (_, k) => {
+                  const rad = (k * 15 * Math.PI) / 180
+                  return (
+                    <line
+                      key={k}
+                      x1={35 + 8 * Math.cos(rad)}
+                      y1={35 + 8 * Math.sin(rad)}
+                      x2={35 + 26 * Math.cos(rad)}
+                      y2={35 + 26 * Math.sin(rad)}
+                      stroke="rgba(20,55,10,0.2)"
+                      strokeWidth="0.6"
+                    />
+                  )
+                })}
+              </svg>
               {/* top center text */}
               <div className="absolute uppercase whitespace-nowrap"
                    style={{ top: 9, left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--font-body)', fontSize: 6, color: 'rgba(20,50,10,0.45)', letterSpacing: '0.15em' }}>
@@ -60,7 +69,7 @@ export default function MoneyStack({ score }) {
               {/* serial row */}
               <div className="absolute flex justify-between items-center" style={{ bottom: 9, left: 68, right: 10 }}>
                 <span style={{ fontFamily: 'var(--font-body)', fontSize: 7, color: 'rgba(20,50,10,0.4)', letterSpacing: '0.1em' }}>{serialFor(i)}</span>
-                <span style={{ fontFamily: 'var(--font-body)', fontSize: 7, color: 'rgba(20,50,10,0.4)', letterSpacing: '0.06em' }}>GIF · {i + 1}</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: 7, color: 'rgba(20,50,10,0.4)', letterSpacing: '0.06em' }}>GIF</span>
               </div>
             </motion.div>
           )

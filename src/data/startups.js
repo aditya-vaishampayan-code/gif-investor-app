@@ -3,9 +3,6 @@ export const MONEY_BY_SCORE = [0, 50, 100, 175, 275, 400, 550, 700, 850, 925, 10
 export const formatMoney = (k) =>
   k >= 1000 ? `$${(k / 1000).toFixed(k % 1000 === 0 ? 0 : 1)}M` : `$${k}K`
 
-export const formatMoneyFull = (k) =>
-  k >= 1000 ? '$1,000,000' : `$${k}K`
-
 const avg = (scores) => scores.reduce((a, b) => a + b, 0) / scores.length
 
 const seed = (scores) => ({ avgScore: Math.round(avg(scores) * 10) / 10, raterCount: scores.length })
