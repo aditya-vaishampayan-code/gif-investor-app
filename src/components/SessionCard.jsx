@@ -1,20 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { initials } from '../data/startups'
+import { speakerPhotoSrc } from '../data/speakers'
 import VenueMapModal from './VenueMapModal'
-
-// Derives the expected photo filename from a speaker's name (e.g. "Dr John
-// Chelladurai" -> "dr-john-chelladurai.jpg") so photos just need to be dropped
-// into public/speakers/ with matching names — no per-speaker data wiring needed.
-function speakerPhotoSrc(name) {
-  const slug = name
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-  return `/speakers/${slug}.jpg`
-}
 
 function SpeakerRow({ speaker }) {
   const [photoFailed, setPhotoFailed] = useState(false)

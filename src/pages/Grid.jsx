@@ -4,11 +4,13 @@ import Frame from '../components/Frame'
 import BottomNav from '../components/BottomNav'
 import ProfileSheet from '../components/ProfileSheet'
 import SessionCard from '../components/SessionCard'
+import SessionThumb from '../components/SessionThumb'
 import { getUser } from '../services/dataService'
 import { getStandaloneSessions, getCurrentSession } from '../data/agenda'
 
-// Session id whose "Happening Now" card gets the gala thumbnail + startup
-// count instead of its plain title/location.
+// Session id whose "Happening Now" card shows a startup count instead of a
+// location, and taps through to the Innovators tab. (The hero image itself is
+// data-driven — see `thumb` in agenda.js.)
 const GALA_SESSION_ID = 'pitch-night-gala-day1'
 
 // How often we re-check the clock to catch a session becoming current, or the
@@ -20,7 +22,6 @@ export default function Grid() {
   const [, setTick] = useState(0)
   const [now, setNow] = useState(() => Date.now())
   const [expandedIds, setExpandedIds] = useState(() => new Set())
-  const [thumbFailed, setThumbFailed] = useState(false)
   const nav = useNavigate()
   const user = getUser()
   const initial = user?.name ? user.name[0].toUpperCase() : '?'
@@ -93,18 +94,7 @@ export default function Grid() {
               onClick={() => nav(isGala ? '/gala' : '/agenda')}
               className="w-full text-left rounded-2xl overflow-hidden border-none p-0 block bg-white active:scale-[0.98] transition-transform shadow-lg"
             >
-              <div className="relative overflow-hidden" style={{ height: 160, background: 'linear-gradient(135deg,#EF4E3D 0%,#6591B0 60%,#4B546B 100%)' }}>
-                {isGala && !thumbFailed && (
-                  <img
-                    src="/pitch-night-thumb.jpg"
-                    alt={currentSession.title}
-                    className="absolute inset-0 w-full h-full object-cover z-0"
-                    onError={() => setThumbFailed(true)}
-                  />
-                )}
-                <div className="absolute inset-0 opacity-25 pointer-events-none z-10" style={{ background: 'var(--stripe-gradient)' }} />
-                <div className="absolute inset-0 pointer-events-none z-10" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 70%)' }} />
-              </div>
+              <SessionThumb session={currentSession} />
               <div className="p-4">
                 <div className="font-display text-[22px] font-bold text-orange mb-0.5" style={{ letterSpacing: '-0.02em' }}>
                   {currentSession.title}

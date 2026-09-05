@@ -6,6 +6,8 @@
 // set to false for items that run concurrently with the session above them.
 // `link` ({ to, label }) adds a call-to-action on the card for sessions that
 // have a dedicated page elsewhere in the app (e.g. the Innovators Gala).
+// `thumb` sets the hero image on the Today tab: `{ image }` for a photograph,
+// or `{ motif }` naming one of the drawn backdrops in SessionThumb.
 
 export const AGENDA_DAYS = [
   {
@@ -84,6 +86,7 @@ export const AGENDA_DAYS = [
         title: 'India x China',
         location: 'Crystal Ballroom – The Taj Mahal Palace, Mumbai',
         showDot: true,
+        thumb: { motif: 'india-china' },
         tracks: [
           {
             name: 'Ancient Systems of Healing',
@@ -119,6 +122,7 @@ export const AGENDA_DAYS = [
         location: 'Crystal Ballroom – The Taj Mahal Palace, Mumbai',
         description: 'Startup showcases from this edition’s Innovators cohort',
         showDot: true,
+        thumb: { image: '/pitch-night-thumb.jpg' },
         // The showcase itself lives on the Innovators tab — this card links
         // straight through to the cohort instead of dead-ending on the agenda.
         link: { to: '/gala', label: 'View the Innovators' },
