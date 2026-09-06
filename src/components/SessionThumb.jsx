@@ -104,13 +104,11 @@ const MOTIFS = {
   'founders-track': { left: 'chevrons', right: 'columns', palette: 'warm', join: 'dot' },
 }
 
-function Motif({ name, uid, compact }) {
+function Motif({ name, uid }) {
   const spec = MOTIFS[name]
   if (!spec) return null
   const p = PALETTES[spec.palette]
-  const g = compact
-    ? { w: 390, h: 96, cy: 48, r: 56, lx: 150, rx: 240 }
-    : { w: 390, h: 160, cy: 64, r: 78, lx: 138, rx: 252 }
+  const g = { w: 390, h: 160, cy: 64, r: 78, lx: 138, rx: 252 }
 
   const disc = (side, field, colour, i) => {
     const cx = side === 'l' ? g.lx : g.rx
@@ -206,22 +204,20 @@ function FaceChip({ speaker, size }) {
 
 // The hero image for a session. Uses `session.thumb.image` when there's a real
 // photograph, otherwise the drawn motif named by `session.thumb.motif`, and
-// falls back to the brand gradient when a session has neither.
-//
-// `compact` is the agenda-card banner: shorter, and without the face pile, since
-// the card already lists every speaker with their photo directly underneath.
-export default function SessionThumb({ session, height, compact = false, style }) {
+// falls back to the brand gradient when a session has neither. Used by Today's
+// "Happening Now" hero — the only place a session thumbnail appears.
+export default function SessionThumb({ session, height, style }) {
   const [imageFailed, setImageFailed] = useState(false)
   const thumb = session.thumb ?? {}
   const drawn = Boolean(MOTIFS[thumb.motif])
-  const speakers = compact ? [] : sessionSpeakers(session)
+  const speakers = sessionSpeakers(session)
   const trackCount = session.tracks?.length ?? 0
 
   return (
     <div
       className="relative overflow-hidden"
       style={{
-        height: height ?? (compact ? 84 : 160),
+        height: height ?? 160,
         background: 'linear-gradient(135deg,#EF4E3D 0%,#6591B0 60%,#4B546B 100%)',
         ...style,
       }}
@@ -234,7 +230,7 @@ export default function SessionThumb({ session, height, compact = false, style }
           onError={() => setImageFailed(true)}
         />
       ) : (
-        <Motif name={thumb.motif} uid={`t-${session.id}${compact ? '-c' : ''}`} compact={compact} />
+        <Motif name={thumb.motif} uid={`t-${session.id}`} />
       )}
 
       {/* Brand stripe wash — lighter over a drawn motif so the artwork reads. */}

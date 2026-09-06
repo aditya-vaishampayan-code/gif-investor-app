@@ -50,21 +50,9 @@ export default function Agenda() {
     const iso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
     return (AGENDA_DAYS.find((d) => d.date === iso) ?? AGENDA_DAYS[0]).id
   })
-  // Cards start collapsed so the day reads as a scannable timeline of thumbnails
-  // and titles; tapping one opens its tracks and speakers.
-  const [expandedIds, setExpandedIds] = useState(() => new Set())
   const user = getUser()
   const initial = user?.name ? user.name[0].toUpperCase() : '?'
   const day = AGENDA_DAYS.find((d) => d.id === dayId) ?? AGENDA_DAYS[0]
-
-  const toggleExpanded = (id) => {
-    setExpandedIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
-  }
 
   return (
     <Frame className="relative overflow-hidden">
@@ -130,16 +118,7 @@ export default function Agenda() {
                   {session.showDot !== false && (
                     <div className="absolute w-2.5 h-2.5 rounded-full bg-orange border-2 border-white shadow" style={{ left: -21, top: 6 }} />
                   )}
-                  {session.type === 'break' ? (
-                    <BreakRow session={session} />
-                  ) : (
-                    <SessionCard
-                      session={session}
-                      collapsible
-                      expanded={expandedIds.has(session.id)}
-                      onToggle={() => toggleExpanded(session.id)}
-                    />
-                  )}
+                  {session.type === 'break' ? <BreakRow session={session} /> : <SessionCard session={session} />}
                 </div>
               ))}
             </div>
