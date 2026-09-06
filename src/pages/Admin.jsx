@@ -1,6 +1,18 @@
 import { useState, useEffect } from 'react'
 import Frame from '../components/Frame'
-import { fetchAllRatings, ratingsToCsv } from '../services/dataService'
+import { fetchAllRatings, ratingsToCsv, fetchAllAccounts, accountsToCsv } from '../services/dataService'
+
+function downloadCsv(csv, filename) {
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
 
 export default function Admin() {
   const [rows, setRows] = useState([])
@@ -25,6 +37,8 @@ export default function Admin() {
     }
   }, [])
 
+  const today = () => new Date().toISOString().slice(0, 10)
+
   const handleExport = async () => {
     setExporting(true)
     setExportNote('')
@@ -34,19 +48,29 @@ export default function Admin() {
         setExportNote('No ratings to export yet.')
         return
       }
-      const csv = ratingsToCsv(data)
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `gif-ratings-${new Date().toISOString().slice(0, 10)}.csv`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
+      downloadCsv(ratingsToCsv(data), `gif-ratings-${today()}.csv`)
       setExportNote(`Exported ${data.length} rating${data.length === 1 ? '' : 's'}.`)
     } catch (err) {
       console.warn('Ratings export failed:', err)
+      setExportNote('Export failed. Check the console.')
+    } finally {
+      setExporting(false)
+    }
+  }
+
+  const handleExportAccounts = async () => {
+    setExporting(true)
+    setExportNote('')
+    try {
+      const data = await fetchAllAccounts()
+      if (data.length === 0) {
+        setExportNote('No accounts to export yet.')
+        return
+      }
+      downloadCsv(accountsToCsv(data), `gif-accounts-${today()}.csv`)
+      setExportNote(`Exported ${data.length} account${data.length === 1 ? '' : 's'}.`)
+    } catch (err) {
+      console.warn('Accounts export failed:', err)
       setExportNote('Export failed. Check the console.')
     } finally {
       setExporting(false)
@@ -80,6 +104,15 @@ export default function Admin() {
             style={{ letterSpacing: '0.1em' }}
           >
             {exporting ? 'Exporting…' : 'Export ratings CSV'}
+          </button>
+          <button
+            type="button"
+            onClick={handleExportAccounts}
+            disabled={exporting}
+            className="text-[11px] font-semibold uppercase text-ink border border-ink/25 px-4 py-2 disabled:opacity-40"
+            style={{ letterSpacing: '0.1em' }}
+          >
+            {exporting ? 'Exporting…' : 'Export accounts CSV'}
           </button>
           {exportNote && <p className="text-xs text-ink/45">{exportNote}</p>}
         </div>

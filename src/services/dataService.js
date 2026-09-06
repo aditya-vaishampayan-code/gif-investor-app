@@ -263,6 +263,57 @@ export function ratingsToCsv(rows) {
   return [header.join(','), ...lines].join('\r\n')
 }
 
+/**
+ * Returns every registered account as a flat row:
+ * { name, company, email, userId, loginAt, updatedAt }
+ * Pulls from the Firestore `users` collection when configured; otherwise
+ * falls back to this device's locally stored account.
+ */
+export async function fetchAllAccounts() {
+  if (isFirebaseConfigured && db) {
+    try {
+      const snapshot = await getDocs(collection(db, 'users'))
+      const rows = []
+      snapshot.forEach((docSnap) => {
+        const d = docSnap.data()
+        rows.push({
+          name: d.name || '',
+          company: d.company || '',
+          email: d.email || '',
+          userId: d.uid || docSnap.id,
+          loginAt: d.loginAt || '',
+          updatedAt: d.updatedAt || '',
+        })
+      })
+      rows.sort((a, b) => a.name.localeCompare(b.name))
+      return rows
+    } catch (err) {
+      console.warn('Failed to fetch accounts from Firestore, using local copy:', err)
+    }
+  }
+
+  const user = getUser()
+  if (!user) return []
+  return [
+    {
+      name: user.name || '',
+      company: user.company || '',
+      email: user.email || '',
+      userId: user.uid || user.email || '',
+      loginAt: user.loginAt || '',
+      updatedAt: user.updatedAt || '',
+    },
+  ]
+}
+
+export function accountsToCsv(rows) {
+  const header = ['Name', 'Company', 'Email', 'User ID', 'First login', 'Last updated']
+  const lines = rows.map((r) =>
+    [r.name, r.company, r.email, r.userId, r.loginAt, r.updatedAt].map(csvCell).join(',')
+  )
+  return [header.join(','), ...lines].join('\r\n')
+}
+
 export function subscribeLeaderboard(onUpdate) {
   const fallback = () => onUpdate(getAggregates())
 
