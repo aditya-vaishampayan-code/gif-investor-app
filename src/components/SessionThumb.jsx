@@ -2,93 +2,232 @@ import { useState } from 'react'
 import { initials } from '../data/startups'
 import { speakerPhotoSrc, sessionSpeakers } from '../data/speakers'
 
-// Two overlapping discs — a rayed sun on the left, concentric ripples on the
-// right — reading as the two traditions this session puts in conversation.
-// Drawn rather than photographed so it stays crisp at any size and needs no
-// image rights.
-const SUN_RAYS = Array.from({ length: 18 }, (_, i) => {
-  const rad = ((360 / 18) * i * Math.PI) / 180
-  return {
-    x1: 138 + 32 * Math.cos(rad),
-    y1: 62 + 32 * Math.sin(rad),
-    x2: 138 + 72 * Math.cos(rad),
-    y2: 62 + 72 * Math.sin(rad),
+// Session thumbnails are drawn, not photographed: they stay crisp at any size,
+// need no image rights, and give every session on the agenda its own card
+// without sourcing artwork per talk. Each one composes the same skeleton — two
+// overlapping discs on a brand gradient — from a pattern per disc and a palette,
+// so the set reads as one family rather than a pile of separate illustrations.
+
+const PALETTES = {
+  warm: { ground: ['#1B1714', '#3A3530', '#6B2A24'], left: '#F7C2B8', right: '#EF4E3D', disc: ['#EF4E3D', '#F49C82'] },
+  cool: { ground: ['#1B1714', '#3A3530', '#4B546B'], left: '#B5DEF6', right: '#6591B0', disc: ['#6591B0', '#B5DEF6'] },
+  deep: { ground: ['#1B1714', '#2C2A33', '#4B546B'], left: '#6591B0', right: '#B5DEF6', disc: ['#4B546B', '#6591B0'] },
+  earth: { ground: ['#1B1714', '#3A3530', '#5A4038'], left: '#F49C82', right: '#F7C2B8', disc: ['#EF4E3D', '#6591B0'] },
+}
+
+// Each field fills a disc of radius r centred at (cx, cy). The caller clips them
+// to that disc, so a pattern is free to run past the edge.
+const FIELDS = {
+  rays: (cx, cy, r) =>
+    Array.from({ length: 18 }, (_, i) => {
+      const a = (i * 20 * Math.PI) / 180
+      return (
+        <line
+          key={i}
+          x1={cx + r * 0.4 * Math.cos(a)}
+          y1={cy + r * 0.4 * Math.sin(a)}
+          x2={cx + r * 0.95 * Math.cos(a)}
+          y2={cy + r * 0.95 * Math.sin(a)}
+        />
+      )
+    }),
+
+  ripples: (cx, cy, r) =>
+    [0.3, 0.5, 0.7, 0.9].map((f) => <circle key={f} cx={cx} cy={cy} r={r * f} />),
+
+  script: (cx, cy, r) =>
+    Array.from({ length: 7 }, (_, i) => {
+      const y = cy - r * 0.62 + i * ((r * 1.24) / 6)
+      const w = r * (i % 3 === 2 ? 0.85 : i % 3 === 1 ? 1.55 : 1.28)
+      return <line key={i} x1={cx - r * 0.8} y1={y} x2={cx - r * 0.8 + w} y2={y} />
+    }),
+
+  waves: (cx, cy, r) =>
+    Array.from({ length: 4 }, (_, i) => {
+      const amp = r * 0.18 * (1 + i * 0.25)
+      const y = cy - r * 0.45 + i * (r * 0.3)
+      const step = r / 4
+      let d = `M ${cx - r} ${y}`
+      for (let k = 0; k < 8; k++) d += ` q ${step / 2} ${k % 2 ? amp : -amp} ${step} 0`
+      return <path key={i} d={d} />
+    }),
+
+  frames: (cx, cy, r) => (
+    <>
+      {Array.from({ length: 3 }, (_, i) => (
+        <rect key={i} x={cx - r * 0.62 + i * (r * 0.46)} y={cy - r * 0.34} width={r * 0.36} height={r * 0.68} rx="1.5" />
+      ))}
+      {Array.from({ length: 10 }, (_, i) => (
+        <rect key={'p' + i} x={cx - r + i * (r * 0.22)} y={cy - r * 0.72} width={r * 0.1} height={r * 0.1} />
+      ))}
+      {Array.from({ length: 10 }, (_, i) => (
+        <rect key={'q' + i} x={cx - r + i * (r * 0.22)} y={cy + r * 0.62} width={r * 0.1} height={r * 0.1} />
+      ))}
+    </>
+  ),
+
+  peaks: (cx, cy, r) => (
+    <>
+      <path d={`M ${cx - r} ${cy + r * 0.55} L ${cx - r * 0.3} ${cy - r * 0.5} L ${cx + r * 0.25} ${cy + r * 0.55} Z`} />
+      <path d={`M ${cx - r * 0.15} ${cy + r * 0.55} L ${cx + r * 0.45} ${cy - r * 0.22} L ${cx + r} ${cy + r * 0.55} Z`} />
+      <line x1={cx - r} y1={cy + r * 0.55} x2={cx + r} y2={cy + r * 0.55} />
+    </>
+  ),
+
+  arcs: (cx, cy, r) =>
+    [0.35, 0.55, 0.75, 0.95].map((f) => (
+      <path
+        key={f}
+        d={`M ${cx - r * f * 0.7} ${cy - r * f * 0.7} A ${r * f} ${r * f} 0 0 1 ${cx - r * f * 0.7} ${cy + r * f * 0.7}`}
+      />
+    )),
+
+  trail: (cx, cy, r) => (
+    <>
+      <path
+        d={`M ${cx - r * 0.9} ${cy + r * 0.6} C ${cx - r * 0.2} ${cy + r * 0.3}, ${cx - r * 0.6} ${cy - r * 0.3}, ${cx + r * 0.1} ${cy - r * 0.45} S ${cx + r * 0.9} ${cy - r * 0.55}, ${cx + r * 0.95} ${cy - r * 0.72}`}
+        strokeDasharray="4 5"
+      />
+      {[[-0.9, 0.6], [0.1, -0.45], [0.95, -0.72]].map(([fx, fy], i) => (
+        <circle key={i} cx={cx + r * fx} cy={cy + r * fy} r="2.4" />
+      ))}
+    </>
+  ),
+
+  star: (cx, cy, r) => (
+    <>
+      {Array.from({ length: 8 }, (_, i) => {
+        const a = (i * 45 * Math.PI) / 180
+        return <line key={i} x1={cx} y1={cy} x2={cx + r * 0.9 * Math.cos(a)} y2={cy + r * 0.9 * Math.sin(a)} />
+      })}
+      <circle cx={cx} cy={cy} r={r * 0.28} />
+    </>
+  ),
+
+  columns: (cx, cy, r) =>
+    [0.5, 0.78, 1, 0.66, 0.4].map((f, i) => (
+      <line
+        key={i}
+        x1={cx - r * 0.68 + i * (r * 0.34)}
+        y1={cy + r * 0.62}
+        x2={cx - r * 0.68 + i * (r * 0.34)}
+        y2={cy + r * 0.62 - r * 1.05 * f}
+      />
+    )),
+
+  laurel: (cx, cy, r) => (
+    <>
+      {[-1, 1].map((s) => (
+        <path
+          key={s}
+          d={`M ${cx + s * r * 0.15} ${cy + r * 0.8} A ${r * 0.8} ${r * 0.8} 0 0 ${s > 0 ? 0 : 1} ${cx + s * r * 0.15} ${cy - r * 0.8}`}
+        />
+      ))}
+      {[-1, 1].map((s) =>
+        Array.from({ length: 5 }, (_, i) => {
+          const t = -0.6 + i * 0.3
+          return <line key={s + '-' + i} x1={cx + s * r * 0.62} y1={cy + r * t} x2={cx + s * r * 0.9} y2={cy + r * (t - 0.14)} />
+        })
+      )}
+    </>
+  ),
+
+  chevrons: (cx, cy, r) =>
+    [0.3, 0.55, 0.8, 1.05].map((f, i) => (
+      <path key={i} d={`M ${cx - r * 0.7} ${cy - r * f * 0.5} L ${cx} ${cy + r * f * 0.35} L ${cx + r * 0.7} ${cy - r * f * 0.5}`} />
+    )),
+}
+
+// Which patterns and palette each session draws. `join` marks the meeting point
+// between the two discs: an × for the bilateral "India x …" conversations, a
+// diamond for everything else.
+const MOTIFS = {
+  'india-china': { left: 'rays', right: 'ripples', palette: 'warm', join: 'x' },
+  'vip-deal-making': { left: 'chevrons', right: 'columns', palette: 'deep', join: 'dot' },
+  'words-that-outlive-empires': { left: 'script', right: 'rays', palette: 'cool', join: 'x' },
+  'the-sound-of-the-soul': { left: 'waves', right: 'ripples', palette: 'cool', join: 'x' },
+  'frames-of-a-civilisation': { left: 'frames', right: 'rays', palette: 'cool', join: 'x' },
+  'guardians-of-the-wild': { left: 'peaks', right: 'ripples', palette: 'earth', join: 'x' },
+  'voices-carried-forward': { left: 'arcs', right: 'rays', palette: 'earth', join: 'x' },
+  'the-long-walk-to-selfhood': { left: 'trail', right: 'ripples', palette: 'earth', join: 'x' },
+  'special-guest-media-bite': { left: 'waves', right: 'columns', palette: 'deep', join: 'dot' },
+  'gala-night-awards-opening': { left: 'star', right: 'rays', palette: 'warm', join: 'dot' },
+  'cultural-icon-of-the-year-award': { left: 'star', right: 'laurel', palette: 'warm', join: 'dot' },
+  'ministerial-keynote': { left: 'columns', right: 'rays', palette: 'deep', join: 'dot' },
+  'the-legacy-hour': { left: 'laurel', right: 'ripples', palette: 'deep', join: 'dot' },
+  'capital-council-pitches': { left: 'chevrons', right: 'ripples', palette: 'warm', join: 'dot' },
+}
+
+function Motif({ name, uid, compact }) {
+  const spec = MOTIFS[name]
+  if (!spec) return null
+  const p = PALETTES[spec.palette]
+  const g = compact
+    ? { w: 390, h: 96, cy: 48, r: 56, lx: 150, rx: 240 }
+    : { w: 390, h: 160, cy: 64, r: 78, lx: 138, rx: 252 }
+
+  const disc = (side, field, colour, i) => {
+    const cx = side === 'l' ? g.lx : g.rx
+    return (
+      <g key={side}>
+        <clipPath id={`${uid}-${side}-clip`}>
+          <circle cx={cx} cy={g.cy} r={g.r} />
+        </clipPath>
+        <circle cx={cx} cy={g.cy} r={g.r} fill={`url(#${uid}-${side}-fill)`} />
+        <circle cx={cx} cy={g.cy} r={g.r} fill="none" stroke={colour} strokeOpacity="0.42" />
+        <g
+          clipPath={`url(#${uid}-${side}-clip)`}
+          fill="none"
+          stroke={colour}
+          strokeOpacity="0.3"
+          strokeWidth="0.9"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          {FIELDS[field](cx, g.cy, g.r)}
+        </g>
+      </g>
+    )
   }
-})
 
-const RIPPLE_RADII = [26, 42, 58, 74]
-
-function IndiaChinaMotif() {
   return (
     <svg
-      viewBox="0 0 390 160"
+      viewBox={`0 0 ${g.w} ${g.h}`}
       preserveAspectRatio="xMidYMid slice"
       className="absolute inset-0 w-full h-full"
       aria-hidden="true"
     >
       <defs>
-        <linearGradient id="ic-ground" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#1B1714" />
-          <stop offset="55%" stopColor="#3A3530" />
-          <stop offset="100%" stopColor="#4B546B" />
+        <linearGradient id={`${uid}-ground`} x1="0" y1="0" x2="1" y2="1">
+          {p.ground.map((c, i) => (
+            <stop key={i} offset={`${i * 50}%`} stopColor={c} />
+          ))}
         </linearGradient>
-        <radialGradient id="ic-warm" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#EF4E3D" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#EF4E3D" stopOpacity="0.04" />
-        </radialGradient>
-        <radialGradient id="ic-cool" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#B5DEF6" stopOpacity="0.42" />
-          <stop offset="100%" stopColor="#6591B0" stopOpacity="0.04" />
-        </radialGradient>
+        {['l', 'r'].map((side, i) => (
+          <radialGradient key={side} id={`${uid}-${side}-fill`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor={p.disc[i]} stopOpacity="0.5" />
+            <stop offset="100%" stopColor={p.disc[i]} stopOpacity="0.04" />
+          </radialGradient>
+        ))}
       </defs>
 
-      <rect width="390" height="160" fill="url(#ic-ground)" />
+      <rect width={g.w} height={g.h} fill={`url(#${uid}-ground)`} />
+      {disc('l', spec.left, p.left)}
+      {disc('r', spec.right, p.right)}
 
-      {/* India — sun disc with rays */}
-      <circle cx="138" cy="62" r="78" fill="url(#ic-warm)" />
-      <circle cx="138" cy="62" r="78" fill="none" stroke="#EF4E3D" strokeOpacity="0.45" />
-      {SUN_RAYS.map((r, i) => (
-        <line
-          key={i}
-          x1={r.x1}
-          y1={r.y1}
-          x2={r.x2}
-          y2={r.y2}
-          stroke="#F7C2B8"
-          strokeOpacity="0.32"
-          strokeWidth="0.9"
-          strokeLinecap="round"
-        />
-      ))}
-
-      {/* China — ripple disc */}
-      <circle cx="252" cy="62" r="78" fill="url(#ic-cool)" />
-      <circle cx="252" cy="62" r="78" fill="none" stroke="#B5DEF6" strokeOpacity="0.4" />
-      {RIPPLE_RADII.map((r) => (
-        <circle
-          key={r}
-          cx="252"
-          cy="62"
-          r={r}
-          fill="none"
-          stroke="#B5DEF6"
-          strokeOpacity="0.2"
-          strokeWidth="0.9"
-        />
-      ))}
-
-      {/* The meeting point */}
-      <line x1="195" y1="8" x2="195" y2="116" stroke="#FFFFFF" strokeOpacity="0.16" strokeWidth="0.75" />
-      <g stroke="#FFFFFF" strokeOpacity="0.75" strokeWidth="1.6" strokeLinecap="round">
-        <line x1="189" y1="56" x2="201" y2="68" />
-        <line x1="201" y1="56" x2="189" y2="68" />
+      <line x1="195" y1={g.cy - g.r * 0.9} x2="195" y2={g.cy + g.r * 0.75} stroke="#FFFFFF" strokeOpacity="0.16" strokeWidth="0.75" />
+      <g stroke="#FFFFFF" strokeOpacity="0.75" strokeWidth="1.6" strokeLinecap="round" fill="none">
+        {spec.join === 'x' ? (
+          <>
+            <line x1="189" y1={g.cy - 6} x2="201" y2={g.cy + 6} />
+            <line x1="201" y1={g.cy - 6} x2="189" y2={g.cy + 6} />
+          </>
+        ) : (
+          <path d={`M 195 ${g.cy - 7} L 202 ${g.cy} L 195 ${g.cy + 7} L 188 ${g.cy} Z`} />
+        )}
       </g>
     </svg>
   )
-}
-
-const MOTIFS = {
-  'india-china': IndiaChinaMotif,
 }
 
 function FaceChip({ speaker, size }) {
@@ -121,19 +260,25 @@ function FaceChip({ speaker, size }) {
 
 // The hero image for a session. Uses `session.thumb.image` when there's a real
 // photograph, otherwise the drawn motif named by `session.thumb.motif`, and
-// falls back to the brand gradient when a session has neither. Any session with
-// billed speakers gets their faces along the bottom edge.
-export default function SessionThumb({ session, height = 160 }) {
+// falls back to the brand gradient when a session has neither.
+//
+// `compact` is the agenda-card banner: shorter, and without the face pile, since
+// the card already lists every speaker with their photo directly underneath.
+export default function SessionThumb({ session, height, compact = false, style }) {
   const [imageFailed, setImageFailed] = useState(false)
   const thumb = session.thumb ?? {}
-  const Motif = MOTIFS[thumb.motif]
-  const speakers = sessionSpeakers(session)
+  const drawn = Boolean(MOTIFS[thumb.motif])
+  const speakers = compact ? [] : sessionSpeakers(session)
   const trackCount = session.tracks?.length ?? 0
 
   return (
     <div
       className="relative overflow-hidden"
-      style={{ height, background: 'linear-gradient(135deg,#EF4E3D 0%,#6591B0 60%,#4B546B 100%)' }}
+      style={{
+        height: height ?? (compact ? 84 : 160),
+        background: 'linear-gradient(135deg,#EF4E3D 0%,#6591B0 60%,#4B546B 100%)',
+        ...style,
+      }}
     >
       {thumb.image && !imageFailed ? (
         <img
@@ -142,14 +287,14 @@ export default function SessionThumb({ session, height = 160 }) {
           className="absolute inset-0 w-full h-full object-cover z-0"
           onError={() => setImageFailed(true)}
         />
-      ) : Motif ? (
-        <Motif />
-      ) : null}
+      ) : (
+        <Motif name={thumb.motif} uid={`t-${session.id}${compact ? '-c' : ''}`} compact={compact} />
+      )}
 
       {/* Brand stripe wash — lighter over a drawn motif so the artwork reads. */}
       <div
         className="absolute inset-0 pointer-events-none z-10"
-        style={{ background: 'var(--stripe-gradient)', opacity: Motif && !thumb.image ? 0.07 : 0.25 }}
+        style={{ background: 'var(--stripe-gradient)', opacity: drawn && !thumb.image ? 0.07 : 0.25 }}
       />
       <div
         className="absolute inset-0 pointer-events-none z-10"

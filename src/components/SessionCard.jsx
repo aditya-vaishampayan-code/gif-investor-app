@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { initials } from '../data/startups'
 import { speakerPhotoSrc } from '../data/speakers'
+import SessionThumb from './SessionThumb'
 import VenueMapModal from './VenueMapModal'
 
 function SpeakerRow({ speaker }) {
@@ -31,7 +32,11 @@ function SpeakerRow({ speaker }) {
 // `collapsible` gates everything below: pass it (with `expanded`/`onToggle`) to
 // let the card hide its description/speakers until tapped. Agenda's timeline
 // omits it and always renders fully expanded, non-interactive.
-export default function SessionCard({ session, collapsible = false, expanded = true, onToggle }) {
+//
+// `showThumb` is off in Today's "Next Up" list, which sits directly under the
+// Happening Now hero — that hero is already a full-size thumbnail, so repeating
+// banners down the queue below it just competes with it.
+export default function SessionCard({ session, collapsible = false, expanded = true, onToggle, showThumb = true }) {
   const [mapOpen, setMapOpen] = useState(false)
   const nav = useNavigate()
   const open = !collapsible || expanded
@@ -39,7 +44,7 @@ export default function SessionCard({ session, collapsible = false, expanded = t
   return (
     <>
       <div
-        className="bg-white rounded-2xl shadow-md p-4"
+        className="bg-white rounded-2xl shadow-md"
         style={collapsible ? { cursor: 'pointer' } : undefined}
         onClick={collapsible ? onToggle : undefined}
         role={collapsible ? 'button' : undefined}
@@ -56,6 +61,14 @@ export default function SessionCard({ session, collapsible = false, expanded = t
             : undefined
         }
       >
+        {/* Full-bleed banner, so the card's padding starts below it. The thumb
+            carries its own top radii (16px = rounded-2xl) rather than relying on
+            the card to clip it. */}
+        {showThumb && session.thumb && (
+          <SessionThumb session={session} compact style={{ borderRadius: '16px 16px 0 0' }} />
+        )}
+
+        <div className="p-4">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             <p className="text-[12px] font-bold text-orange mb-1">{session.time}</p>
@@ -143,6 +156,7 @@ export default function SessionCard({ session, collapsible = false, expanded = t
             {session.link.label} →
           </button>
         )}
+        </div>
       </div>
 
       <VenueMapModal

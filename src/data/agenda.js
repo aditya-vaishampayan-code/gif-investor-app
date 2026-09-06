@@ -136,6 +136,7 @@ export const AGENDA_DAYS = [
     sessions: [
       {
         id: 'vip-deal-making',
+        thumb: { motif: 'vip-deal-making' },
         time: '10:30am onwards (OPEN FULL DAY)',
         title: 'VIP DEAL MAKING',
         location: 'Gateway – The Taj Mahal Palace, Mumbai',
@@ -143,6 +144,7 @@ export const AGENDA_DAYS = [
       },
       {
         id: 'words-that-outlive-empires',
+        thumb: { motif: 'words-that-outlive-empires' },
         time: '10:30am – 11:10am',
         title: 'Words That Outlive Empires',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
@@ -159,6 +161,7 @@ export const AGENDA_DAYS = [
       },
       {
         id: 'the-sound-of-the-soul',
+        thumb: { motif: 'the-sound-of-the-soul' },
         time: '11:15am – 12:05pm',
         title: 'The Sound of the Soul',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
@@ -175,6 +178,7 @@ export const AGENDA_DAYS = [
       },
       {
         id: 'frames-of-a-civilisation',
+        thumb: { motif: 'frames-of-a-civilisation' },
         time: '12:10pm – 01:00pm',
         title: 'Frames of a Civilisation',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
@@ -198,6 +202,7 @@ export const AGENDA_DAYS = [
       },
       {
         id: 'guardians-of-the-wild',
+        thumb: { motif: 'guardians-of-the-wild' },
         time: '02:00pm – 02:40pm',
         title: 'Guardians of the Wild',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
@@ -213,6 +218,7 @@ export const AGENDA_DAYS = [
       },
       {
         id: 'voices-carried-forward',
+        thumb: { motif: 'voices-carried-forward' },
         time: '02:45pm – 03:25pm',
         title: 'Voices Carried Forward',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
@@ -221,6 +227,7 @@ export const AGENDA_DAYS = [
       },
       {
         id: 'the-long-walk-to-selfhood',
+        thumb: { motif: 'the-long-walk-to-selfhood' },
         time: '03:30pm – 04:15pm',
         title: 'The Long Walk to Selfhood',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
@@ -243,6 +250,7 @@ export const AGENDA_DAYS = [
       },
       {
         id: 'special-guest-media-bite',
+        thumb: { motif: 'special-guest-media-bite' },
         time: '04:15pm – 04:45pm',
         title: 'Special Guest (MCEE) – Media Bite',
         location: 'Prince’s – The Taj Mahal Palace, Mumbai',
@@ -250,6 +258,7 @@ export const AGENDA_DAYS = [
       },
       {
         id: 'gala-night-awards-opening',
+        thumb: { motif: 'gala-night-awards-opening' },
         time: '04:45pm – 05:00pm',
         title: 'Gala Night & Awards Ceremony Opening',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
@@ -257,6 +266,7 @@ export const AGENDA_DAYS = [
       },
       {
         id: 'cultural-icon-of-the-year-award',
+        thumb: { motif: 'cultural-icon-of-the-year-award' },
         time: '05:00pm – 05:15pm',
         title: 'Cultural Icon of the Year Award',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
@@ -276,6 +286,7 @@ export const AGENDA_DAYS = [
         // Hour below (5:20pm onward), both in Crystal. Flagging for the organizers
         // to confirm the real running order.
         id: 'ministerial-keynote',
+        thumb: { motif: 'ministerial-keynote' },
         time: '05:00pm – 05:25pm',
         title: 'Ministerial Keynote',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
@@ -290,6 +301,7 @@ export const AGENDA_DAYS = [
       },
       {
         id: 'the-legacy-hour',
+        thumb: { motif: 'the-legacy-hour' },
         time: '05:20pm – 06:50pm',
         title: 'The Legacy Hour',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',
@@ -297,6 +309,7 @@ export const AGENDA_DAYS = [
       },
       {
         id: 'capital-council-pitches',
+        thumb: { motif: 'capital-council-pitches' },
         time: '07:30pm onwards',
         title: 'The Capital Council (6) Innovators',
         location: 'Crystal – The Taj Mahal Palace, Mumbai',

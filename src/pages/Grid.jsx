@@ -118,6 +118,7 @@ export default function Grid() {
                 key={session.id}
                 session={session}
                 collapsible
+                showThumb={false}
                 expanded={expandedIds.has(session.id)}
                 onToggle={() => toggleExpanded(session.id)}
               />
