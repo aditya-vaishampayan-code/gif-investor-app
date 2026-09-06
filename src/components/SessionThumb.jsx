@@ -52,20 +52,6 @@ const FIELDS = {
       return <path key={i} d={d} />
     }),
 
-  frames: (cx, cy, r) => (
-    <>
-      {Array.from({ length: 3 }, (_, i) => (
-        <rect key={i} x={cx - r * 0.62 + i * (r * 0.46)} y={cy - r * 0.34} width={r * 0.36} height={r * 0.68} rx="1.5" />
-      ))}
-      {Array.from({ length: 10 }, (_, i) => (
-        <rect key={'p' + i} x={cx - r + i * (r * 0.22)} y={cy - r * 0.72} width={r * 0.1} height={r * 0.1} />
-      ))}
-      {Array.from({ length: 10 }, (_, i) => (
-        <rect key={'q' + i} x={cx - r + i * (r * 0.22)} y={cy + r * 0.62} width={r * 0.1} height={r * 0.1} />
-      ))}
-    </>
-  ),
-
   peaks: (cx, cy, r) => (
     <>
       <path d={`M ${cx - r} ${cy + r * 0.55} L ${cx - r * 0.3} ${cy - r * 0.5} L ${cx + r * 0.25} ${cy + r * 0.55} Z`} />
@@ -73,14 +59,6 @@ const FIELDS = {
       <line x1={cx - r} y1={cy + r * 0.55} x2={cx + r} y2={cy + r * 0.55} />
     </>
   ),
-
-  arcs: (cx, cy, r) =>
-    [0.35, 0.55, 0.75, 0.95].map((f) => (
-      <path
-        key={f}
-        d={`M ${cx - r * f * 0.7} ${cy - r * f * 0.7} A ${r * f} ${r * f} 0 0 1 ${cx - r * f * 0.7} ${cy + r * f * 0.7}`}
-      />
-    )),
 
   trail: (cx, cy, r) => (
     <>
@@ -91,16 +69,6 @@ const FIELDS = {
       {[[-0.9, 0.6], [0.1, -0.45], [0.95, -0.72]].map(([fx, fy], i) => (
         <circle key={i} cx={cx + r * fx} cy={cy + r * fy} r="2.4" />
       ))}
-    </>
-  ),
-
-  star: (cx, cy, r) => (
-    <>
-      {Array.from({ length: 8 }, (_, i) => {
-        const a = (i * 45 * Math.PI) / 180
-        return <line key={i} x1={cx} y1={cy} x2={cx + r * 0.9 * Math.cos(a)} y2={cy + r * 0.9 * Math.sin(a)} />
-      })}
-      <circle cx={cx} cy={cy} r={r * 0.28} />
     </>
   ),
 
@@ -115,23 +83,6 @@ const FIELDS = {
       />
     )),
 
-  laurel: (cx, cy, r) => (
-    <>
-      {[-1, 1].map((s) => (
-        <path
-          key={s}
-          d={`M ${cx + s * r * 0.15} ${cy + r * 0.8} A ${r * 0.8} ${r * 0.8} 0 0 ${s > 0 ? 0 : 1} ${cx + s * r * 0.15} ${cy - r * 0.8}`}
-        />
-      ))}
-      {[-1, 1].map((s) =>
-        Array.from({ length: 5 }, (_, i) => {
-          const t = -0.6 + i * 0.3
-          return <line key={s + '-' + i} x1={cx + s * r * 0.62} y1={cy + r * t} x2={cx + s * r * 0.9} y2={cy + r * (t - 0.14)} />
-        })
-      )}
-    </>
-  ),
-
   chevrons: (cx, cy, r) =>
     [0.3, 0.55, 0.8, 1.05].map((f, i) => (
       <path key={i} d={`M ${cx - r * 0.7} ${cy - r * f * 0.5} L ${cx} ${cy + r * f * 0.35} L ${cx + r * 0.7} ${cy - r * f * 0.5}`} />
@@ -144,18 +95,13 @@ const FIELDS = {
 const MOTIFS = {
   'india-china': { left: 'rays', right: 'ripples', palette: 'warm', join: 'x' },
   'vip-deal-making': { left: 'chevrons', right: 'columns', palette: 'deep', join: 'dot' },
-  'words-that-outlive-empires': { left: 'script', right: 'rays', palette: 'cool', join: 'x' },
-  'the-sound-of-the-soul': { left: 'waves', right: 'ripples', palette: 'cool', join: 'x' },
-  'frames-of-a-civilisation': { left: 'frames', right: 'rays', palette: 'cool', join: 'x' },
-  'guardians-of-the-wild': { left: 'peaks', right: 'ripples', palette: 'earth', join: 'x' },
-  'voices-carried-forward': { left: 'arcs', right: 'rays', palette: 'earth', join: 'x' },
-  'the-long-walk-to-selfhood': { left: 'trail', right: 'ripples', palette: 'earth', join: 'x' },
-  'special-guest-media-bite': { left: 'waves', right: 'columns', palette: 'deep', join: 'dot' },
-  'gala-night-awards-opening': { left: 'star', right: 'rays', palette: 'warm', join: 'dot' },
-  'cultural-icon-of-the-year-award': { left: 'star', right: 'laurel', palette: 'warm', join: 'dot' },
-  'ministerial-keynote': { left: 'columns', right: 'rays', palette: 'deep', join: 'dot' },
-  'the-legacy-hour': { left: 'laurel', right: 'ripples', palette: 'deep', join: 'dot' },
-  'capital-council-pitches': { left: 'chevrons', right: 'ripples', palette: 'warm', join: 'dot' },
+  // One block covering literature, cinema and music, so its two discs pair the
+  // written word with sound rather than picking a single art form.
+  'india-russia': { left: 'script', right: 'waves', palette: 'cool', join: 'x' },
+  // Conservation and the long walk to freedom — landscape paired with a path.
+  'india-south-africa': { left: 'peaks', right: 'trail', palette: 'earth', join: 'x' },
+  // Founders and capital: ascent paired with the rows of a pitch room.
+  'founders-track': { left: 'chevrons', right: 'columns', palette: 'warm', join: 'dot' },
 }
 
 function Motif({ name, uid, compact }) {

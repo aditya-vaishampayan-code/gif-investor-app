@@ -1,6 +1,6 @@
 // Each day is a list of sessions. A session can have `tracks` (each track is an
-// optional `name` plus a `speakers` list) when multiple parallel talks share one
-// time slot — e.g. "India x Brazil" running Music & Movement / Beauty / Sports at once.
+// optional `name` plus a `speakers` list) when several talks share one time slot
+// — e.g. "India x Brazil" running Music & Movement / Beauty / Sports at once.
 // Sessions with no `tracks` (or `type: 'break'`) render as simple time/title/location cards.
 // `showDot` controls whether this session gets its own marker on the timeline —
 // set to false for items that run concurrently with the session above them.
@@ -28,7 +28,7 @@ export const AGENDA_DAYS = [
           },
           {
             name: 'Address · 10:30 AM',
-            speakers: [{ name: 'Piyush Goyal', role: 'Union Minister of Commerce and Industry, MP' }],
+            speakers: [{ name: 'Shri Piyush Goyal', role: 'Union Minister of Commerce and Industry, MP' }],
           },
           {
             name: 'Inauguration',
@@ -143,52 +143,39 @@ export const AGENDA_DAYS = [
         showDot: false,
       },
       {
-        id: 'words-that-outlive-empires',
-        thumb: { motif: 'words-that-outlive-empires' },
-        time: '10:30am – 11:10am',
-        title: 'Words That Outlive Empires',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
-        description: 'India x Russia · Literature — Tagore and Tolstoy',
+        // Was three separate 40-50 minute sessions; they are one block running
+        // 10:30–13:00 in Crystal, structured like Day 1's India x Brazil and
+        // India x China. Track order follows the running order, which is not
+        // the order the talks were previously listed in.
+        id: 'india-russia',
+        thumb: { motif: 'india-russia' },
+        time: '10:30 AM – 1:00 PM',
+        title: 'India x Russia',
+        location: 'Crystal Ballroom – The Taj Mahal Palace, Mumbai',
         showDot: true,
         tracks: [
           {
+            name: 'Words That Outlive Empires',
+            description: 'Exploring the friendship between Tagore and Tolstoy.',
             speakers: [
-              { name: 'Smt Umadas Gupta', role: 'Indian actress and historian' },
-              { name: 'Matvei', role: 'Russian ice hockey player' },
+              { name: 'Uma Dasgupta', role: 'Indian actress and historian' },
+              { name: 'Matvei Fetisov', role: 'Vice Consul at the Consulate General of Russia in Mumbai' },
             ],
           },
-        ],
-      },
-      {
-        id: 'the-sound-of-the-soul',
-        thumb: { motif: 'the-sound-of-the-soul' },
-        time: '11:15am – 12:05pm',
-        title: 'The Sound of the Soul',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
-        description: 'India x Russia · Classical music traditions',
-        showDot: true,
-        tracks: [
           {
+            name: 'Frames of a Civilisation',
+            description: 'Indian filmmaking’s growing impact on cinema’s future.',
             speakers: [
-              { name: 'Konstantin Zenkin', role: 'Musicologist' },
-              { name: 'Shri Purbayan Chatterjee', role: 'Indian sitar maestro' },
+              { name: 'Sanjay Rodrigues', role: 'Founder and CEO of Phenomenal AI' },
+              { name: 'Ivan Fetisov', role: 'Consul General of the Russian Federation' },
             ],
           },
-        ],
-      },
-      {
-        id: 'frames-of-a-civilisation',
-        thumb: { motif: 'frames-of-a-civilisation' },
-        time: '12:10pm – 01:00pm',
-        title: 'Frames of a Civilisation',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
-        description: 'India x Russia · Cinema as a civilisational mirror',
-        showDot: true,
-        tracks: [
           {
+            name: 'The Sound of the Soul',
+            description: 'Sitar traditions’ global reach, from Herbie Hancock to Amazon Prime.',
             speakers: [
-              { name: 'Sanjay R', role: 'Founder and CEO of Phenomenal AI' },
-              { name: 'Aleksandr Fursov', role: 'Deputy Consul General of the Russian Federation in Mumbai' },
+              { name: 'Purbayan Chatterjee', role: 'Indian Sitar Maestro' },
+              { name: 'Aleksandr Fursov', role: 'Deputy Consul General of the Russian Federation' },
             ],
           },
         ],
@@ -201,42 +188,37 @@ export const AGENDA_DAYS = [
         type: 'break',
       },
       {
-        id: 'guardians-of-the-wild',
-        thumb: { motif: 'guardians-of-the-wild' },
-        time: '02:00pm – 02:40pm',
-        title: 'Guardians of the Wild',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
-        description: 'India x South Africa · Wildlife and conservation',
+        // Was three separate talks; they run as one block in Crystal, same shape
+        // as India x Russia above.
+        id: 'india-south-africa',
+        thumb: { motif: 'india-south-africa' },
+        time: '2:00 PM – 4:15 PM',
+        title: 'India x South Africa',
+        location: 'Crystal Ballroom – The Taj Mahal Palace, Mumbai',
         showDot: true,
         tracks: [
           {
+            name: 'Guardians of the Wild',
+            description: 'Shared India–South Africa conservation battles, from the ground.',
             speakers: [
               { name: 'Anand Shinde', role: 'Founder of Trunk Call The Wildlife Foundation' },
+              { name: 'Sibusiso Mpungose', role: 'Speaker, Global Impact Forum' },
             ],
           },
-        ],
-      },
-      {
-        id: 'voices-carried-forward',
-        thumb: { motif: 'voices-carried-forward' },
-        time: '02:45pm – 03:25pm',
-        title: 'Voices Carried Forward',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
-        description: 'India x South Africa · Indigenous oral traditions (Adivasi, Zulu, Xhosa)',
-        showDot: true,
-      },
-      {
-        id: 'the-long-walk-to-selfhood',
-        thumb: { motif: 'the-long-walk-to-selfhood' },
-        time: '03:30pm – 04:15pm',
-        title: 'The Long Walk to Selfhood',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
-        description: 'India x South Africa · Resistance, identity and freedom',
-        showDot: true,
-        tracks: [
           {
+            name: 'Voices Carried Forward',
+            description: 'Deep, overlooked history connecting India and Africa.',
             speakers: [
-              { name: 'Dr John Chelladurai', role: 'South African Consul General' },
+              { name: 'Dr. Neelima Sona', role: 'Emotional intelligence expert, author, and leadership coach' },
+              { name: 'Mr. Mashudubele Sedula Mamabolo', role: 'Counsellor, South African High Commission' },
+            ],
+          },
+          {
+            name: 'The Long Walk to Selfhood',
+            description: 'Diplomacy meets philosophy on freedom and identity.',
+            speakers: [
+              { name: 'Manish Karmwar', role: 'Department of African Studies' },
+              { name: 'Gideon Labane', role: 'Consulate General of South Africa' },
             ],
           },
         ],
@@ -249,74 +231,44 @@ export const AGENDA_DAYS = [
         type: 'break',
       },
       {
-        id: 'special-guest-media-bite',
-        thumb: { motif: 'special-guest-media-bite' },
-        time: '04:15pm – 04:45pm',
-        title: 'Special Guest (MCEE) – Media Bite',
-        location: 'Prince’s – The Taj Mahal Palace, Mumbai',
-        showDot: false,
-      },
-      {
-        id: 'gala-night-awards-opening',
-        thumb: { motif: 'gala-night-awards-opening' },
-        time: '04:45pm – 05:00pm',
-        title: 'Gala Night & Awards Ceremony Opening',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
-        showDot: true,
-      },
-      {
-        id: 'cultural-icon-of-the-year-award',
-        thumb: { motif: 'cultural-icon-of-the-year-award' },
-        time: '05:00pm – 05:15pm',
-        title: 'Cultural Icon of the Year Award',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
+        // Everything between High Tea and the closing dinner now runs as one
+        // Founders Track block. This replaces five separate sessions: the Media
+        // Bite, the Gala Night & Awards opening, the Cultural Icon of the Year
+        // Award, the Ministerial Keynote and the Capital Council pitches.
+        id: 'founders-track',
+        thumb: { motif: 'founders-track' },
+        time: '04:45 PM onwards',
+        title: 'Founders Track',
+        location: 'Crystal Ballroom – The Taj Mahal Palace, Mumbai',
         showDot: true,
         tracks: [
           {
+            name: 'Opening Remarks',
+            description: 'Founders building enterprises meant to outlast generations.',
             speakers: [
-              { name: 'Ashish Shelar', role: 'Indian politician' },
-              { name: 'Suniel Shetty', role: 'Actor' },
+              { name: 'Shreya Hegde', role: 'Indian content creator, entrepreneur, and soft skills trainer' },
             ],
           },
-        ],
-      },
-      {
-        // Moved earlier per the updated running order — now overlaps the Cultural
-        // Icon of the Year Award above (5:00–5:15pm) and the start of The Legacy
-        // Hour below (5:20pm onward), both in Crystal. Flagging for the organizers
-        // to confirm the real running order.
-        id: 'ministerial-keynote',
-        thumb: { motif: 'ministerial-keynote' },
-        time: '05:00pm – 05:25pm',
-        title: 'Ministerial Keynote',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
-        showDot: true,
-        tracks: [
           {
+            name: 'The Legacy Hour',
+            description: 'A curated session exploring what it takes to build enterprises designed to outlast generations.',
+          },
+          {
+            name: 'Ministerial Keynote',
+            description: 'Keynote on India’s current investment moment.',
             speakers: [
-              { name: 'Gajendra Singh Shekhawat', role: 'Minister of Tourism of India' },
+              { name: 'Shri Piyush Goyal', role: 'Minister of Commerce and Industry of India' },
             ],
           },
+          {
+            name: 'The Capital Council',
+            description: 'VC dealmaking track for founders and investors.',
+          },
         ],
-      },
-      {
-        id: 'the-legacy-hour',
-        thumb: { motif: 'the-legacy-hour' },
-        time: '05:20pm – 06:50pm',
-        title: 'The Legacy Hour',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
-        showDot: true,
-      },
-      {
-        id: 'capital-council-pitches',
-        thumb: { motif: 'capital-council-pitches' },
-        time: '07:30pm onwards',
-        title: 'The Capital Council (6) Innovators',
-        location: 'Crystal – The Taj Mahal Palace, Mumbai',
-        showDot: true,
       },
       {
         id: 'networking-reception-closing-dinner',
+        description: 'Closing reception to continue the day’s conversations.',
         time: '8:00 PM onwards',
         title: 'Networking Reception & Closing Dinner',
         location: 'Ballroom – The Taj Mahal Palace, Mumbai',
