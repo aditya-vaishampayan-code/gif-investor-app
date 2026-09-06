@@ -29,6 +29,31 @@ function SpeakerRow({ speaker }) {
   )
 }
 
+// A session's tracks, each with its own speakers. Shared with Today's
+// "Happening Now" card so both expand to the same content.
+export function TrackList({ tracks }) {
+  return tracks.map((track, i) => (
+    <div key={i} className="mt-3 pt-3 border-t border-ink/8">
+      {track.name && <p className="text-[12px] font-bold text-ink mb-1">{track.name}</p>}
+      {track.description && <p className="text-[11px] text-ink/45 mb-2">{track.description}</p>}
+      {track.speakers?.length > 0 ? (
+        <>
+          <span className="inline-block px-2.5 py-1 rounded-full bg-orange text-white text-[9px] font-bold uppercase mb-1.5" style={{ letterSpacing: '0.06em' }}>
+            Speakers
+          </span>
+          <div>
+            {track.speakers.map((sp) => (
+              <SpeakerRow key={sp.name} speaker={sp} />
+            ))}
+          </div>
+        </>
+      ) : (
+        <p className="text-[11px] text-ink/35 italic">Speakers to be announced</p>
+      )}
+    </div>
+  ))
+}
+
 // `collapsible` gates everything below: pass it (with `expanded`/`onToggle`) to
 // let the card hide its description/speakers until tapped. Agenda's timeline
 // omits it and always renders fully expanded, non-interactive.
@@ -114,30 +139,7 @@ export default function SessionCard({ session, collapsible = false, expanded = t
           <>
             {session.description && <p className="text-[12px] text-ink/40 mt-0.5">{session.description}</p>}
 
-            {session.tracks?.map((track, i) => (
-              <div key={i} className="mt-3 pt-3 border-t border-ink/8">
-                {track.name && (
-                  <p className="text-[12px] font-bold text-ink mb-1">{track.name}</p>
-                )}
-                {track.description && (
-                  <p className="text-[11px] text-ink/45 mb-2">{track.description}</p>
-                )}
-                {track.speakers?.length > 0 ? (
-                  <>
-                    <span className="inline-block px-2.5 py-1 rounded-full bg-orange text-white text-[9px] font-bold uppercase mb-1.5" style={{ letterSpacing: '0.06em' }}>
-                      Speakers
-                    </span>
-                    <div>
-                      {track.speakers.map((sp) => (
-                        <SpeakerRow key={sp.name} speaker={sp} />
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <p className="text-[11px] text-ink/35 italic">Speakers to be announced</p>
-                )}
-              </div>
-            ))}
+            {session.tracks && <TrackList tracks={session.tracks} />}
           </>
         )}
 

@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import Frame from '../components/Frame'
 import BottomNav from '../components/BottomNav'
 import ProfileSheet from '../components/ProfileSheet'
-import SessionCard from '../components/SessionCard'
+import SessionCard, { TrackList } from '../components/SessionCard'
 import SessionThumb from '../components/SessionThumb'
 import { getUser } from '../services/dataService'
 import { getStandaloneSessions, getCurrentSession } from '../data/agenda'
 
 // Session id whose "Happening Now" card shows a startup count instead of a
-// location, and taps through to the Innovators tab. (The hero image itself is
-// data-driven — see `thumb` in agenda.js.)
+// location. (The hero image is data-driven — see `thumb` in agenda.js — and the
+// route through to the Innovators tab comes from that session's `link`.)
 const GALA_SESSION_ID = 'pitch-night-gala-day1'
 
 // How often we re-check the clock to catch a session becoming current, or the
@@ -22,6 +22,7 @@ export default function Grid() {
   const [, setTick] = useState(0)
   const [now, setNow] = useState(() => Date.now())
   const [expandedIds, setExpandedIds] = useState(() => new Set())
+  const [heroOpen, setHeroOpen] = useState(false)
   const nav = useNavigate()
   const user = getUser()
   const initial = user?.name ? user.name[0].toUpperCase() : '?'
@@ -90,20 +91,62 @@ export default function Grid() {
                 <span className="text-[11px] font-semibold text-white" style={{ letterSpacing: '0.08em' }}>LIVE</span>
               </div>
             </div>
-            <button
-              onClick={() => nav(isGala ? '/gala' : '/agenda')}
-              className="w-full text-left rounded-2xl overflow-hidden border-none p-0 block bg-white active:scale-[0.98] transition-transform shadow-lg"
-            >
-              <SessionThumb session={currentSession} />
-              <div className="p-4">
-                <div className="font-display text-[22px] font-bold text-orange mb-0.5" style={{ letterSpacing: '-0.02em' }}>
-                  {currentSession.title}
+            {/* Expands in place rather than jumping to the Agenda tab. No
+                `overflow-hidden`: the thumb carries its own top radii, so a
+                coloured child never gets clipped against the white card. */}
+            <div className="w-full rounded-2xl bg-white shadow-lg">
+              <button
+                onClick={() => setHeroOpen((v) => !v)}
+                aria-expanded={heroOpen}
+                className="w-full text-left border-none p-0 block bg-transparent cursor-pointer"
+              >
+                <SessionThumb session={currentSession} style={{ borderRadius: '16px 16px 0 0' }} />
+                <div className="p-4 flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <div className="font-display text-[22px] font-bold text-orange mb-0.5" style={{ letterSpacing: '-0.02em' }}>
+                      {currentSession.title}
+                    </div>
+                    <div className="text-[13px] text-ink/55 font-semibold">
+                      {isGala ? '6 Startups' : currentSession.location}
+                    </div>
+                  </div>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-ink/40 shrink-0 mt-2 transition-transform"
+                    style={{ transform: heroOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                    aria-hidden="true"
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
                 </div>
-                <div className="text-[13px] text-ink/55 font-semibold">
-                  {isGala ? '6 Startups' : currentSession.location}
+              </button>
+
+              {heroOpen && (
+                <div className="px-4 pb-4">
+                  {currentSession.description && (
+                    <p className="text-[12px] text-ink/40">{currentSession.description}</p>
+                  )}
+                  {currentSession.tracks && <TrackList tracks={currentSession.tracks} />}
+                  {currentSession.link && (
+                    <button
+                      type="button"
+                      onClick={() => nav(currentSession.link.to)}
+                      className="w-full mt-3 py-2.5 rounded-xl bg-orange text-white font-display text-[12px] font-bold border-none cursor-pointer active:scale-[0.98] transition-transform"
+                      style={{ letterSpacing: '0.04em' }}
+                    >
+                      {currentSession.link.label} →
+                    </button>
+                  )}
                 </div>
-              </div>
-            </button>
+              )}
+            </div>
           </div>
         )}
 
